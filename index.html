@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>24 Respiri per Genitori</title>
+<meta name="description" content="Un calendario dell’Avvento per mamme e papà: ogni giorno una carta, una frase e un piccolo gesto di cura. Della Dott.ssa Sara Savelli, pedagogista.">
+<meta property="og:title" content="24 Respiri per Genitori">
+<meta property="og:description" content="Un calendario dell’Avvento per mamme e papà: ogni giorno una carta, una frase e un piccolo gesto di cura.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#16271F">
+<meta name="apple-mobile-web-app-title" content="24 Respiri">
+<link rel="icon" href="icona.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icona.png">
+<style>
+@font-face{font-family:'Alegreya';font-style:normal;font-weight:400;font-display:swap;src:url('font/Alegreya-normal-400.ttf') format('truetype')}
+@font-face{font-family:'Alegreya';font-style:normal;font-weight:500;font-display:swap;src:url('font/Alegreya-normal-500.ttf') format('truetype')}
+@font-face{font-family:'Alegreya';font-style:normal;font-weight:700;font-display:swap;src:url('font/Alegreya-normal-700.ttf') format('truetype')}
+@font-face{font-family:'Alegreya';font-style:italic;font-weight:500;font-display:swap;src:url('font/Alegreya-italic-500.ttf') format('truetype')}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:500;font-display:swap;src:url('font/CormorantGaramond-normal-500.ttf') format('truetype')}
+
+/* Una sera d'inverno: fuori buio e neve, al centro il calendario di carta illuminato. */
+:root{
+  color-scheme:dark;
+  --notte:#111E18; --notte-2:#1F382C; --notte-3:#2C4C3B;
+  --crema:#FBF6EC; --carta-scura:#EADCBC; --luce:#FFE6A8;
+  --rosso:#A0222A; --rosso-scuro:#8E1B1E; --verde:#3F6B4A; --oro:#C49A45; --oro-chiaro:#E8CD86;
+  --testo:#2E2A26; --chiaro:#F6EDD8; --tenue:#B9C4B4;
+  --grana:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .24 0 0 0 0 .1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+  --u:min(calc(90vw / 64), calc((100dvh - 190px) / 92), 6.2px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;background:var(--notte)}
+body{overflow-x:clip;font-family:'Alegreya',Georgia,serif;color:var(--chiaro);background:radial-gradient(130% 70% at 50% 0%,var(--notte-3) 0%,var(--notte-2) 38%,var(--notte) 100%) fixed var(--notte);font-variant-numeric:lining-nums;font-feature-settings:'lnum' 1;line-height:1.45;min-height:100dvh}
+html.fermo,html.fermo body{overflow:hidden}
+button{font:inherit;color:inherit}
+#neve{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.pagina{position:relative;z-index:1;max-width:640px;margin:0 auto;padding-block:22px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* testata */
+.testata{text-align:center;padding:10px 0 20px}
+/* mentre la casa si avvicina, le scritte intorno svaniscono */
+.testata,footer{transition:opacity .55s ease}
+html.zoom .testata,html.zoom footer{opacity:0;pointer-events:none}
+h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-height:1.02;letter-spacing:-0.005em;text-shadow:0 0 26px rgba(255,214,140,.28)}
+.sotto{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px}
+.sotto span{font-size:clamp(9.5px,2.75vw,12px);letter-spacing:.15em;text-transform:uppercase;color:var(--oro-chiaro);font-weight:700;line-height:1.35;max-width:270px}
+.sotto svg{flex:none;width:30px;height:10px}.sotto svg:last-child{transform:scaleX(-1)}
+.stato{margin-top:14px;font-size:17px;line-height:1.3}
+.stato b{color:var(--oro-chiaro);font-weight:700}
+.barra{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;font-size:13.5px;color:var(--tenue)}
+.barra span{width:100%}
+.barra button{border:1px solid var(--oro-chiaro);background:none;color:var(--oro-chiaro);border-radius:99px;padding:5px 12px;font-size:13.5px;cursor:pointer}
+.barra button:active{background:var(--oro-chiaro);color:var(--notte)}
+.prova[hidden],.barra[hidden]{display:none}
+.prova{display:inline-block;margin-top:8px;font-size:12px;background:var(--oro-chiaro);color:var(--notte);padding:2px 10px;border-radius:99px;letter-spacing:.04em;font-weight:700}
+
+/* la casetta: frontone innevato con lucine, facciata di assi rosse, zoccolo di pietra, neve e abeti */
+.casa{position:relative;transition:transform .85s cubic-bezier(.45,.05,.2,1)}
+.tetto{display:block;width:calc(100% - 16px);height:auto;margin:0 8px -1px;position:relative;z-index:2;overflow:visible}
+.fumo{transform-box:fill-box;transform-origin:center;animation:fumo 4.2s ease-out infinite;opacity:0}
+.fumo.f2{animation-delay:1.4s}.fumo.f3{animation-delay:2.8s}
+@keyframes fumo{0%{transform:translate(0,6px) scale(.5);opacity:0}18%{opacity:.55}100%{transform:translate(-18px,-36px) scale(1.9);opacity:0}}
+.lamp{animation:brilla 2.8s ease-in-out infinite}
+@keyframes brilla{0%,100%{opacity:1}50%{opacity:.35}}
+.tavola{position:relative;margin:0 8px;padding:20px 4px 0;border-left:7px solid #F2E6CC;border-right:7px solid #F2E6CC;
+  background:
+    repeating-linear-gradient(180deg,rgba(255,255,255,.06) 0 1px,rgba(0,0,0,0) 1px 24px,rgba(30,0,0,.38) 24px 26px),
+    linear-gradient(90deg,rgba(0,0,0,.2),rgba(0,0,0,0) 10%,rgba(0,0,0,0) 90%,rgba(0,0,0,.2)),
+    var(--grana),#8E1B1E;
+  box-shadow:0 0 70px -6px rgba(255,205,120,.3),0 26px 46px -22px rgba(0,0,0,.85),inset 0 12px 12px -9px rgba(0,0,0,.55),inset 1px 0 0 rgba(0,0,0,.25),inset -1px 0 0 rgba(0,0,0,.25)}
+.griglia{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:34px 16px;padding:0 8px;align-items:start;--bordo:12px}
+.griglia.ferma{pointer-events:none}
+@media (min-width:560px){.griglia{grid-template-columns:repeat(6,1fr);gap:36px 18px;padding:0 12px;--bordo:16px}}
+.zoccolo{display:block;width:calc(100% - 6px);height:20px;margin:0 3px}
+.terra{display:block;width:100vw;height:64px;margin:-16px 0 0 calc(50% - 50vw);position:relative;z-index:2}
+.ombra-casa{position:absolute;left:-6px;right:-6px;bottom:46px;height:14px;z-index:2;pointer-events:none;background:radial-gradient(ellipse 52% 60% at 50% 30%,rgba(70,100,125,.42),rgba(70,100,125,0) 72%)}
+.abete{position:absolute;bottom:28px;height:auto;z-index:3;pointer-events:none}
+.ab-sx{left:-18px;width:48px}
+.ab-dx{right:-16px;width:41px;transform:scaleX(-1);transform-origin:center}
+
+/* una finestrella: cornice, architrave con la neve, davanzale innevato, due ante sui cardini */
+.fin{position:relative;aspect-ratio:3/4;border:0;background:none;padding:0;perspective:560px;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:6px;touch-action:manipulation;transition:transform .16s}
+.fin:active{transform:scale(.94)}
+.fin::before{content:'';position:absolute;inset:-5px;border-radius:8px 8px 3px 3px;background:linear-gradient(#FBF4E3,#E3D3B0);box-shadow:0 2px 4px rgba(40,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.45)}
+/* architrave e davanzale: assi chiare con la neve sopra */
+.arch,.soglia{position:absolute;left:-7px;right:-7px;height:6px;background:linear-gradient(#FBF4E3,#D6C6A2);box-shadow:0 2px 3px rgba(40,0,0,.45),inset 0 1px 0 rgba(255,255,255,.6)}
+.arch{top:-11px;border-radius:1.5px}
+/* il davanzale è un tratto del marcapiano: tocca quelli accanto e arriva fino agli angoli della casa */
+.soglia{bottom:-11px;left:-8px;right:-8px;border-radius:0}
+.fin:nth-child(4n+1) .soglia{left:calc(-1 * var(--bordo))}
+.fin:nth-child(4n) .soglia{right:calc(-1 * var(--bordo))}
+@media (min-width:560px){.fin:nth-child(4n+1) .soglia{left:-8px}.fin:nth-child(4n) .soglia{right:-8px}.fin:nth-child(6n+1) .soglia{left:calc(-1 * var(--bordo))}.fin:nth-child(6n) .soglia{right:calc(-1 * var(--bordo))}}
+.arch::before,.soglia::before{content:'';position:absolute;left:1px;right:1px;top:-4px;height:6px;border-radius:46% 46% 2px 2px / 100% 100% 2px 2px;background:linear-gradient(#FFFFFF 45%,#DFE9EE);box-shadow:inset 0 -1px 0 rgba(150,175,190,.35)}
+.soglia::before{left:3px;right:4px;border-radius:40% 52% 2px 2px / 100% 100% 2px 2px}
+.aperta::before{box-shadow:0 2px 4px rgba(40,0,0,.5),0 0 16px 3px rgba(255,196,100,.42),inset 0 0 0 1px rgba(255,255,255,.45)}
+.fin:focus-visible{outline:3px solid var(--oro-chiaro);outline-offset:6px}
+.dentro{position:absolute;inset:0;border-radius:6px;display:grid;place-items:center;overflow:hidden;
+  background:radial-gradient(circle at 50% 46%,#FFF6DA 0%,#FBE3A6 55%,#E2B766 100%);
+  box-shadow:inset 0 4px 9px rgba(70,35,0,.55),inset 0 -1px 2px rgba(70,35,0,.25),inset 0 0 0 1px rgba(70,35,0,.3)}
+.dentro svg{width:70%;height:70%;opacity:0;transform:scale(.6);transition:opacity .4s .25s,transform .7s .25s cubic-bezier(.2,.9,.3,1.35);filter:drop-shadow(0 2px 2px rgba(70,35,0,.3))}
+.aperta .dentro svg{opacity:1;transform:none}
+.anta{--t:4.5px;position:absolute;top:0;bottom:0;width:50%;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.3,1.25,.45,1)}
+/* l'anta è un blocchetto: faccia esterna davanti, faccia interna dietro, bordo di spessore sul lato libero */
+.fin.aperta{z-index:1}
+.sx{left:0;transform-origin:left center}
+.dx{right:0;transform-origin:right center;transition-delay:.09s}
+.dav,.die,.lato{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.dav{transform:translateZ(var(--t))}
+.lato{left:auto;right:auto;width:var(--t);background:linear-gradient(90deg,rgba(0,0,0,.42),rgba(0,0,0,.2) 45%,rgba(255,255,255,.1)),var(--c)}
+.sx .lato,.unica .lato{left:calc(100% - var(--t) / 2);transform:translateZ(calc(var(--t) / 2)) rotateY(90deg)}
+.dx .lato{left:calc(var(--t) / -2);transform:translateZ(calc(var(--t) / 2)) rotateY(-90deg)}
+.sx .dav,.sx .die{border-radius:6px 0 0 6px}
+.dx .dav,.dx .die{border-radius:0 6px 6px 0}
+.dav{background:
+  linear-gradient(rgba(46,36,28,.62),rgba(46,36,28,.62)) no-repeat var(--hx,0) 17%/6px 2px,
+  linear-gradient(rgba(46,36,28,.62),rgba(46,36,28,.62)) no-repeat var(--hx,0) 83%/6px 2px,
+  linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 32%,rgba(0,0,0,0) 68%,rgba(0,0,0,.16)),
+  var(--grana),var(--c)}
+.sx .dav{--hx:0;box-shadow:inset -1px 0 0 rgba(0,0,0,.3)}
+.dx .dav{--hx:100%;box-shadow:inset 1px 0 0 rgba(255,255,255,.2)}
+.dav::before{content:'';position:absolute;top:5px;bottom:5px;border:1px solid var(--f);box-shadow:inset 1px 1px 0 rgba(255,255,255,.16),inset -1px -1px 0 rgba(0,0,0,.14)}
+.sx .dav::before{left:5px;right:0;border-right:0;border-radius:4px 0 0 4px}
+.dx .dav::before{right:5px;left:0;border-left:0;border-radius:0 4px 4px 0}
+.dav::after{content:'';position:absolute;top:71%;width:5px;height:5px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFF2BE,#C49A45 60%,#6E5019);box-shadow:0 1px 1px rgba(0,0,0,.4)}
+.sx .dav::after{right:3px}.dx .dav::after{left:3px}
+.die{transform:rotateY(180deg);background:linear-gradient(270deg,rgba(255,196,100,0),rgba(255,196,100,0)),linear-gradient(90deg,rgba(0,0,0,.26),rgba(0,0,0,.08) 70%),var(--grana),var(--c)}
+.die::before{content:'';position:absolute;inset:6px 5px;border-radius:3px;border:1px solid rgba(0,0,0,.2);box-shadow:inset 1px 1px 0 rgba(255,255,255,.16),1px 1px 0 rgba(255,255,255,.14)}
+/* la luce della finestra illumina il lato interno dell'anta aperta */
+.aperta .sx .die,.aperta .unica .die{background:linear-gradient(270deg,rgba(255,196,100,.38),rgba(255,196,100,0) 60%),linear-gradient(90deg,rgba(0,0,0,.2),rgba(0,0,0,.05) 70%),var(--grana),var(--c)}
+.aperta .dx .die{background:linear-gradient(90deg,rgba(255,196,100,.38),rgba(255,196,100,0) 60%),linear-gradient(270deg,rgba(0,0,0,.2),rgba(0,0,0,.05) 70%),var(--grana),var(--c)}
+.dx .die{background:linear-gradient(270deg,rgba(0,0,0,.26),rgba(0,0,0,.08) 70%),var(--grana),var(--c)}
+.num{position:absolute;top:0;bottom:0;width:200%;display:grid;place-items:center;font-weight:700;font-size:clamp(22px,7.2vw,32px);color:var(--n);line-height:1;text-shadow:0 1px 0 rgba(0,0,0,.14)}
+.sx .num{left:0}.dx .num{right:0}
+.aperta .sx{transform:rotateY(-112deg)}
+.aperta .dx{transform:rotateY(112deg)}
+.col-s{--c:#C9D6DA;--n:#8E1B1E;--f:#FFFFFF}
+.col-g{--c:#3F6B4A;--n:#FFF8EA;--f:#E3C77D}
+.col-c{--c:#FFF8EA;--n:#8E1B1E;--f:#C49A45}
+.col-o{--c:#C9A24B;--n:#7A1518;--f:#FFF8EA}
+
+/* il 24 è la porta di casa, con la ghirlanda */
+.fin.porta{aspect-ratio:3/4.9}
+.porta,.porta .dentro,.porta .dav,.porta .die{border-radius:50% 50% 3px 3px / 30% 30% 3px 3px}
+.porta::before{inset:-5px -5px 0;border-radius:50% 50% 2px 2px / 31% 31% 2px 2px}
+.porta::after{content:'';position:absolute;left:-7px;right:-7px;top:-9px;height:60%;border-top:4px solid #FFFFFF;border-radius:50% 50% 0 0 / 52% 52% 0 0;filter:drop-shadow(0 1px 0 rgba(140,165,180,.55));pointer-events:none}
+.porta .anta{width:100%;--t:5px;--c:#24452F}
+.porta .lato{top:29%}
+.unica{left:0;transform-origin:left center}
+.porta .dav{background:linear-gradient(90deg,rgba(255,255,255,.1),rgba(0,0,0,.14)),var(--grana),#24452F}
+.porta .dav::before,.porta .dav::after{display:none}
+.facciata{position:absolute;inset:0;width:100%;height:100%}
+.porta .die::before{inset:10% 14% 8%;border-radius:40% 40% 3px 3px / 22% 22% 3px 3px;border-color:rgba(227,199,125,.45)}
+/* la porta di casa si apre verso l'interno: si vede la ghirlanda di scorcio */
+.aperta .unica{transform:rotateY(74deg)}
+.aperta .unica .dav::after{content:'';display:block;position:absolute;inset:0;width:auto;height:auto;top:0;border-radius:inherit;background:linear-gradient(90deg,rgba(0,0,0,.05),rgba(0,0,0,.4));box-shadow:none}
+.porta .soglia{left:-10px;right:-10px;bottom:-9px;height:9px;border-radius:2px 2px 1px 1px;background:linear-gradient(#E4E6E1 0 3px,#AEB2AD 3px,#8E928D);box-shadow:0 2px 3px rgba(0,0,0,.4)}
+.porta .soglia::before{display:none}
+
+/* giorni non ancora arrivati: ante in ombra */
+.chiusa .dav{filter:saturate(.62) brightness(.8)}
+.chiusa .dentro{background:#351212;box-shadow:inset 0 3px 7px rgba(0,0,0,.6)}
+.attesa .chiusa .dav{filter:none}
+.attesa .chiusa .dentro{box-shadow:none}
+/* la finestrella di oggi si socchiude da sola e lascia uscire la luce */
+.oggi:not(.aperta) .sx{animation:socchiudi-s 3.4s ease-in-out infinite}
+.oggi:not(.aperta) .unica{animation:socchiudi-p 3.4s ease-in-out infinite}
+.oggi:not(.aperta) .dx{animation:socchiudi-d 3.4s ease-in-out infinite}
+.oggi:not(.aperta) .dentro{animation:bagliore 3.4s ease-in-out infinite}
+@keyframes socchiudi-s{0%,58%,100%{transform:rotateY(0)}72%{transform:rotateY(-24deg)}84%{transform:rotateY(-10deg)}92%{transform:rotateY(-15deg)}}
+@keyframes socchiudi-p{0%,58%,100%{transform:rotateY(0)}72%{transform:rotateY(22deg)}84%{transform:rotateY(9deg)}92%{transform:rotateY(13deg)}}
+@keyframes socchiudi-d{0%,62%,100%{transform:rotateY(0)}76%{transform:rotateY(24deg)}88%{transform:rotateY(10deg)}95%{transform:rotateY(14deg)}}
+@keyframes bagliore{0%,55%,100%{box-shadow:inset 0 4px 9px rgba(70,35,0,.55),0 0 0 0 rgba(255,205,110,0)}78%{box-shadow:inset 0 4px 9px rgba(70,35,0,.55),0 0 18px 6px rgba(255,205,110,.75)}}
+.trema{animation:trema .38s}
+/* prima di aprirsi: le ante tremano tre volte e dalla fessura filtra la luce */
+.fin.scuote,.fin.esplode{z-index:2}
+.fin.scuote{animation:tremito .78s linear both}
+.fin.scuote .sx{animation:scuoti-s .78s ease-in-out both}
+.fin.scuote .dx{animation:scuoti-d .78s ease-in-out both}
+.fin.scuote .unica{animation:scuoti-p .78s ease-in-out both}
+.fin.scuote .dentro{animation:filtra .78s ease-in both}
+.fin.esplode .dentro{animation:esplode 1.2s ease-out both}
+@keyframes tremito{0%,100%{transform:none}8%{transform:translate(-.5px,.2px)}16%{transform:translate(.5px,-.2px)}38%{transform:translate(-.6px,0)}46%{transform:translate(.6px,.2px)}68%{transform:translate(-.7px,-.2px)}76%{transform:translate(.7px,0)}}
+@keyframes scuoti-s{0%{transform:rotateY(0)}12%{transform:rotateY(-8deg)}22%{transform:rotateY(-1deg)}42%{transform:rotateY(-12deg)}52%{transform:rotateY(-2deg)}72%{transform:rotateY(-17deg)}84%{transform:rotateY(-3deg)}100%{transform:rotateY(-5deg)}}
+@keyframes scuoti-d{0%{transform:rotateY(0)}14%{transform:rotateY(7deg)}24%{transform:rotateY(1deg)}44%{transform:rotateY(11deg)}54%{transform:rotateY(2deg)}74%{transform:rotateY(16deg)}86%{transform:rotateY(3deg)}100%{transform:rotateY(5deg)}}
+@keyframes scuoti-p{0%{transform:rotateY(0)}12%{transform:rotateY(6deg)}22%{transform:rotateY(1deg)}42%{transform:rotateY(9deg)}52%{transform:rotateY(2deg)}72%{transform:rotateY(13deg)}84%{transform:rotateY(3deg)}100%{transform:rotateY(4deg)}}
+@keyframes filtra{0%{box-shadow:inset 0 4px 9px rgba(70,35,0,.55),0 0 0 0 rgba(255,205,110,0);filter:brightness(1)}100%{box-shadow:inset 0 4px 9px rgba(70,35,0,.55),0 0 16px 5px rgba(255,205,110,.7);filter:brightness(1.12)}}
+@keyframes esplode{0%{box-shadow:inset 0 4px 9px rgba(70,35,0,.55),0 0 16px 5px rgba(255,205,110,.7);filter:brightness(1.12)}22%{box-shadow:inset 0 4px 9px rgba(70,35,0,.3),0 0 46px 20px rgba(255,218,140,.85);filter:brightness(1.3)}100%{box-shadow:inset 0 4px 9px rgba(70,35,0,.55),0 0 0 0 rgba(255,205,110,0);filter:brightness(1)}}
+@keyframes trema{20%{transform:translateX(-4px) rotate(-1.5deg)}45%{transform:translateX(4px) rotate(1.5deg)}70%{transform:translateX(-3px)}90%{transform:translateX(2px)}}
+
+/* la lettera di benvenuto: si apre da sola la prima volta, poi con «Perché questo calendario» */
+.musica{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:15;width:46px;height:46px;border-radius:50%;border:1px solid rgba(232,205,134,.65);background:rgba(17,30,24,.78);color:var(--oro-chiaro);display:grid;place-items:center;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+/* il pulsante della lettera: compare quando la lettera si chiude e ci si trasforma dentro */
+.pillola{margin-top:14px;display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(232,205,134,.7);border-radius:99px;background:rgba(17,30,24,.55);color:var(--oro-chiaro);font-size:16px;font-weight:700;letter-spacing:.01em;padding:9px 18px 9px 14px;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:opacity .45s,transform .45s cubic-bezier(.3,1.5,.5,1),background .2s}
+.pillola svg{width:24px;height:8px;flex:none}
+.pillola:active{transform:scale(.96);background:rgba(232,205,134,.16)}
+.pillola.nascosta{opacity:0;visibility:hidden;transform:scale(.7)}
+.pillola.arriva{animation:arriva .9s ease-out}
+@keyframes arriva{0%{box-shadow:0 0 0 0 rgba(232,205,134,.75)}100%{box-shadow:0 0 0 18px rgba(232,205,134,0)}}
+
+
+
+
+
+
+.pillola:focus-visible,.entra:focus-visible{outline:3px solid var(--oro-chiaro);outline-offset:3px;border-radius:6px}
+.lettera{position:fixed;inset:0;z-index:25;display:flex;align-items:center;justify-content:center;padding:18px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:rgba(8,15,11,0);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);perspective:1100px;transition:background .5s,backdrop-filter .5s,-webkit-backdrop-filter .5s}
+.lettera[hidden]{display:none}
+.lettera.viva{background:rgba(8,15,11,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.foglio{position:relative;width:min(100%,520px);max-height:calc(100dvh - 40px);display:flex;flex-direction:column;overflow:hidden;
+  background:var(--grana),var(--crema);color:var(--testo);border-radius:14px;border:2px solid var(--rosso);
+  box-shadow:inset 0 0 0 4px var(--crema),inset 0 0 0 5px var(--oro),0 34px 70px -18px rgba(0,0,0,.85);
+  padding:0;transform-origin:50% 0;transform:rotateX(-78deg) translateY(40px);opacity:0;
+  transition:transform 1s cubic-bezier(.2,.85,.25,1),opacity .45s}
+.lettera.viva .foglio{transform:none;opacity:1}
+
+.scorre{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;padding:28px 22px 10px;-webkit-mask-image:linear-gradient(#000 calc(100% - 28px),transparent);mask-image:linear-gradient(#000 calc(100% - 28px),transparent)}
+.piede{flex:none;padding:6px 22px 22px}
+.foglio h2{font-size:26px;color:var(--rosso-scuro);font-weight:700;text-align:center;line-height:1.1;margin-bottom:16px;text-wrap:balance}
+.regola{background:var(--grana),#F5EBD6;color:var(--testo);border:1px solid var(--oro);border-radius:10px;padding:16px 18px;font-size:18px;line-height:1.42;font-style:italic;font-weight:500}
+.regola b{font-style:normal;color:var(--rosso-scuro);font-weight:700}
+.foglio p.t{font-size:17px;margin-top:14px;line-height:1.45}
+.foglio p.t b{color:var(--rosso-scuro)}
+.passi{margin-top:18px;display:grid;gap:9px}
+.passo{display:flex;gap:12px;border:1px solid var(--oro);border-radius:10px;padding:12px 13px;background:rgba(245,235,214,.6)}
+.n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--rosso);color:#FFF8EA;font-size:19px;font-weight:700;display:grid;place-items:center;line-height:1}
+.passo h3{font-size:18px;color:var(--rosso-scuro);font-weight:700;line-height:1.15;margin:3px 0 3px}
+.passo p{font-size:15.5px;line-height:1.34}
+.foglio .firma{margin-top:24px;color:var(--testo)}
+.foglio .fw{color:#4A4540}
+.foglio .fl{border-top-color:#77706A}
+.entra{display:block;width:100%;margin-top:0;border:0;border-radius:99px;background:var(--rosso);color:#FFF8EA;font-size:18px;font-weight:700;padding:14px 20px;cursor:pointer;box-shadow:0 8px 18px -8px rgba(80,10,10,.7);transition:transform .15s}
+.entra:active{transform:scale(.97)}
+
+/* firma */
+.firma{margin-top:38px;text-align:center;font-family:'Cormorant Garamond',Georgia,serif;color:var(--crema)}
+.fn{font-size:27px;font-weight:500;letter-spacing:.05em;line-height:1}
+.ft{display:flex;align-items:center;justify-content:center;gap:13px;margin-top:10px}
+.fw{font-size:11.5px;font-weight:500;letter-spacing:.34em;margin-right:-.34em;color:var(--tenue);line-height:1}
+.fl{display:block;width:56px;border-top:1px solid var(--tenue)}
+.profilo{margin-top:18px;text-align:center;font-size:17px;line-height:1.3}
+.profilo a{color:var(--oro-chiaro);font-weight:700;text-decoration:underline;text-underline-offset:3px;display:inline-block;padding:8px 6px}
+.profilo span{display:block;font-size:13.5px;color:var(--tenue);margin-top:-4px}
+.nota{margin-top:26px;text-align:center;font-size:14.5px;color:var(--tenue);line-height:1.4}
+
+/* scena con la carta */
+.scena{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:18px 12px calc(18px + env(safe-area-inset-bottom));background:rgba(8,15,11,0);transition:background .4s,backdrop-filter .4s,-webkit-backdrop-filter .4s;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);touch-action:none;overflow:hidden}
+.scena[hidden]{display:none}
+.scena.viva{background:rgba(8,15,11,.74);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
+.scena.via{opacity:0;transition:opacity .25s}
+.alone{position:absolute;left:50%;top:46%;width:calc(120 * var(--u));height:calc(120 * var(--u));transform:translate(-50%,-50%) scale(.4);border-radius:50%;background:radial-gradient(circle,rgba(255,214,140,.34),rgba(255,214,140,0) 62%);opacity:0;transition:opacity .8s .25s,transform 1.1s .25s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.viva .alone{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.chiudi{position:absolute;top:calc(10px + env(safe-area-inset-top));right:12px;width:46px;height:46px;border-radius:50%;border:0;background:rgba(251,246,236,.94);color:var(--rosso-scuro);font-size:30px;line-height:1;cursor:pointer;display:grid;place-items:center;opacity:0;transition:opacity .3s .6s;z-index:2}
+.viva .chiudi{opacity:1}
+.chiudi span{display:block;margin-top:-4px}
+.carta{position:relative;display:block;flex:none;width:calc(64 * var(--u));height:calc(92 * var(--u));border:0;background:none;padding:0;perspective:calc(190 * var(--u));cursor:pointer;-webkit-tap-highlight-color:transparent;will-change:transform;border-radius:calc(4.4 * var(--u))}
+.carta:focus-visible{outline:3px solid var(--oro-chiaro);outline-offset:5px}
+.fluttua,.inclina,.giro{position:absolute;inset:0;display:block;transform-style:preserve-3d}
+.fluttua.viva{animation:entra 1s cubic-bezier(.2,.8,.25,1) both,ondeggia 8s 1.05s ease-in-out infinite}
+@keyframes entra{0%{transform:rotateY(-80deg) rotateZ(-14deg)}55%{transform:rotateY(14deg) rotateZ(3deg)}80%{transform:rotateY(-5deg) rotateZ(-1deg)}100%{transform:none}}
+@keyframes ondeggia{0%,100%{transform:none}25%{transform:rotateY(-6deg) rotateX(2.5deg) translateY(calc(-.9 * var(--u)))}75%{transform:rotateY(6deg) rotateX(-2.5deg) translateY(calc(.6 * var(--u)))}}
+.inclina{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .6s cubic-bezier(.2,.7,.2,1),scale .45s cubic-bezier(.3,.6,.3,1)}
+.tocco .inclina{transition:transform .09s linear,scale .45s}
+.inclina.su{scale:1.08}
+.giro{transition:transform .9s cubic-bezier(.4,.05,.2,1)}
+.girata .giro{transform:rotateY(180deg)}
+.faccia{position:absolute;inset:0;display:block;background:var(--grana),var(--crema);border-radius:calc(4.4 * var(--u));overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 22px 46px -14px rgba(0,0,0,.8),0 0 0 calc(.18 * var(--u)) rgba(120,90,40,.35);color:var(--testo);text-align:center}
+.retro{transform:rotateY(180deg)}
+.faccia span{display:block}
+/* riflesso dorato che segue il dito */
+.luce{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .45s;background:radial-gradient(circle at var(--lx,50%) var(--ly,35%),rgba(255,232,170,.62),rgba(255,232,170,.14) 38%,rgba(255,232,170,0) 62%)}
+.retro .luce{background:radial-gradient(circle at calc(100% - var(--lx,50%)) var(--ly,35%),rgba(255,232,170,.5),rgba(255,232,170,.1) 38%,rgba(255,232,170,0) 62%)}
+.tocco .luce{opacity:1}
+/* lampo di luce quando la carta arriva */
+.lampo{position:absolute;top:-10%;bottom:-10%;left:0;width:60%;pointer-events:none;background:linear-gradient(100deg,rgba(255,240,200,0) 0%,rgba(255,240,200,.85) 50%,rgba(255,240,200,0) 100%);transform:translateX(-180%) skewX(-12deg)}
+.fluttua.viva .lampo{animation:lampo 1s .7s ease-out 1 both}
+@keyframes lampo{to{transform:translateX(280%) skewX(-12deg)}}
+.fr1{position:absolute;inset:calc(2.5 * var(--u));border:calc(.6 * var(--u)) solid var(--rosso);border-radius:calc(3.4 * var(--u))}
+.fr2{position:absolute;inset:calc(4.7 * var(--u));border:calc(.35 * var(--u)) solid var(--oro);border-radius:calc(2.2 * var(--u))}
+.cn{position:absolute;width:calc(8 * var(--u));height:calc(8 * var(--u));overflow:visible}
+.cn.tl{left:calc(5.5 * var(--u));top:calc(5.5 * var(--u))}
+.cn.tr{right:calc(5.5 * var(--u));top:calc(5.5 * var(--u));transform:scaleX(-1)}
+.cn.bl{left:calc(5.5 * var(--u));bottom:calc(5.5 * var(--u));transform:scaleY(-1)}
+.cn.br{right:calc(5.5 * var(--u));bottom:calc(5.5 * var(--u));transform:scale(-1,-1)}
+.giorno{position:absolute;top:calc(12 * var(--u));left:0;right:0;font-size:calc(8.11 * var(--u));font-weight:700;color:var(--rosso-scuro);line-height:1}
+.art{position:absolute;left:calc(16 * var(--u));top:calc(31 * var(--u));width:calc(32 * var(--u));height:calc(32 * var(--u))}
+.faccia .tit{position:absolute;left:calc(7.5 * var(--u));width:calc(49 * var(--u));top:calc(68 * var(--u));height:calc(14 * var(--u));display:flex;align-items:center;justify-content:center}
+.tin{font-size:calc(4.23 * var(--u));line-height:1.12;font-weight:500}
+.faccia .date{position:absolute;top:calc(10 * var(--u));left:0;right:0;display:flex;align-items:center;justify-content:center;gap:calc(1.4 * var(--u));height:calc(8 * var(--u))}
+.date span{font-size:calc(5.29 * var(--u));font-weight:700;color:var(--rosso-scuro);line-height:1;white-space:nowrap}
+.date svg{width:calc(9 * var(--u));height:calc(3 * var(--u))}.date .rr{transform:scaleX(-1)}
+.faccia .rbody{position:absolute;left:calc(7.5 * var(--u));width:calc(49 * var(--u));top:calc(21 * var(--u));height:calc(59 * var(--u));display:flex;flex-direction:column;justify-content:center;font-size:calc(2.82 * var(--u))}
+.in{line-height:1.24}
+.frase{font-size:1.0625em;font-style:italic;font-weight:500}
+.sep{display:block;width:calc(21 * var(--u));height:calc(4.2 * var(--u));margin:calc(2.4 * var(--u)) auto calc(2.2 * var(--u))}
+.eti{font-size:.82em;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--rosso-scuro);margin-bottom:calc(.8 * var(--u))}
+.sugg{position:relative;color:#FFF8EA;font-size:16.5px;letter-spacing:.02em;opacity:0;transition:opacity .4s .9s;display:flex;align-items:center;gap:8px;min-height:24px}
+.viva .sugg{opacity:.95}
+.sugg svg{width:20px;height:20px}
+.manda{position:relative;border:1px solid rgba(255,248,234,.75);background:rgba(251,246,236,.12);color:#FFF8EA;border-radius:99px;padding:11px 22px;font-size:16.5px;font-weight:500;cursor:pointer;opacity:0;transition:opacity .4s 1s,background .2s}
+.viva .manda{opacity:1}
+.manda:active{background:rgba(251,246,236,.3)}
+.azioni{position:relative;display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+.azioni .manda,.storia .manda{font-size:15.5px;padding:11px 17px;text-decoration:none;line-height:1.2}
+.manda.piena{background:var(--oro-chiaro);border-color:var(--oro-chiaro);color:var(--notte);font-weight:700}
+.manda.piena:active{background:#F6E3A8}
+.manda[disabled]{opacity:.55!important}
+/* l'immagine per le storie */
+.storia{position:fixed;inset:0;z-index:30;background:rgba(8,15,11,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:18px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.storia[hidden]{display:none}
+.storia img{display:block;max-height:60dvh;max-width:84vw;width:auto;height:auto;border-radius:14px;box-shadow:0 20px 50px -12px rgba(0,0,0,.9),0 0 0 1px rgba(232,205,134,.35);-webkit-touch-callout:default;user-select:auto}
+.storia p{color:var(--chiaro);font-size:16px;line-height:1.3;text-align:center;max-width:300px}
+.storia .manda{opacity:1}
+.scint{position:absolute;color:#F6DC95;pointer-events:none;line-height:1;text-shadow:0 0 9px rgba(255,214,130,.95);animation:scint 1.25s cubic-bezier(.15,.7,.3,1) both;z-index:1}
+@keyframes scint{0%{transform:translate(-50%,-50%) scale(.1);opacity:0}18%{opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1) rotate(140deg);opacity:0}}
+
+.musica{left:max(12px,env(safe-area-inset-left,0px));font-size:23px;line-height:1;transition:transform .16s}
+.musica:active{transform:scale(.92)}
+.musica.spenta{color:var(--tenue);border-color:rgba(185,196,180,.45)}
+.musica.spenta::after{content:'';position:absolute;width:28px;border-top:2px solid currentColor;transform:rotate(-45deg)}
+.musica:focus-visible{outline:3px solid var(--oro-chiaro);outline-offset:3px}
+.avviso{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:var(--crema);color:var(--testo);padding:11px 20px;border-radius:99px;font-size:16px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:20;max-width:90vw;text-align:center;line-height:1.25;box-shadow:0 10px 30px -10px rgba(0,0,0,.7)}
+.avviso.su{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important}
+}
+</style>
+</head>
+<body>
+<svg aria-hidden="true" width="0" height="0" style="position:absolute"><defs><symbol id="d1" viewBox="0 0 100 100"><line x1="30" y1="88" x2="68" y2="20" stroke="#3F6B4A" stroke-width="3.4" stroke-linecap="round"/><g stroke="#3F6B4A" stroke-width="4.2" stroke-linecap="round"><line x1="35.3" y1="78.5" x2="27.6" y2="55.8"/><line x1="35.3" y1="78.5" x2="58.7" y2="73.2"/><line x1="39.4" y1="71.2" x2="32.2" y2="49.9"/><line x1="39.4" y1="71.2" x2="61.3" y2="66.2"/><line x1="43.5" y1="63.9" x2="36.7" y2="44.1"/><line x1="43.5" y1="63.9" x2="63.9" y2="59.2"/><line x1="47.6" y1="56.5" x2="41.3" y2="38.2"/><line x1="47.6" y1="56.5" x2="66.5" y2="52.3"/><line x1="51.7" y1="49.2" x2="45.9" y2="32.3"/><line x1="51.7" y1="49.2" x2="69.1" y2="45.3"/><line x1="55.7" y1="41.9" x2="50.5" y2="26.5"/><line x1="55.7" y1="41.9" x2="71.7" y2="38.3"/><line x1="59.8" y1="34.6" x2="55.1" y2="20.6"/><line x1="59.8" y1="34.6" x2="74.2" y2="31.3"/><line x1="63.9" y1="27.3" x2="59.6" y2="14.8"/><line x1="63.9" y1="27.3" x2="76.8" y2="24.4"/><line x1="68.0" y1="20.0" x2="64.2" y2="8.9"/><line x1="68.0" y1="20.0" x2="79.4" y2="17.4"/></g><path d="M32 78 C26 72 24 66 26 58" stroke="#9A6B45" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M33 72 C29 70 22 70 20 68" stroke="#9A6B45" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="26" cy="57" r="7" fill="#B0282B"/><circle cx="23.9" cy="54.5" r="1.5" fill="#FFF8EA"/><circle cx="19" cy="69" r="7" fill="#B0282B"/><circle cx="16.9" cy="66.5" r="1.5" fill="#FFF8EA"/><polygon points="80.00,37.00 82.97,43.91 90.46,44.60 84.81,49.56 86.47,56.90 80.00,53.06 73.53,56.90 75.19,49.56 69.54,44.60 77.03,43.91" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/></symbol><symbol id="d2" viewBox="0 0 100 100"><ellipse cx="46" cy="86" rx="30" ry="6" fill="#E2D3B4"/><path d="M66 46 C86 44 86 72 64 70" fill="none" stroke="#B0282B" stroke-width="7"/><path d="M22 40 H70 V68 C70 80 62 84 46 84 C30 84 22 80 22 68 Z" fill="#B0282B"/><rect x="22" y="52" width="48" height="6" fill="#FFF8EA"/><rect x="22" y="40" width="48" height="5" fill="#8E1B1E"/><g fill="none" stroke="#8FAEB9" stroke-width="3.6" stroke-linecap="round"><path d="M34 30 C28 24 40 20 34 12"/><path d="M46 30 C40 24 52 20 46 12"/><path d="M58 30 C52 24 64 20 58 12"/></g><polygon points="46.00,68.50 47.49,71.95 51.23,72.30 48.41,74.78 49.23,78.45 46.00,76.53 42.77,78.45 43.59,74.78 40.77,72.30 44.51,71.95" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/></symbol><symbol id="d3" viewBox="0 0 100 100"><ellipse cx="50" cy="84" rx="34" ry="8" fill="#9A6B45"/><ellipse cx="50" cy="81" rx="30" ry="6" fill="#B58459"/><rect x="39" y="40" width="22" height="42" rx="3" fill="#FFF8EA" stroke="#E2D3B4" stroke-width="1.6"/><path d="M50 14 C58 24 60 30 56 36 C54 40 46 40 44 36 C40 30 44 24 50 14 Z" fill="#C9A24B"/><path d="M50 26 C54 30 54 34 52 36 C48 36 46 32 50 26 Z" fill="#B0282B"/><line x1="50" y1="38" x2="50" y2="42" stroke="#7E5636" stroke-width="2"/><g transform="translate(40,78) rotate(200)"><polygon points="0.0,-0.0 0.4,-1.0 0.8,-1.4 1.2,-1.7 1.6,-1.9 2.0,-2.1 2.4,-2.2 2.8,-2.3 3.2,-2.4 3.6,-2.6 4.0,-2.7 4.4,-2.8 4.8,-3.0 5.2,-3.2 5.6,-3.5 6.0,-3.8 6.4,-4.1 6.8,-4.4 7.2,-4.8 7.6,-5.1 8.0,-5.5 8.4,-5.3 8.8,-5.1 9.2,-4.9 9.6,-4.7 10.0,-4.5 10.4,-4.4 10.8,-4.3 11.2,-4.2 11.6,-4.1 12.0,-4.1 12.4,-4.1 12.8,-4.2 13.2,-4.3 13.6,-4.4 14.0,-4.5 14.4,-4.7 14.8,-4.9 15.2,-5.1 15.6,-5.3 16.0,-5.5 16.4,-5.1 16.8,-4.8 17.2,-4.4 17.6,-4.1 18.0,-3.8 18.4,-3.5 18.8,-3.2 19.2,-3.0 19.6,-2.8 20.0,-2.7 20.4,-2.6 20.8,-2.4 21.2,-2.3 21.6,-2.2 22.0,-2.1 22.4,-1.9 22.8,-1.7 23.2,-1.4 23.6,-1.0 24.0,-0.0 24.0,0.0 23.6,1.0 23.2,1.4 22.8,1.7 22.4,1.9 22.0,2.1 21.6,2.2 21.2,2.3 20.8,2.4 20.4,2.6 20.0,2.7 19.6,2.8 19.2,3.0 18.8,3.2 18.4,3.5 18.0,3.8 17.6,4.1 17.2,4.4 16.8,4.8 16.4,5.1 16.0,5.5 15.6,5.3 15.2,5.1 14.8,4.9 14.4,4.7 14.0,4.5 13.6,4.4 13.2,4.3 12.8,4.2 12.4,4.1 12.0,4.1 11.6,4.1 11.2,4.2 10.8,4.3 10.4,4.4 10.0,4.5 9.6,4.7 9.2,4.9 8.8,5.1 8.4,5.3 8.0,5.5 7.6,5.1 7.2,4.8 6.8,4.4 6.4,4.1 6.0,3.8 5.6,3.5 5.2,3.2 4.8,3.0 4.4,2.8 4.0,2.7 3.6,2.6 3.2,2.4 2.8,2.3 2.4,2.2 2.0,2.1 1.6,1.9 1.2,1.7 0.8,1.4 0.4,1.0 0.0,0.0" fill="#3F6B4A" stroke="#3F6B4A" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(60,78) rotate(-20)"><polygon points="0.0,-0.0 0.4,-1.0 0.8,-1.4 1.2,-1.7 1.6,-1.9 2.0,-2.1 2.4,-2.2 2.8,-2.3 3.2,-2.4 3.6,-2.6 4.0,-2.7 4.4,-2.8 4.8,-3.0 5.2,-3.2 5.6,-3.5 6.0,-3.8 6.4,-4.1 6.8,-4.4 7.2,-4.8 7.6,-5.1 8.0,-5.5 8.4,-5.3 8.8,-5.1 9.2,-4.9 9.6,-4.7 10.0,-4.5 10.4,-4.4 10.8,-4.3 11.2,-4.2 11.6,-4.1 12.0,-4.1 12.4,-4.1 12.8,-4.2 13.2,-4.3 13.6,-4.4 14.0,-4.5 14.4,-4.7 14.8,-4.9 15.2,-5.1 15.6,-5.3 16.0,-5.5 16.4,-5.1 16.8,-4.8 17.2,-4.4 17.6,-4.1 18.0,-3.8 18.4,-3.5 18.8,-3.2 19.2,-3.0 19.6,-2.8 20.0,-2.7 20.4,-2.6 20.8,-2.4 21.2,-2.3 21.6,-2.2 22.0,-2.1 22.4,-1.9 22.8,-1.7 23.2,-1.4 23.6,-1.0 24.0,-0.0 24.0,0.0 23.6,1.0 23.2,1.4 22.8,1.7 22.4,1.9 22.0,2.1 21.6,2.2 21.2,2.3 20.8,2.4 20.4,2.6 20.0,2.7 19.6,2.8 19.2,3.0 18.8,3.2 18.4,3.5 18.0,3.8 17.6,4.1 17.2,4.4 16.8,4.8 16.4,5.1 16.0,5.5 15.6,5.3 15.2,5.1 14.8,4.9 14.4,4.7 14.0,4.5 13.6,4.4 13.2,4.3 12.8,4.2 12.4,4.1 12.0,4.1 11.6,4.1 11.2,4.2 10.8,4.3 10.4,4.4 10.0,4.5 9.6,4.7 9.2,4.9 8.8,5.1 8.4,5.3 8.0,5.5 7.6,5.1 7.2,4.8 6.8,4.4 6.4,4.1 6.0,3.8 5.6,3.5 5.2,3.2 4.8,3.0 4.4,2.8 4.0,2.7 3.6,2.6 3.2,2.4 2.8,2.3 2.4,2.2 2.0,2.1 1.6,1.9 1.2,1.7 0.8,1.4 0.4,1.0 0.0,0.0" fill="#3F6B4A" stroke="#3F6B4A" stroke-width="1" stroke-linejoin="round"/></g><circle cx="46" cy="77" r="4" fill="#B0282B"/><circle cx="44.8" cy="75.6" r="0.9" fill="#FFF8EA"/><circle cx="54" cy="77" r="4" fill="#B0282B"/><circle cx="52.8" cy="75.6" r="0.9" fill="#FFF8EA"/><circle cx="50" cy="74" r="4" fill="#B0282B"/><circle cx="48.8" cy="72.6" r="0.9" fill="#FFF8EA"/></symbol><symbol id="d4" viewBox="0 0 100 100"><path d="M50 6 C42 6 42 18 50 18" fill="none" stroke="#C9A24B" stroke-width="2.4"/><line x1="50" y1="18" x2="50" y2="24" stroke="#C9A24B" stroke-width="2.4"/><rect x="42" y="22" width="16" height="9" rx="2" fill="#C9A24B"/><circle cx="50" cy="60" r="29" fill="#B0282B"/><path d="M22 56 Q50 74 78 56 L79 64 Q50 84 21 64 Z" fill="#C9A24B"/><path d="M25 60 Q50 76 75 60" fill="none" stroke="#FFF8EA" stroke-width="1.6" stroke-dasharray="3 3"/><path d="M30 42 A24 24 0 0 1 44 34" fill="none" stroke="#FFF8EA" stroke-width="3.2" stroke-linecap="round"/><polygon points="50.00,43.90 50.03,43.96 50.10,43.97 50.04,44.01 50.06,44.08 50.00,44.05 49.94,44.08 49.96,44.01 49.90,43.97 49.97,43.96" fill="#B0282B" stroke="#B0282B" stroke-width="1.2" stroke-linejoin="round"/></symbol><symbol id="d5" viewBox="0 0 100 100"><path d="M26 28 Q50 6 74 28" fill="none" stroke="#C9A24B" stroke-width="2.6" stroke-dasharray="1 5" stroke-linecap="round"/><g transform="translate(27,50) rotate(-10) scale(0.92)"><path d="M-13 28 L-13 -2 C-13 -22 13 -22 13 -2 L13 28 Z" fill="#B0282B"/><path d="M12 12 C24 8 27 -4 20 -8 C15 -6 12 -2 12 2 Z" fill="#B0282B"/><rect x="-15" y="24" width="30" height="13" rx="3" fill="#FFF8EA" stroke="#E2D3B4" stroke-width="1.2"/><path d="M-9 8 h18 M-9 14 h18" stroke="#FFF8EA" stroke-width="2.4"/></g><g transform="translate(73,50) rotate(10) scale(-0.92,0.92)"><path d="M-13 28 L-13 -2 C-13 -22 13 -22 13 -2 L13 28 Z" fill="#3F6B4A"/><path d="M12 12 C24 8 27 -4 20 -8 C15 -6 12 -2 12 2 Z" fill="#3F6B4A"/><rect x="-15" y="24" width="30" height="13" rx="3" fill="#FFF8EA" stroke="#E2D3B4" stroke-width="1.2"/><path d="M-9 8 h18 M-9 14 h18" stroke="#FFF8EA" stroke-width="2.4"/></g><polygon points="50.00,17.00 51.35,20.14 54.76,20.45 52.19,22.71 52.94,26.05 50.00,24.30 47.06,26.05 47.81,22.71 45.24,20.45 48.65,20.14" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/></symbol><symbol id="d6" viewBox="0 0 100 100"><path d="M50 86 C10 58 10 24 32 20 C42 18 50 26 50 32 C50 26 58 18 68 20 C90 24 90 58 50 86 Z" fill="#B0282B"/><g transform="translate(52,50) rotate(12)"><rect x="-17" y="-14" width="34" height="28" rx="3" fill="#FFF8EA"/><rect x="-14.5" y="-11.5" width="29" height="23" rx="2" fill="none" stroke="#C9A24B" stroke-width="1.8" stroke-dasharray="3 2.6"/><path d="M-6 -4 l6 8 M0 -4 l-6 8 M6 -4 l6 8 M12 -4 l-6 8" stroke="#B0282B" stroke-width="2" stroke-linecap="round"/></g></symbol><symbol id="d7" viewBox="0 0 100 100"><path d="M36 22 C36 4 64 4 64 22" fill="none" stroke="#C9A24B" stroke-width="3.2"/><path d="M32 36 L38 22 H62 L68 36 Z" fill="#9A6B45"/><rect x="30" y="34" width="40" height="5" rx="1.5" fill="#7E5636"/><rect x="33" y="39" width="34" height="40" fill="#FBE9B7"/><path d="M50 48 C58 58 60 64 56 70 C54 74 46 74 44 70 C40 64 44 58 50 48 Z" fill="#C9A24B"/><path d="M50 60 C54 64 54 68 52 70 C48 70 46 66 50 60 Z" fill="#B0282B"/><g stroke="#9A6B45" stroke-width="3"><line x1="33" y1="39" x2="33" y2="79"/><line x1="67" y1="39" x2="67" y2="79"/><line x1="50" y1="39" x2="50" y2="45" /></g><rect x="28" y="78" width="44" height="8" rx="2" fill="#9A6B45"/><rect x="28" y="78" width="44" height="3" fill="#7E5636"/></symbol><symbol id="d8" viewBox="0 0 100 100"><path d="M18 22 C16 14 24 12 26 18" fill="none" stroke="#C9A24B" stroke-width="3"/><path d="M30 20 H62 V52 C62 60 70 62 80 66 C90 70 88 86 76 86 H50 C36 86 30 78 30 66 Z" fill="#B0282B"/><rect x="26" y="14" width="40" height="14" rx="5" fill="#FFF8EA" stroke="#E2D3B4" stroke-width="1.4"/><path d="M30 70 C30 78 36 86 50 86 H56 V70 Z" fill="#C9A24B"/><path d="M68 66 C78 68 86 72 88 80 C86 86 80 86 76 86 H70 Z" fill="#C9A24B"/><g transform="translate(46,45)"><polygon points="0.00,-7.00 1.89,-2.61 6.66,-2.16 3.06,1.00 4.11,5.66 0.00,3.22 -4.11,5.66 -3.06,1.00 -6.66,-2.16 -1.89,-2.61" fill="#FFF8EA" stroke="#FFF8EA" stroke-width="1.2" stroke-linejoin="round"/></g><circle cx="35" cy="21" r="1.8" fill="#E2D3B4"/><circle cx="46" cy="21" r="1.8" fill="#E2D3B4"/><circle cx="57" cy="21" r="1.8" fill="#E2D3B4"/></symbol><symbol id="d9" viewBox="0 0 100 100"><path d="M30 62 H70 L65 90 H35 Z" fill="#9A6B45"/><rect x="26" y="54" width="48" height="11" rx="3" fill="#7E5636"/><path d="M50 56 C50 48 49 42 50 34" fill="none" stroke="#3F6B4A" stroke-width="3.8" stroke-linecap="round"/><path d="M50 40 C36 42 26 32 28 22 C42 22 51 28 50 40 Z" fill="#6E9A6F"/><path d="M50 48 C64 50 76 40 74 28 C60 28 50 36 50 48 Z" fill="#3F6B4A"/><polygon points="82.00,8.00 84.16,13.02 89.61,13.53 85.50,17.14 86.70,22.47 82.00,19.68 77.30,22.47 78.50,17.14 74.39,13.53 79.84,13.02" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/><polygon points="18.00,39.50 19.22,42.33 22.28,42.61 19.97,44.64 20.65,47.64 18.00,46.07 15.35,47.64 16.03,44.64 13.72,42.61 16.78,42.33" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/></symbol><symbol id="d10" viewBox="0 0 100 100"><g stroke="#8FAEB9" stroke-width="4.6" stroke-linecap="round" fill="none"><g transform="rotate(0 50 50)"><line x1="50" y1="50" x2="50" y2="12" /><path d="M50 28 L41 19 M50 28 L59 19 M50 40 L43 34 M50 40 L57 34"/></g><g transform="rotate(60 50 50)"><line x1="50" y1="50" x2="50" y2="12" /><path d="M50 28 L41 19 M50 28 L59 19 M50 40 L43 34 M50 40 L57 34"/></g><g transform="rotate(120 50 50)"><line x1="50" y1="50" x2="50" y2="12" /><path d="M50 28 L41 19 M50 28 L59 19 M50 40 L43 34 M50 40 L57 34"/></g><g transform="rotate(180 50 50)"><line x1="50" y1="50" x2="50" y2="12" /><path d="M50 28 L41 19 M50 28 L59 19 M50 40 L43 34 M50 40 L57 34"/></g><g transform="rotate(240 50 50)"><line x1="50" y1="50" x2="50" y2="12" /><path d="M50 28 L41 19 M50 28 L59 19 M50 40 L43 34 M50 40 L57 34"/></g><g transform="rotate(300 50 50)"><line x1="50" y1="50" x2="50" y2="12" /><path d="M50 28 L41 19 M50 28 L59 19 M50 40 L43 34 M50 40 L57 34"/></g></g><circle cx="50" cy="50" r="6" fill="#8FAEB9"/><circle cx="50" cy="50" r="2.4" fill="#FFF8EA"/></symbol><symbol id="d11" viewBox="0 0 100 100"><g stroke="#9A6B45" stroke-linecap="round" fill="#9A6B45"><line x1="50" y1="40" x2="50" y2="66" stroke-width="22"/><line x1="26" y1="44" x2="74" y2="44" stroke-width="12"/><line x1="40" y1="70" x2="34" y2="84" stroke-width="12"/><line x1="60" y1="70" x2="66" y2="84" stroke-width="12"/><circle cx="50" cy="26" r="15" stroke="none"/></g><g stroke="#FFF8EA" stroke-width="2.6" stroke-linecap="round" fill="none"><path d="M22 41 l0 6 M78 41 l0 6"/><path d="M30 83 l8 3 M70 83 l-8 3"/></g><circle cx="44" cy="24" r="2.2" fill="#7E5636"/><circle cx="56" cy="24" r="2.2" fill="#7E5636"/><path d="M43 31 Q50 37 57 31" stroke="#FFF8EA" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="50" cy="50" r="3.2" fill="#B0282B"/><circle cx="50" cy="60" r="3.2" fill="#B0282B"/><path d="M44 38 Q50 42 56 38" stroke="#3F6B4A" stroke-width="2.6" fill="none" stroke-linecap="round"/></symbol><symbol id="d12" viewBox="0 0 100 100"><rect x="20" y="44" width="60" height="42" fill="#B0282B"/><rect x="16" y="34" width="68" height="14" rx="2" fill="#8E1B1E"/><rect x="44" y="34" width="12" height="52" fill="#C9A24B"/><g transform="translate(50,32)"><ellipse cx="-12" cy="-6" rx="13" ry="8" transform="rotate(-25 -12 -6)" fill="#C9A24B"/><ellipse cx="12" cy="-6" rx="13" ry="8" transform="rotate(25 12 -6)" fill="#C9A24B"/><ellipse cx="-12" cy="-6" rx="6" ry="3" transform="rotate(-25 -12 -6)" fill="#E3C77D"/><ellipse cx="12" cy="-6" rx="6" ry="3" transform="rotate(25 12 -6)" fill="#E3C77D"/><circle cx="0" cy="-2" r="5.5" fill="#C9A24B"/></g><circle cx="32" cy="66" r="2.4" fill="#FFF8EA"/><circle cx="68" cy="66" r="2.4" fill="#FFF8EA"/><circle cx="32" cy="78" r="2.4" fill="#FFF8EA"/><circle cx="68" cy="78" r="2.4" fill="#FFF8EA"/></symbol><symbol id="d13" viewBox="0 0 100 100"><g fill="none" stroke="#8FAEB9" stroke-width="3.6" stroke-linecap="round" opacity="1"><path d="M66 24 C60 18 72 14 66 8" /><path d="M76 24 C70 18 82 14 76 8"/></g><rect x="64" y="26" width="12" height="22" fill="#7E5636"/><rect x="62" y="24" width="16" height="5" fill="#9A6B45"/><rect x="20" y="48" width="60" height="38" fill="#9A6B45"/><polygon points="50,18 88,52 12,52" fill="#B0282B"/><path d="M50 18 L88 52 L80 52 L50 25 L20 52 L12 52 Z" fill="#FFF8EA"/><rect x="43" y="62" width="14" height="24" rx="7" fill="#3F6B4A"/><rect x="26" y="60" width="12" height="12" fill="#C9A24B"/><rect x="62" y="60" width="12" height="12" fill="#C9A24B"/><g stroke="#7E5636" stroke-width="1.6"><line x1="32" y1="60" x2="32" y2="72"/><line x1="26" y1="66" x2="38" y2="66"/><line x1="68" y1="60" x2="68" y2="72"/><line x1="62" y1="66" x2="74" y2="66"/></g><circle cx="54" cy="75" r="1.4" fill="#C9A24B"/></symbol><symbol id="d14" viewBox="0 0 100 100"><circle cx="50" cy="20" r="5" fill="none" stroke="#C9A24B" stroke-width="3"/><path d="M50 26 C32 26 30 50 28 62 L22 74 H78 L72 62 C70 50 68 26 50 26 Z" fill="#C9A24B"/><path d="M50 26 C60 28 64 40 66 54 L70 66 L64 66 C62 50 58 34 50 26 Z" fill="#E3C77D" opacity="1"/><rect x="20" y="72" width="60" height="8" rx="4" fill="#E3C77D" stroke="#C9A24B" stroke-width="1.2"/><circle cx="50" cy="86" r="6" fill="#9A6B45"/><g transform="translate(50,24)"><path d="M0 0 L-16 -9 C-20 -2 -18 6 -12 8 Z" fill="#B0282B"/><path d="M0 0 L16 -9 C20 -2 18 6 12 8 Z" fill="#B0282B"/><path d="M-3 4 L-10 20 L-4 17 L0 22 Z M3 4 L10 20 L4 17 L0 22 Z" fill="#8E1B1E"/><circle r="4.4" fill="#B0282B"/></g></symbol><symbol id="d15" viewBox="0 0 100 100"><defs><mask id="cm"><path d="M36 90 V38 A17 17 0 0 1 70 38" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/></mask></defs><path d="M36 90 V38 A17 17 0 0 1 70 38" fill="none" stroke="#E2D3B4" stroke-width="17" stroke-linecap="round"/><path d="M36 90 V38 A17 17 0 0 1 70 38" fill="none" stroke="#FFF8EA" stroke-width="14" stroke-linecap="round"/><g mask="url(#cm)" stroke="#B0282B" stroke-width="4.2"><line x1="25.3" y1="99.0" x2="46.7" y2="81.0"/><line x1="25.3" y1="92.5" x2="46.7" y2="74.5"/><line x1="25.3" y1="86.0" x2="46.7" y2="68.0"/><line x1="25.3" y1="79.5" x2="46.7" y2="61.5"/><line x1="25.3" y1="73.0" x2="46.7" y2="55.0"/><line x1="25.3" y1="66.5" x2="46.7" y2="48.5"/><line x1="25.3" y1="60.0" x2="46.7" y2="42.0"/><line x1="25.3" y1="53.5" x2="46.7" y2="35.5"/><line x1="25.3" y1="47.0" x2="46.7" y2="29.0"/><line x1="23.9" y1="36.0" x2="50.5" y2="27.3"/><line x1="26.8" y1="25.3" x2="54.7" y2="27.2"/><line x1="33.4" y1="16.4" x2="58.6" y2="28.6"/><line x1="42.9" y1="10.7" x2="61.7" y2="31.4"/><line x1="53.8" y1="8.9" x2="63.6" y2="35.1"/><line x1="64.6" y1="11.3" x2="63.9" y2="39.3"/><line x1="73.7" y1="17.5" x2="62.6" y2="43.2"/><line x1="79.9" y1="26.7" x2="60.0" y2="46.4"/></g><g transform="translate(36,68)"><path d="M0 0 L-14 -8 C-16 -2 -14 5 -8 6 Z" fill="#3F6B4A"/><path d="M0 0 L14 -8 C16 -2 14 5 8 6 Z" fill="#3F6B4A"/><circle r="3.6" fill="#B0282B"/></g></symbol><symbol id="d16" viewBox="0 0 100 100"><g transform="translate(50,56) rotate(-150)"><polygon points="0.0,-0.0 0.7,-2.3 1.5,-3.3 2.2,-3.9 2.9,-4.4 3.7,-4.8 4.4,-5.1 5.1,-5.4 5.9,-5.7 6.6,-6.0 7.3,-6.3 8.1,-6.6 8.8,-7.1 9.5,-7.6 10.3,-8.2 11.0,-8.8 11.7,-9.5 12.5,-10.3 13.2,-11.1 13.9,-12.0 14.7,-12.8 15.4,-12.4 16.1,-11.9 16.9,-11.5 17.6,-11.0 18.3,-10.6 19.1,-10.2 19.8,-9.9 20.5,-9.7 21.3,-9.6 22.0,-9.5 22.7,-9.6 23.5,-9.7 24.2,-9.9 24.9,-10.2 25.7,-10.6 26.4,-11.0 27.1,-11.5 27.9,-11.9 28.6,-12.4 29.3,-12.8 30.1,-12.0 30.8,-11.1 31.5,-10.3 32.3,-9.5 33.0,-8.8 33.7,-8.2 34.5,-7.6 35.2,-7.1 35.9,-6.6 36.7,-6.3 37.4,-6.0 38.1,-5.7 38.9,-5.4 39.6,-5.1 40.3,-4.8 41.1,-4.4 41.8,-3.9 42.5,-3.3 43.3,-2.3 44.0,-0.0 44.0,0.0 43.3,2.3 42.5,3.3 41.8,3.9 41.1,4.4 40.3,4.8 39.6,5.1 38.9,5.4 38.1,5.7 37.4,6.0 36.7,6.3 35.9,6.6 35.2,7.1 34.5,7.6 33.7,8.2 33.0,8.8 32.3,9.5 31.5,10.3 30.8,11.1 30.1,12.0 29.3,12.8 28.6,12.4 27.9,11.9 27.1,11.5 26.4,11.0 25.7,10.6 24.9,10.2 24.2,9.9 23.5,9.7 22.7,9.6 22.0,9.5 21.3,9.6 20.5,9.7 19.8,9.9 19.1,10.2 18.3,10.6 17.6,11.0 16.9,11.5 16.1,11.9 15.4,12.4 14.7,12.8 13.9,12.0 13.2,11.1 12.5,10.3 11.7,9.5 11.0,8.8 10.3,8.2 9.5,7.6 8.8,7.1 8.1,6.6 7.3,6.3 6.6,6.0 5.9,5.7 5.1,5.4 4.4,5.1 3.7,4.8 2.9,4.4 2.2,3.9 1.5,3.3 0.7,2.3 0.0,0.0" fill="#3F6B4A" stroke="#3F6B4A" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(50,56) rotate(-30)"><polygon points="0.0,-0.0 0.7,-2.3 1.5,-3.3 2.2,-3.9 2.9,-4.4 3.7,-4.8 4.4,-5.1 5.1,-5.4 5.9,-5.7 6.6,-6.0 7.3,-6.3 8.1,-6.6 8.8,-7.1 9.5,-7.6 10.3,-8.2 11.0,-8.8 11.7,-9.5 12.5,-10.3 13.2,-11.1 13.9,-12.0 14.7,-12.8 15.4,-12.4 16.1,-11.9 16.9,-11.5 17.6,-11.0 18.3,-10.6 19.1,-10.2 19.8,-9.9 20.5,-9.7 21.3,-9.6 22.0,-9.5 22.7,-9.6 23.5,-9.7 24.2,-9.9 24.9,-10.2 25.7,-10.6 26.4,-11.0 27.1,-11.5 27.9,-11.9 28.6,-12.4 29.3,-12.8 30.1,-12.0 30.8,-11.1 31.5,-10.3 32.3,-9.5 33.0,-8.8 33.7,-8.2 34.5,-7.6 35.2,-7.1 35.9,-6.6 36.7,-6.3 37.4,-6.0 38.1,-5.7 38.9,-5.4 39.6,-5.1 40.3,-4.8 41.1,-4.4 41.8,-3.9 42.5,-3.3 43.3,-2.3 44.0,-0.0 44.0,0.0 43.3,2.3 42.5,3.3 41.8,3.9 41.1,4.4 40.3,4.8 39.6,5.1 38.9,5.4 38.1,5.7 37.4,6.0 36.7,6.3 35.9,6.6 35.2,7.1 34.5,7.6 33.7,8.2 33.0,8.8 32.3,9.5 31.5,10.3 30.8,11.1 30.1,12.0 29.3,12.8 28.6,12.4 27.9,11.9 27.1,11.5 26.4,11.0 25.7,10.6 24.9,10.2 24.2,9.9 23.5,9.7 22.7,9.6 22.0,9.5 21.3,9.6 20.5,9.7 19.8,9.9 19.1,10.2 18.3,10.6 17.6,11.0 16.9,11.5 16.1,11.9 15.4,12.4 14.7,12.8 13.9,12.0 13.2,11.1 12.5,10.3 11.7,9.5 11.0,8.8 10.3,8.2 9.5,7.6 8.8,7.1 8.1,6.6 7.3,6.3 6.6,6.0 5.9,5.7 5.1,5.4 4.4,5.1 3.7,4.8 2.9,4.4 2.2,3.9 1.5,3.3 0.7,2.3 0.0,0.0" fill="#6E9A6F" stroke="#6E9A6F" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(50,56) rotate(90)"><polygon points="0.0,-0.0 0.5,-1.6 1.0,-2.4 1.5,-3.0 2.0,-3.4 2.5,-3.7 3.0,-4.0 3.5,-4.2 4.0,-4.4 4.5,-4.6 5.0,-4.8 5.5,-4.9 6.0,-5.1 6.5,-5.2 7.0,-5.4 7.5,-5.5 8.0,-5.7 8.5,-5.9 9.0,-6.1 9.5,-6.4 10.0,-6.6 10.5,-6.9 11.0,-7.2 11.5,-7.5 12.0,-7.9 12.5,-8.2 13.0,-8.6 13.5,-8.9 14.0,-9.3 14.5,-9.7 15.0,-10.0 15.5,-9.7 16.0,-9.3 16.5,-8.9 17.0,-8.6 17.5,-8.2 18.0,-7.9 18.5,-7.5 19.0,-7.2 19.5,-6.9 20.0,-6.6 20.5,-6.4 21.0,-6.1 21.5,-5.9 22.0,-5.7 22.5,-5.5 23.0,-5.4 23.5,-5.2 24.0,-5.1 24.5,-4.9 25.0,-4.8 25.5,-4.6 26.0,-4.4 26.5,-4.2 27.0,-4.0 27.5,-3.7 28.0,-3.4 28.5,-3.0 29.0,-2.4 29.5,-1.6 30.0,-0.0 30.0,0.0 29.5,1.6 29.0,2.4 28.5,3.0 28.0,3.4 27.5,3.7 27.0,4.0 26.5,4.2 26.0,4.4 25.5,4.6 25.0,4.8 24.5,4.9 24.0,5.1 23.5,5.2 23.0,5.4 22.5,5.5 22.0,5.7 21.5,5.9 21.0,6.1 20.5,6.4 20.0,6.6 19.5,6.9 19.0,7.2 18.5,7.5 18.0,7.9 17.5,8.2 17.0,8.6 16.5,8.9 16.0,9.3 15.5,9.7 15.0,10.0 14.5,9.7 14.0,9.3 13.5,8.9 13.0,8.6 12.5,8.2 12.0,7.9 11.5,7.5 11.0,7.2 10.5,6.9 10.0,6.6 9.5,6.4 9.0,6.1 8.5,5.9 8.0,5.7 7.5,5.5 7.0,5.4 6.5,5.2 6.0,5.1 5.5,4.9 5.0,4.8 4.5,4.6 4.0,4.4 3.5,4.2 3.0,4.0 2.5,3.7 2.0,3.4 1.5,3.0 1.0,2.4 0.5,1.6 0.0,0.0" fill="#3F6B4A" stroke="#3F6B4A" stroke-width="1" stroke-linejoin="round"/></g><circle cx="42" cy="56" r="7" fill="#B0282B"/><circle cx="39.9" cy="53.5" r="1.5" fill="#FFF8EA"/><circle cx="58" cy="56" r="7" fill="#B0282B"/><circle cx="55.9" cy="53.5" r="1.5" fill="#FFF8EA"/><circle cx="50" cy="46" r="7" fill="#B0282B"/><circle cx="47.9" cy="43.5" r="1.5" fill="#FFF8EA"/></symbol><symbol id="d17" viewBox="0 0 100 100"><path d="M62 12 A40 40 0 1 0 88 66 A31 31 0 1 1 62 12 Z" fill="#C9A24B"/><polygon points="72.00,24.00 74.70,30.28 81.51,30.91 76.37,35.42 77.88,42.09 72.00,38.60 66.12,42.09 67.63,35.42 62.49,30.91 69.30,30.28" fill="#E3C77D" stroke="#E3C77D" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.00,50.00 85.62,53.77 89.71,54.15 86.62,56.85 87.53,60.85 84.00,58.76 80.47,60.85 81.38,56.85 78.29,54.15 82.38,53.77" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/><polygon points="60.00,15.90 60.03,15.96 60.10,15.97 60.04,16.01 60.06,16.08 60.00,16.05 59.94,16.08 59.96,16.01 59.90,15.97 59.97,15.96" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/></symbol><symbol id="d18" viewBox="0 0 100 100"><path d="M50 44 L30 80 L40 76 L46 88 L52 54 Z" fill="#8E1B1E"/><path d="M50 44 L70 80 L60 76 L54 88 L48 54 Z" fill="#8E1B1E"/><path d="M50 44 C36 20 12 20 14 42 C16 58 38 52 50 44 Z" fill="#B0282B"/><path d="M50 44 C64 20 88 20 86 42 C84 58 62 52 50 44 Z" fill="#B0282B"/><path d="M48 44 C38 32 26 30 22 38" fill="none" stroke="#8E1B1E" stroke-width="2" stroke-linecap="round"/><path d="M52 44 C62 32 74 30 78 38" fill="none" stroke="#8E1B1E" stroke-width="2" stroke-linecap="round"/><rect x="42" y="36" width="16" height="16" rx="5" fill="#B0282B"/><path d="M45 40 h10" stroke="#8E1B1E" stroke-width="1.6"/></symbol><symbol id="d19" viewBox="0 0 100 100"><defs><clipPath id="pcc"><path d="M50 20 C72 20 80 40 72 62 C66 78 55 90 50 94 C45 90 34 78 28 62 C20 40 28 20 50 20 Z"/></clipPath></defs><path d="M50 20 C72 20 80 40 72 62 C66 78 55 90 50 94 C45 90 34 78 28 62 C20 40 28 20 50 20 Z" fill="#B98B5E"/><g clip-path="url(#pcc)"><path d="M-0.5 83.2 Q-1.5 92.2 5.0 99.2 Q11.5 92.2 10.5 83.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M9.5 83.2 Q8.5 92.2 15.0 99.2 Q21.5 92.2 20.5 83.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M19.5 83.2 Q18.5 92.2 25.0 99.2 Q31.5 92.2 30.5 83.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M29.5 83.2 Q28.5 92.2 35.0 99.2 Q41.5 92.2 40.5 83.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M39.5 83.2 Q38.5 92.2 45.0 99.2 Q51.5 92.2 50.5 83.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M49.5 83.2 Q48.5 92.2 55.0 99.2 Q61.5 92.2 60.5 83.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M59.5 83.2 Q58.5 92.2 65.0 99.2 Q71.5 92.2 70.5 83.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M69.5 83.2 Q68.5 92.2 75.0 99.2 Q81.5 92.2 80.5 83.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M79.5 83.2 Q78.5 92.2 85.0 99.2 Q91.5 92.2 90.5 83.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M89.5 83.2 Q88.5 92.2 95.0 99.2 Q101.5 92.2 100.5 83.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M4.5 77.6 Q3.5 86.6 10.0 93.6 Q16.5 86.6 15.5 77.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M14.5 77.6 Q13.5 86.6 20.0 93.6 Q26.5 86.6 25.5 77.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M24.5 77.6 Q23.5 86.6 30.0 93.6 Q36.5 86.6 35.5 77.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M34.5 77.6 Q33.5 86.6 40.0 93.6 Q46.5 86.6 45.5 77.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M44.5 77.6 Q43.5 86.6 50.0 93.6 Q56.5 86.6 55.5 77.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M54.5 77.6 Q53.5 86.6 60.0 93.6 Q66.5 86.6 65.5 77.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M64.5 77.6 Q63.5 86.6 70.0 93.6 Q76.5 86.6 75.5 77.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M74.5 77.6 Q73.5 86.6 80.0 93.6 Q86.5 86.6 85.5 77.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M84.5 77.6 Q83.5 86.6 90.0 93.6 Q96.5 86.6 95.5 77.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M94.5 77.6 Q93.5 86.6 100.0 93.6 Q106.5 86.6 105.5 77.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M-0.5 72.0 Q-1.5 81.0 5.0 88.0 Q11.5 81.0 10.5 72.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M9.5 72.0 Q8.5 81.0 15.0 88.0 Q21.5 81.0 20.5 72.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M19.5 72.0 Q18.5 81.0 25.0 88.0 Q31.5 81.0 30.5 72.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M29.5 72.0 Q28.5 81.0 35.0 88.0 Q41.5 81.0 40.5 72.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M39.5 72.0 Q38.5 81.0 45.0 88.0 Q51.5 81.0 50.5 72.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M49.5 72.0 Q48.5 81.0 55.0 88.0 Q61.5 81.0 60.5 72.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M59.5 72.0 Q58.5 81.0 65.0 88.0 Q71.5 81.0 70.5 72.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M69.5 72.0 Q68.5 81.0 75.0 88.0 Q81.5 81.0 80.5 72.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M79.5 72.0 Q78.5 81.0 85.0 88.0 Q91.5 81.0 90.5 72.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M89.5 72.0 Q88.5 81.0 95.0 88.0 Q101.5 81.0 100.5 72.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M4.5 66.4 Q3.5 75.4 10.0 82.4 Q16.5 75.4 15.5 66.4 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M14.5 66.4 Q13.5 75.4 20.0 82.4 Q26.5 75.4 25.5 66.4 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M24.5 66.4 Q23.5 75.4 30.0 82.4 Q36.5 75.4 35.5 66.4 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M34.5 66.4 Q33.5 75.4 40.0 82.4 Q46.5 75.4 45.5 66.4 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M44.5 66.4 Q43.5 75.4 50.0 82.4 Q56.5 75.4 55.5 66.4 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M54.5 66.4 Q53.5 75.4 60.0 82.4 Q66.5 75.4 65.5 66.4 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M64.5 66.4 Q63.5 75.4 70.0 82.4 Q76.5 75.4 75.5 66.4 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M74.5 66.4 Q73.5 75.4 80.0 82.4 Q86.5 75.4 85.5 66.4 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M84.5 66.4 Q83.5 75.4 90.0 82.4 Q96.5 75.4 95.5 66.4 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M94.5 66.4 Q93.5 75.4 100.0 82.4 Q106.5 75.4 105.5 66.4 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M-0.5 60.8 Q-1.5 69.8 5.0 76.8 Q11.5 69.8 10.5 60.8 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M9.5 60.8 Q8.5 69.8 15.0 76.8 Q21.5 69.8 20.5 60.8 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M19.5 60.8 Q18.5 69.8 25.0 76.8 Q31.5 69.8 30.5 60.8 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M29.5 60.8 Q28.5 69.8 35.0 76.8 Q41.5 69.8 40.5 60.8 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M39.5 60.8 Q38.5 69.8 45.0 76.8 Q51.5 69.8 50.5 60.8 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M49.5 60.8 Q48.5 69.8 55.0 76.8 Q61.5 69.8 60.5 60.8 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M59.5 60.8 Q58.5 69.8 65.0 76.8 Q71.5 69.8 70.5 60.8 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M69.5 60.8 Q68.5 69.8 75.0 76.8 Q81.5 69.8 80.5 60.8 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M79.5 60.8 Q78.5 69.8 85.0 76.8 Q91.5 69.8 90.5 60.8 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M89.5 60.8 Q88.5 69.8 95.0 76.8 Q101.5 69.8 100.5 60.8 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M4.5 55.2 Q3.5 64.2 10.0 71.2 Q16.5 64.2 15.5 55.2 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M14.5 55.2 Q13.5 64.2 20.0 71.2 Q26.5 64.2 25.5 55.2 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M24.5 55.2 Q23.5 64.2 30.0 71.2 Q36.5 64.2 35.5 55.2 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M34.5 55.2 Q33.5 64.2 40.0 71.2 Q46.5 64.2 45.5 55.2 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M44.5 55.2 Q43.5 64.2 50.0 71.2 Q56.5 64.2 55.5 55.2 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M54.5 55.2 Q53.5 64.2 60.0 71.2 Q66.5 64.2 65.5 55.2 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M64.5 55.2 Q63.5 64.2 70.0 71.2 Q76.5 64.2 75.5 55.2 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M74.5 55.2 Q73.5 64.2 80.0 71.2 Q86.5 64.2 85.5 55.2 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M84.5 55.2 Q83.5 64.2 90.0 71.2 Q96.5 64.2 95.5 55.2 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M94.5 55.2 Q93.5 64.2 100.0 71.2 Q106.5 64.2 105.5 55.2 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M-0.5 49.6 Q-1.5 58.6 5.0 65.6 Q11.5 58.6 10.5 49.6 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M9.5 49.6 Q8.5 58.6 15.0 65.6 Q21.5 58.6 20.5 49.6 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M19.5 49.6 Q18.5 58.6 25.0 65.6 Q31.5 58.6 30.5 49.6 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M29.5 49.6 Q28.5 58.6 35.0 65.6 Q41.5 58.6 40.5 49.6 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M39.5 49.6 Q38.5 58.6 45.0 65.6 Q51.5 58.6 50.5 49.6 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M49.5 49.6 Q48.5 58.6 55.0 65.6 Q61.5 58.6 60.5 49.6 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M59.5 49.6 Q58.5 58.6 65.0 65.6 Q71.5 58.6 70.5 49.6 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M69.5 49.6 Q68.5 58.6 75.0 65.6 Q81.5 58.6 80.5 49.6 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M79.5 49.6 Q78.5 58.6 85.0 65.6 Q91.5 58.6 90.5 49.6 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M89.5 49.6 Q88.5 58.6 95.0 65.6 Q101.5 58.6 100.5 49.6 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M4.5 44.0 Q3.5 53.0 10.0 60.0 Q16.5 53.0 15.5 44.0 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M14.5 44.0 Q13.5 53.0 20.0 60.0 Q26.5 53.0 25.5 44.0 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M24.5 44.0 Q23.5 53.0 30.0 60.0 Q36.5 53.0 35.5 44.0 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M34.5 44.0 Q33.5 53.0 40.0 60.0 Q46.5 53.0 45.5 44.0 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M44.5 44.0 Q43.5 53.0 50.0 60.0 Q56.5 53.0 55.5 44.0 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M54.5 44.0 Q53.5 53.0 60.0 60.0 Q66.5 53.0 65.5 44.0 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M64.5 44.0 Q63.5 53.0 70.0 60.0 Q76.5 53.0 75.5 44.0 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M74.5 44.0 Q73.5 53.0 80.0 60.0 Q86.5 53.0 85.5 44.0 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M84.5 44.0 Q83.5 53.0 90.0 60.0 Q96.5 53.0 95.5 44.0 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M94.5 44.0 Q93.5 53.0 100.0 60.0 Q106.5 53.0 105.5 44.0 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M-0.5 38.4 Q-1.5 47.4 5.0 54.4 Q11.5 47.4 10.5 38.4 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M9.5 38.4 Q8.5 47.4 15.0 54.4 Q21.5 47.4 20.5 38.4 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M19.5 38.4 Q18.5 47.4 25.0 54.4 Q31.5 47.4 30.5 38.4 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M29.5 38.4 Q28.5 47.4 35.0 54.4 Q41.5 47.4 40.5 38.4 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M39.5 38.4 Q38.5 47.4 45.0 54.4 Q51.5 47.4 50.5 38.4 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M49.5 38.4 Q48.5 47.4 55.0 54.4 Q61.5 47.4 60.5 38.4 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M59.5 38.4 Q58.5 47.4 65.0 54.4 Q71.5 47.4 70.5 38.4 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M69.5 38.4 Q68.5 47.4 75.0 54.4 Q81.5 47.4 80.5 38.4 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M79.5 38.4 Q78.5 47.4 85.0 54.4 Q91.5 47.4 90.5 38.4 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M89.5 38.4 Q88.5 47.4 95.0 54.4 Q101.5 47.4 100.5 38.4 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M4.5 32.8 Q3.5 41.8 10.0 48.8 Q16.5 41.8 15.5 32.8 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M14.5 32.8 Q13.5 41.8 20.0 48.8 Q26.5 41.8 25.5 32.8 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M24.5 32.8 Q23.5 41.8 30.0 48.8 Q36.5 41.8 35.5 32.8 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M34.5 32.8 Q33.5 41.8 40.0 48.8 Q46.5 41.8 45.5 32.8 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M44.5 32.8 Q43.5 41.8 50.0 48.8 Q56.5 41.8 55.5 32.8 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M54.5 32.8 Q53.5 41.8 60.0 48.8 Q66.5 41.8 65.5 32.8 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M64.5 32.8 Q63.5 41.8 70.0 48.8 Q76.5 41.8 75.5 32.8 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M74.5 32.8 Q73.5 41.8 80.0 48.8 Q86.5 41.8 85.5 32.8 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M84.5 32.8 Q83.5 41.8 90.0 48.8 Q96.5 41.8 95.5 32.8 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M94.5 32.8 Q93.5 41.8 100.0 48.8 Q106.5 41.8 105.5 32.8 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M-0.5 27.2 Q-1.5 36.2 5.0 43.2 Q11.5 36.2 10.5 27.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M9.5 27.2 Q8.5 36.2 15.0 43.2 Q21.5 36.2 20.5 27.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M19.5 27.2 Q18.5 36.2 25.0 43.2 Q31.5 36.2 30.5 27.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M29.5 27.2 Q28.5 36.2 35.0 43.2 Q41.5 36.2 40.5 27.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M39.5 27.2 Q38.5 36.2 45.0 43.2 Q51.5 36.2 50.5 27.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M49.5 27.2 Q48.5 36.2 55.0 43.2 Q61.5 36.2 60.5 27.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M59.5 27.2 Q58.5 36.2 65.0 43.2 Q71.5 36.2 70.5 27.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M69.5 27.2 Q68.5 36.2 75.0 43.2 Q81.5 36.2 80.5 27.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M79.5 27.2 Q78.5 36.2 85.0 43.2 Q91.5 36.2 90.5 27.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M89.5 27.2 Q88.5 36.2 95.0 43.2 Q101.5 36.2 100.5 27.2 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M4.5 21.6 Q3.5 30.6 10.0 37.6 Q16.5 30.6 15.5 21.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M14.5 21.6 Q13.5 30.6 20.0 37.6 Q26.5 30.6 25.5 21.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M24.5 21.6 Q23.5 30.6 30.0 37.6 Q36.5 30.6 35.5 21.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M34.5 21.6 Q33.5 30.6 40.0 37.6 Q46.5 30.6 45.5 21.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M44.5 21.6 Q43.5 30.6 50.0 37.6 Q56.5 30.6 55.5 21.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M54.5 21.6 Q53.5 30.6 60.0 37.6 Q66.5 30.6 65.5 21.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M64.5 21.6 Q63.5 30.6 70.0 37.6 Q76.5 30.6 75.5 21.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M74.5 21.6 Q73.5 30.6 80.0 37.6 Q86.5 30.6 85.5 21.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M84.5 21.6 Q83.5 30.6 90.0 37.6 Q96.5 30.6 95.5 21.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M94.5 21.6 Q93.5 30.6 100.0 37.6 Q106.5 30.6 105.5 21.6 Z" fill="#9E6F44" stroke="#7E5636" stroke-width="1.1"/><path d="M-0.5 16.0 Q-1.5 25.0 5.0 32.0 Q11.5 25.0 10.5 16.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M9.5 16.0 Q8.5 25.0 15.0 32.0 Q21.5 25.0 20.5 16.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M19.5 16.0 Q18.5 25.0 25.0 32.0 Q31.5 25.0 30.5 16.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M29.5 16.0 Q28.5 25.0 35.0 32.0 Q41.5 25.0 40.5 16.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M39.5 16.0 Q38.5 25.0 45.0 32.0 Q51.5 25.0 50.5 16.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M49.5 16.0 Q48.5 25.0 55.0 32.0 Q61.5 25.0 60.5 16.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M59.5 16.0 Q58.5 25.0 65.0 32.0 Q71.5 25.0 70.5 16.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M69.5 16.0 Q68.5 25.0 75.0 32.0 Q81.5 25.0 80.5 16.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M79.5 16.0 Q78.5 25.0 85.0 32.0 Q91.5 25.0 90.5 16.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/><path d="M89.5 16.0 Q88.5 25.0 95.0 32.0 Q101.5 25.0 100.5 16.0 Z" fill="#B98B5E" stroke="#7E5636" stroke-width="1.1"/></g><path d="M50 20 C72 20 80 40 72 62 C66 78 55 90 50 94 C45 90 34 78 28 62 C20 40 28 20 50 20 Z" fill="none" stroke="#7E5636" stroke-width="1.6"/><g stroke="#3F6B4A" stroke-width="3.2" stroke-linecap="round"><line x1="10.2" y1="85.4" x2="14.0" y2="74.7"/><line x1="10.2" y1="85.4" x2="18.9" y2="92.7"/><line x1="16.8" y1="83.6" x2="20.0" y2="74.8"/><line x1="16.8" y1="83.6" x2="24.0" y2="89.6"/><line x1="23.4" y1="81.8" x2="25.9" y2="74.9"/><line x1="23.4" y1="81.8" x2="29.1" y2="86.5"/><line x1="30.0" y1="80.0" x2="31.8" y2="74.9"/><line x1="30.0" y1="80.0" x2="34.2" y2="83.5"/></g><line x1="8" y1="86" x2="30" y2="80" stroke="#3F6B4A" stroke-width="3.2" stroke-linecap="round"/><circle cx="14" cy="78" r="4.2" fill="#B0282B"/><circle cx="12.7" cy="76.5" r="0.9" fill="#FFF8EA"/><circle cx="22" cy="92" r="4.2" fill="#B0282B"/><circle cx="20.7" cy="90.5" r="0.9" fill="#FFF8EA"/></symbol><symbol id="d20" viewBox="0 0 100 100"><polygon points="50,14 68,40 32,40" fill="#6E9A6F"/><polygon points="50,28 76,60 24,60" fill="#3F6B4A"/><polygon points="50,44 84,80 16,80" fill="#6E9A6F"/><rect x="43" y="80" width="14" height="10" fill="#9A6B45"/><polygon points="50.00,4.00 52.70,10.28 59.51,10.91 54.37,15.42 55.88,22.09 50.00,18.60 44.12,22.09 45.63,15.42 40.49,10.91 47.30,10.28" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/><circle cx="46" cy="52" r="4" fill="#B0282B"/><circle cx="44.8" cy="50.6" r="0.9" fill="#FFF8EA"/><circle cx="60" cy="64" r="4.4" fill="#C9A24B"/><circle cx="58.7" cy="62.5" r="1.0" fill="#FFF8EA"/><circle cx="38" cy="72" r="4.4" fill="#B0282B"/><circle cx="36.7" cy="70.5" r="1.0" fill="#FFF8EA"/><circle cx="64" cy="76" r="3.8" fill="#B0282B"/><circle cx="62.9" cy="74.7" r="0.8" fill="#FFF8EA"/><circle cx="50" cy="70" r="4" fill="#C9A24B"/><circle cx="48.8" cy="68.6" r="0.9" fill="#FFF8EA"/><circle cx="52" cy="40" r="3.4" fill="#C9A24B"/><circle cx="51.0" cy="38.8" r="0.7" fill="#FFF8EA"/></symbol><symbol id="d21" viewBox="0 0 100 100"><circle cx="50" cy="44" r="34" fill="#E6EFF1" stroke="#8FAEB9" stroke-width="2.6"/><path d="M20 58 Q50 70 80 58 Q76 74 50 78 Q24 74 20 58 Z" fill="#FFF8EA"/><rect x="40" y="46" width="22" height="16" fill="#9A6B45"/><polygon points="38,48 51,34 64,48" fill="#B0282B"/><rect x="48" y="52" width="7" height="10" rx="3" fill="#C9A24B"/><rect x="43" y="49" width="4" height="4" fill="#C9A24B"/><g fill="#FFF8EA" stroke="#E2D3B4" stroke-width="0.8"><circle cx="34" cy="30" r="2"/><circle cx="66" cy="26" r="2"/><circle cx="72" cy="42" r="1.8"/><circle cx="28" cy="46" r="1.8"/><circle cx="52" cy="22" r="1.8"/><circle cx="44" cy="36" r="1.5"/></g><path d="M30 28 A28 28 0 0 1 42 18" fill="none" stroke="#FFF8EA" stroke-width="3" stroke-linecap="round"/><path d="M26 76 H74 L80 92 H20 Z" fill="#9A6B45"/><rect x="24" y="74" width="52" height="7" rx="2" fill="#B0282B"/></symbol><symbol id="d22" viewBox="0 0 100 100"><path d="M50 90 C50 70 48 56 50 40" fill="none" stroke="#3F6B4A" stroke-width="3.2" stroke-linecap="round"/><ellipse cx="0" cy="-13" rx="6.4" ry="14" transform="translate(50,40) rotate(-62)" fill="#3F6B4A"/><ellipse cx="0" cy="-13" rx="6.4" ry="14" transform="translate(50,40) rotate(62)" fill="#3F6B4A"/><ellipse cx="0" cy="-13" rx="6.4" ry="14" transform="translate(50,40) rotate(0)" fill="#6E9A6F"/><ellipse cx="0" cy="-13" rx="6.4" ry="14" transform="translate(50,58) rotate(-70)" fill="#6E9A6F"/><ellipse cx="0" cy="-13" rx="6.4" ry="14" transform="translate(50,58) rotate(70)" fill="#6E9A6F"/><ellipse cx="0" cy="-13" rx="6.4" ry="14" transform="translate(49,72) rotate(-62)" fill="#3F6B4A"/><ellipse cx="0" cy="-13" rx="6.4" ry="14" transform="translate(51,72) rotate(62)" fill="#3F6B4A"/><g fill="#FFF8EA" stroke="#E2D3B4" stroke-width="1.6"><circle cx="44" cy="42" r="5.2"/><circle cx="56" cy="42" r="5.2"/><circle cx="50" cy="50" r="5.2"/></g><g transform="translate(50,84)"><path d="M0 0 L-12 -7 C-14 0 -12 6 -6 5 Z" fill="#B0282B"/><path d="M0 0 L12 -7 C14 0 12 6 6 5 Z" fill="#B0282B"/><circle r="3.4" fill="#8E1B1E"/></g></symbol><symbol id="d23" viewBox="0 0 100 100"><rect x="24" y="32.9" width="8" height="28" rx="1.5" fill="#B0282B"/><rect x="24" y="32.9" width="2.4" height="28" fill="#8E1B1E"/><path d="M28 21.9 C33 27.9 32 31.9 28 31.9 C24 31.9 23 27.9 28 21.9 Z" fill="#C9A24B"/><rect x="38" y="29.2" width="8" height="30" rx="1.5" fill="#B0282B"/><rect x="38" y="29.2" width="2.4" height="30" fill="#8E1B1E"/><path d="M42 18.2 C47 24.2 46 28.2 42 28.2 C38 28.2 37 24.2 42 18.2 Z" fill="#C9A24B"/><rect x="54" y="29.2" width="8" height="30" rx="1.5" fill="#B0282B"/><rect x="54" y="29.2" width="2.4" height="30" fill="#8E1B1E"/><path d="M58 18.2 C63 24.2 62 28.2 58 28.2 C54 28.2 53 24.2 58 18.2 Z" fill="#C9A24B"/><rect x="68" y="32.9" width="8" height="28" rx="1.5" fill="#B0282B"/><rect x="68" y="32.9" width="2.4" height="28" fill="#8E1B1E"/><path d="M72 21.9 C77 27.9 76 31.9 72 31.9 C68 31.9 67 27.9 72 21.9 Z" fill="#C9A24B"/><ellipse cx="50" cy="70" rx="36" ry="14" fill="none" stroke="#3F6B4A" stroke-width="9"/><ellipse cx="86.0" cy="70.0" rx="7" ry="3.6" transform="rotate(60 86.0 70.0)" fill="#3F6B4A"/><ellipse cx="85.2" cy="72.9" rx="7" ry="3.6" transform="rotate(132 85.2 72.9)" fill="#6E9A6F"/><ellipse cx="82.9" cy="75.7" rx="7" ry="3.6" transform="rotate(84 82.9 75.7)" fill="#3F6B4A"/><ellipse cx="79.1" cy="78.2" rx="7" ry="3.6" transform="rotate(156 79.1 78.2)" fill="#6E9A6F"/><ellipse cx="74.1" cy="80.4" rx="7" ry="3.6" transform="rotate(108 74.1 80.4)" fill="#3F6B4A"/><ellipse cx="68.0" cy="82.1" rx="7" ry="3.6" transform="rotate(180 68.0 82.1)" fill="#6E9A6F"/><ellipse cx="61.1" cy="83.3" rx="7" ry="3.6" transform="rotate(132 61.1 83.3)" fill="#3F6B4A"/><ellipse cx="53.8" cy="83.9" rx="7" ry="3.6" transform="rotate(204 53.8 83.9)" fill="#6E9A6F"/><ellipse cx="46.2" cy="83.9" rx="7" ry="3.6" transform="rotate(156 46.2 83.9)" fill="#3F6B4A"/><ellipse cx="38.9" cy="83.3" rx="7" ry="3.6" transform="rotate(228 38.9 83.3)" fill="#6E9A6F"/><ellipse cx="32.0" cy="82.1" rx="7" ry="3.6" transform="rotate(180 32.0 82.1)" fill="#3F6B4A"/><ellipse cx="25.9" cy="80.4" rx="7" ry="3.6" transform="rotate(252 25.9 80.4)" fill="#6E9A6F"/><ellipse cx="20.9" cy="78.2" rx="7" ry="3.6" transform="rotate(204 20.9 78.2)" fill="#3F6B4A"/><ellipse cx="17.1" cy="75.7" rx="7" ry="3.6" transform="rotate(276 17.1 75.7)" fill="#6E9A6F"/><ellipse cx="14.8" cy="72.9" rx="7" ry="3.6" transform="rotate(228 14.8 72.9)" fill="#3F6B4A"/><ellipse cx="14.0" cy="70.0" rx="7" ry="3.6" transform="rotate(300 14.0 70.0)" fill="#6E9A6F"/><ellipse cx="14.8" cy="67.1" rx="7" ry="3.6" transform="rotate(252 14.8 67.1)" fill="#3F6B4A"/><ellipse cx="17.1" cy="64.3" rx="7" ry="3.6" transform="rotate(324 17.1 64.3)" fill="#6E9A6F"/><ellipse cx="20.9" cy="61.8" rx="7" ry="3.6" transform="rotate(276 20.9 61.8)" fill="#3F6B4A"/><ellipse cx="25.9" cy="59.6" rx="7" ry="3.6" transform="rotate(348 25.9 59.6)" fill="#6E9A6F"/><ellipse cx="32.0" cy="57.9" rx="7" ry="3.6" transform="rotate(300 32.0 57.9)" fill="#3F6B4A"/><ellipse cx="38.9" cy="56.7" rx="7" ry="3.6" transform="rotate(372 38.9 56.7)" fill="#6E9A6F"/><ellipse cx="46.2" cy="56.1" rx="7" ry="3.6" transform="rotate(324 46.2 56.1)" fill="#3F6B4A"/><ellipse cx="53.8" cy="56.1" rx="7" ry="3.6" transform="rotate(396 53.8 56.1)" fill="#6E9A6F"/><ellipse cx="61.1" cy="56.7" rx="7" ry="3.6" transform="rotate(348 61.1 56.7)" fill="#3F6B4A"/><ellipse cx="68.0" cy="57.9" rx="7" ry="3.6" transform="rotate(420 68.0 57.9)" fill="#6E9A6F"/><ellipse cx="74.1" cy="59.6" rx="7" ry="3.6" transform="rotate(372 74.1 59.6)" fill="#3F6B4A"/><ellipse cx="79.1" cy="61.8" rx="7" ry="3.6" transform="rotate(444 79.1 61.8)" fill="#6E9A6F"/><ellipse cx="82.9" cy="64.3" rx="7" ry="3.6" transform="rotate(396 82.9 64.3)" fill="#3F6B4A"/><ellipse cx="85.2" cy="67.1" rx="7" ry="3.6" transform="rotate(468 85.2 67.1)" fill="#6E9A6F"/><circle cx="24" cy="74" r="3.6" fill="#B0282B"/><circle cx="22.9" cy="72.7" r="0.8" fill="#FFF8EA"/><circle cx="36" cy="82" r="3.6" fill="#B0282B"/><circle cx="34.9" cy="80.7" r="0.8" fill="#FFF8EA"/><circle cx="64" cy="82" r="3.6" fill="#B0282B"/><circle cx="62.9" cy="80.7" r="0.8" fill="#FFF8EA"/><circle cx="78" cy="72" r="3.6" fill="#B0282B"/><circle cx="76.9" cy="70.7" r="0.8" fill="#FFF8EA"/><circle cx="50" cy="58" r="3.4" fill="#B0282B"/><circle cx="49.0" cy="56.8" r="0.7" fill="#FFF8EA"/><g transform="translate(50,86)"><path d="M0 0 L-13 -6 C-15 1 -12 7 -6 5 Z" fill="#B0282B"/><path d="M0 0 L13 -6 C15 1 12 7 6 5 Z" fill="#B0282B"/><circle r="3.4" fill="#8E1B1E"/></g></symbol><symbol id="d24" viewBox="0 0 100 100"><path d="M34 46 Q64 36 94 8 Q74 42 58 74 Z" fill="#E3C77D"/><path d="M38 52 Q62 46 86 22 Q70 50 58 70 Z" fill="#C9A24B"/><polygon points="38.00,36.00 44.88,52.53 62.73,53.97 49.13,65.62 53.28,83.03 38.00,73.70 22.72,83.03 26.87,65.62 13.27,53.97 31.12,52.53" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/><polygon points="38.00,50.00 41.53,57.15 49.41,58.29 43.71,63.85 45.05,71.71 38.00,68.00 30.95,71.71 32.29,63.85 26.59,58.29 34.47,57.15" fill="#E3C77D" stroke="#E3C77D" stroke-width="1.2" stroke-linejoin="round"/><polygon points="78.00,65.00 79.35,68.14 82.76,68.45 80.19,70.71 80.94,74.05 78.00,72.30 75.06,74.05 75.81,70.71 73.24,68.45 76.65,68.14" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/><polygon points="18.00,19.50 19.22,22.33 22.28,22.61 19.97,24.64 20.65,27.64 18.00,26.07 15.35,27.64 16.03,24.64 13.72,22.61 16.78,22.33" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/><polygon points="86.00,36.00 87.08,38.51 89.80,38.76 87.75,40.57 88.35,43.24 86.00,41.84 83.65,43.24 84.25,40.57 82.20,38.76 84.92,38.51" fill="#E3C77D" stroke="#E3C77D" stroke-width="1.2" stroke-linejoin="round"/></symbol><symbol id="corner" viewBox="0 0 20 20" overflow="visible"><path d="M2 19 Q3 8 15 3" fill="none" stroke="#C49A45" stroke-width="0.7" stroke-linecap="round"/><ellipse cx="2.07" cy="10.89" rx="1.0" ry="3.19" transform="rotate(-200.5 2.07 10.89)" fill="#C49A45"/><ellipse cx="6.04" cy="12.45" rx="1.0" ry="3.19" transform="rotate(-116.5 6.04 12.45)" fill="#C49A45"/><ellipse cx="4.60" cy="7.52" rx="1.0" ry="3.03" transform="rotate(-187.2 4.60 7.52)" fill="#C49A45"/><ellipse cx="7.93" cy="9.83" rx="1.0" ry="3.03" transform="rotate(-103.2 7.93 9.83)" fill="#C49A45"/><ellipse cx="7.82" cy="4.74" rx="1.0" ry="2.87" transform="rotate(-174.6 7.82 4.74)" fill="#C49A45"/><ellipse cx="10.42" cy="7.56" rx="1.0" ry="2.87" transform="rotate(-90.6 10.42 7.56)" fill="#C49A45"/><ellipse cx="11.65" cy="2.49" rx="1.0" ry="2.71" transform="rotate(-163.6 11.65 2.49)" fill="#C49A45"/><ellipse cx="13.55" cy="5.57" rx="1.0" ry="2.71" transform="rotate(-79.6 13.55 5.57)" fill="#C49A45"/><ellipse cx="16.09" cy="0.70" rx="1.0" ry="2.55" transform="rotate(-154.6 16.09 0.70)" fill="#C49A45"/><ellipse cx="17.41" cy="3.85" rx="1.0" ry="2.55" transform="rotate(-70.6 17.41 3.85)" fill="#C49A45"/><circle cx="2.5" cy="3" r="0.9" fill="#C49A45"/><circle cx="6.5" cy="1.8" r="0.7" fill="#C49A45"/><circle cx="1.5" cy="7" r="0.7" fill="#C49A45"/><polygon points="6.00,4.90 6.43,5.90 7.52,6.01 6.70,6.73 6.94,7.79 6.00,7.24 5.06,7.79 5.30,6.73 4.48,6.01 5.57,5.90" fill="#C49A45" stroke="#C49A45" stroke-width="1.2" stroke-linejoin="round"/></symbol><symbol id="ramo" viewBox="0 0 30 10"><path d="M1 8 Q14 7 29 2.5" fill="none" stroke="#6E9A6F" stroke-width="1.0" stroke-linecap="round"/><ellipse cx="6.42" cy="4.33" rx="1.5" ry="4.07" transform="rotate(-146.1 6.42 4.33)" fill="#6E9A6F"/><ellipse cx="7.09" cy="10.53" rx="1.5" ry="4.07" transform="rotate(-46.1 7.09 10.53)" fill="#6E9A6F"/><ellipse cx="10.90" cy="3.78" rx="1.5" ry="3.89" transform="rotate(-148.5 10.90 3.78)" fill="#6E9A6F"/><ellipse cx="11.78" cy="9.68" rx="1.5" ry="3.89" transform="rotate(-48.5 11.78 9.68)" fill="#6E9A6F"/><ellipse cx="15.53" cy="3.04" rx="1.5" ry="3.70" transform="rotate(-150.8 15.53 3.04)" fill="#6E9A6F"/><ellipse cx="16.59" cy="8.62" rx="1.5" ry="3.70" transform="rotate(-50.8 16.59 8.62)" fill="#6E9A6F"/><ellipse cx="20.29" cy="2.10" rx="1.5" ry="3.52" transform="rotate(-152.9 20.29 2.10)" fill="#6E9A6F"/><ellipse cx="21.49" cy="7.36" rx="1.5" ry="3.52" transform="rotate(-52.9 21.49 7.36)" fill="#6E9A6F"/><ellipse cx="25.20" cy="0.96" rx="1.5" ry="3.33" transform="rotate(-154.9 25.20 0.96)" fill="#6E9A6F"/><ellipse cx="26.51" cy="5.90" rx="1.5" ry="3.33" transform="rotate(-54.9 26.51 5.90)" fill="#6E9A6F"/><ellipse cx="30.25" cy="-0.39" rx="1.5" ry="3.15" transform="rotate(-156.7 30.25 -0.39)" fill="#6E9A6F"/><ellipse cx="31.63" cy="4.23" rx="1.5" ry="3.15" transform="rotate(-56.7 31.63 4.23)" fill="#6E9A6F"/></symbol><symbol id="sep" viewBox="0 0 40 8"><g><path d="M17 4 Q10 4 2 4" fill="none" stroke="#C9A24B" stroke-width="0.6" stroke-linecap="round"/><ellipse cx="11.33" cy="5.97" rx="0.9" ry="2.41" transform="rotate(35.0 11.33 5.97)" fill="#C9A24B"/><ellipse cx="11.33" cy="2.03" rx="0.9" ry="2.41" transform="rotate(145.0 11.33 2.03)" fill="#C9A24B"/><ellipse cx="7.96" cy="5.85" rx="0.9" ry="2.25" transform="rotate(35.0 7.96 5.85)" fill="#C9A24B"/><ellipse cx="7.96" cy="2.15" rx="0.9" ry="2.25" transform="rotate(145.0 7.96 2.15)" fill="#C9A24B"/><ellipse cx="4.47" cy="5.72" rx="0.9" ry="2.10" transform="rotate(35.0 4.47 5.72)" fill="#C9A24B"/><ellipse cx="4.47" cy="2.28" rx="0.9" ry="2.10" transform="rotate(145.0 4.47 2.28)" fill="#C9A24B"/><ellipse cx="0.88" cy="5.60" rx="0.9" ry="1.95" transform="rotate(35.0 0.88 5.60)" fill="#C9A24B"/><ellipse cx="0.88" cy="2.40" rx="0.9" ry="1.95" transform="rotate(145.0 0.88 2.40)" fill="#C9A24B"/><path d="M23 4 Q30 4 38 4" fill="none" stroke="#C9A24B" stroke-width="0.6" stroke-linecap="round"/><ellipse cx="28.67" cy="2.03" rx="0.9" ry="2.41" transform="rotate(-145.0 28.67 2.03)" fill="#C9A24B"/><ellipse cx="28.67" cy="5.97" rx="0.9" ry="2.41" transform="rotate(-35.0 28.67 5.97)" fill="#C9A24B"/><ellipse cx="32.04" cy="2.15" rx="0.9" ry="2.25" transform="rotate(-145.0 32.04 2.15)" fill="#C9A24B"/><ellipse cx="32.04" cy="5.85" rx="0.9" ry="2.25" transform="rotate(-35.0 32.04 5.85)" fill="#C9A24B"/><ellipse cx="35.53" cy="2.28" rx="0.9" ry="2.10" transform="rotate(-145.0 35.53 2.28)" fill="#C9A24B"/><ellipse cx="35.53" cy="5.72" rx="0.9" ry="2.10" transform="rotate(-35.0 35.53 5.72)" fill="#C9A24B"/><ellipse cx="39.12" cy="2.40" rx="0.9" ry="1.95" transform="rotate(-145.0 39.12 2.40)" fill="#C9A24B"/><ellipse cx="39.12" cy="5.60" rx="0.9" ry="1.95" transform="rotate(-35.0 39.12 5.60)" fill="#C9A24B"/><polygon points="20.00,0.90 20.84,2.85 22.95,3.04 21.36,4.44 21.82,6.51 20.00,5.43 18.18,6.51 18.64,4.44 17.05,3.04 19.16,2.85" fill="#C9A24B" stroke="#C9A24B" stroke-width="1.2" stroke-linejoin="round"/></g></symbol></defs></svg>
+<canvas id="neve" aria-hidden="true"></canvas>
+<div class="pagina">
+  <header class="testata">
+    <h1>24 Respiri per Genitori</h1>
+    <div class="sotto"><svg aria-hidden="true"><use href="#ramo"/></svg><span>Il tuo calendario dell’Avvento di consapevolezza e cura</span><svg aria-hidden="true"><use href="#ramo"/></svg></div>
+    <p class="stato" id="stato" aria-live="polite"></p>
+    <button class="pillola" id="rileggi"><svg aria-hidden="true"><use href="#ramo"/></svg>La lettera di Sara</button>
+    <span class="prova" id="prova" hidden></span>
+    <div class="barra" id="barra" hidden><span>Prova un giorno:</span><button data-d="oggi">Oggi vero</button><button data-d="11-30">30 nov</button><button data-d="12-1">1 dic</button><button data-d="12-8">8 dic</button><button data-d="12-24">24 dic</button><button data-d="1-5">Gennaio</button><button data-d="zero">Richiudi tutto</button></div>
+  </header>
+
+  <main class="casa" id="casa">
+    <svg class="tetto" viewBox="0 0 400 168" aria-hidden="true"><defs><pattern id="assi" width="13" height="10" patternUnits="userSpaceOnUse"><rect width="13" height="10" fill="#8E1B1E"/><rect width="1.3" height="10" fill="#5C0F12"/><rect x="1.3" width=".8" height="10" fill="#A8343A" opacity=".55"/></pattern><linearGradient id="ombraFr" gradientUnits="userSpaceOnUse" x1="0" y1="30" x2="0" y2="160"><stop offset="0" stop-color="#1A0000" stop-opacity=".55"/><stop offset=".55" stop-color="#1A0000" stop-opacity=".12"/><stop offset="1" stop-color="#1A0000" stop-opacity="0"/></linearGradient><radialGradient id="caldo"><stop offset="0" stop-color="#FFC86A" stop-opacity=".42"/><stop offset="1" stop-color="#FFC86A" stop-opacity="0"/></radialGradient><radialGradient id="vetro" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#FFF6D8"/><stop offset=".6" stop-color="#FCE2A0"/><stop offset="1" stop-color="#E9B55E"/></radialGradient><linearGradient id="cornicione" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF4E3"/><stop offset="1" stop-color="#DCCCA8"/></linearGradient><linearGradient id="ghiaccio" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#CFE6F0"/><stop offset="1" stop-color="#CFE6F0" stop-opacity=".15"/></linearGradient><linearGradient id="latoCamino" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".32"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#FFF" stop-opacity=".08"/></linearGradient><pattern id="mattoni" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="translate(258 18)"><rect width="12" height="12" fill="#9A4F35"/><path d="M0 .5H12M0 6.5H12M.5 0V6M6.5 6V12" stroke="#66301F" stroke-width="1"/></pattern><radialGradient id="l-oro"><stop offset="0" stop-color="#F6C95A" stop-opacity=".95"/><stop offset=".35" stop-color="#F6C95A" stop-opacity=".45"/><stop offset="1" stop-color="#F6C95A" stop-opacity="0"/></radialGradient><radialGradient id="l-rosso"><stop offset="0" stop-color="#EA4F48" stop-opacity=".95"/><stop offset=".35" stop-color="#EA4F48" stop-opacity=".45"/><stop offset="1" stop-color="#EA4F48" stop-opacity="0"/></radialGradient><radialGradient id="l-bianco"><stop offset="0" stop-color="#FFF1CF" stop-opacity=".95"/><stop offset=".35" stop-color="#FFF1CF" stop-opacity=".45"/><stop offset="1" stop-color="#FFF1CF" stop-opacity="0"/></radialGradient><radialGradient id="l-verde"><stop offset="0" stop-color="#79C788" stop-opacity=".95"/><stop offset=".35" stop-color="#79C788" stop-opacity=".45"/><stop offset="1" stop-color="#79C788" stop-opacity="0"/></radialGradient></defs><circle class="fumo" cx="273" cy="4" r="7" fill="#DDE5E2"/><circle class="fumo f2" cx="273" cy="4" r="7" fill="#DDE5E2"/><circle class="fumo f3" cx="273" cy="4" r="7" fill="#DDE5E2"/><rect x="258" y="18" width="30" height="64" fill="url(#mattoni)"/><rect x="258" y="18" width="30" height="64" fill="url(#latoCamino)"/><rect x="254" y="12" width="38" height="8" rx="1.5" fill="#5A2D20"/><rect x="254" y="12" width="38" height="1.6" rx=".8" fill="#7E4430"/><path d="M251.5 14.5C251 9 256.5 6.6 260.5 8.6C263.5 4.4 271 4.2 274 7.6C278.5 3.8 286.5 5.6 288.6 9.8C293.5 9.6 295 14 292 15.2Z" fill="#B9CCD5" transform="translate(0 1.6)"/><path d="M251.5 14.5C251 9 256.5 6.6 260.5 8.6C263.5 4.4 271 4.2 274 7.6C278.5 3.8 286.5 5.6 288.6 9.8C293.5 9.6 295 14 292 15.2Z" fill="#FFFDF8"/><polygon points="0,160 400,160 200,30" fill="url(#assi)"/><polygon points="0,160 400,160 200,30" fill="url(#ombraFr)"/><circle cx="200" cy="103" r="50" fill="url(#caldo)"/><circle cx="200" cy="105" r="22.5" fill="#1A0000" opacity=".28"/><circle cx="200" cy="103" r="22" fill="url(#cornicione)"/><circle cx="200" cy="103" r="16" fill="url(#vetro)"/><circle cx="200" cy="103" r="16" fill="none" stroke="#9C7A3E" stroke-opacity=".45" stroke-width="1"/><path d="M200 87V119M184 103H216" stroke="#F3E7CB" stroke-width="3"/><path d="M178.8 98.5A22 22 0 0 1 221.2 98.5C219 95 214 93.2 211 94.8C207 89.6 197 89 192.5 93.6C188 91.6 181 93.6 178.8 98.5Z" fill="#FFFDF8"/><ellipse cx="193" cy="125.5" rx="6.5" ry="2.8" transform="rotate(-28 193 125.5)" fill="#3E7A4E"/><ellipse cx="207" cy="125.5" rx="6.5" ry="2.8" transform="rotate(28 207 125.5)" fill="#3E7A4E"/><circle cx="197.6" cy="124.2" r="2.1" fill="#C3272E"/><circle cx="202.4" cy="124.2" r="2.1" fill="#C3272E"/><circle cx="200" cy="127" r="2.1" fill="#C3272E"/><rect x="-12" y="157" width="424" height="11" fill="url(#cornicione)"/><rect x="-12" y="157" width="424" height="1.2" fill="#FFFFFF" opacity=".5"/><rect x="-12" y="166.4" width="424" height="1.6" fill="#1A0000" opacity=".3"/><polygon points="200,38.3 0,168.3 0,160 200,30" fill="#1A0000" opacity=".26"/><polygon points="200,38.3 400,168.3 400,160 200,30" fill="#1A0000" opacity=".26"/><polygon points="200,30 -12,167.8 -12,161.2 200,23.4" fill="url(#cornicione)"/><polygon points="200,30 412,167.8 412,161.2 200,23.4" fill="url(#cornicione)"/><polygon points="200,23.4 -12,161.2 -12,152.3 200,14.5" fill="#4A1512"/><polygon points="200,23.4 412,161.2 412,152.3 200,14.5" fill="#4A1512"/><polygon points="-12,167.8 -12,161.2 -10.4,161.2 -10.4,167.8" fill="#CDBB94"/><polygon points="412,167.8 412,161.2 410.4,161.2 410.4,167.8" fill="#CDBB94"/><polygon points="-12,161.2 -12,152.3 -10.4,152.3 -10.4,161.2" fill="#3A0F0D"/><polygon points="412,161.2 412,152.3 410.4,152.3 410.4,161.2" fill="#3A0F0D"/><polygon points="200,15.7 -12,153.5 -12,152.3 200,14.5" fill="#6E2A22"/><polygon points="200,15.7 412,153.5 412,152.3 200,14.5" fill="#6E2A22"/><path d="M-16.7,143.8 L-14.9,141.5 L-12.8,139.4 L-10.2,137.8 L-7.4,136.6 L-4.5,135.6 L-1.5,134.7 L1.4,133.7 L4.1,132.3 L6.6,130.6 L9,128.8 L11.4,127 L14,125.5 L16.8,124.3 L19.8,123.4 L22.8,122.5 L25.7,121.5 L28.3,120 L30.7,118.1 L32.7,115.7 L34.6,113.2 L36.5,110.6 L38.6,108.3 L40.9,106.3 L43.5,104.8 L46.1,103.4 L48.8,102 L51.4,100.5 L53.8,98.6 L56,96.5 L58.2,94.4 L60.5,92.5 L63.1,90.9 L65.9,89.8 L69,89 L72.2,88.5 L75.3,87.8 L78.3,86.7 L80.9,85.3 L83.2,83.4 L85.4,81.2 L87.6,79.1 L89.9,77.1 L92.4,75.4 L95,74 L97.7,72.6 L100.3,71.1 L102.7,69.2 L104.8,67 L106.8,64.5 L108.7,62 L110.7,59.6 L112.9,57.5 L115.5,56 L118.4,54.9 L121.4,54.1 L124.5,53.3 L127.3,52.2 L130,50.8 L132.5,49.1 L134.9,47.2 L137.3,45.5 L139.9,44 L142.7,42.8 L145.7,41.8 L148.6,40.9 L151.5,39.7 L154,38.2 L156.3,36.1 L158.3,33.7 L160.1,31 L162,28.5 L164.1,26.2 L166.5,24.3 L169.1,22.8 L171.8,21.5 L174.5,20.2 L177.1,18.7 L179.5,16.8 L181.8,14.8 L184,12.8 L186.4,10.9 L189,9.4 L191.9,8.4 L195,7.7 L198.2,7.1 L200,6.7 L201.8,7.1 L205,7.7 L208.1,8.4 L211,9.4 L213.6,10.9 L216,12.8 L218.2,14.8 L220.5,16.8 L222.9,18.7 L225.5,20.2 L228.2,21.5 L230.9,22.8 L233.5,24.3 L235.9,26.2 L238,28.5 L239.9,31 L241.7,33.7 L243.7,36.1 L246,38.2 L248.5,39.7 L251.4,40.9 L254.3,41.8 L257.3,42.8 L260.1,44 L262.7,45.5 L265.1,47.2 L267.5,49.1 L270,50.8 L272.7,52.2 L275.5,53.3 L278.6,54.1 L281.6,54.9 L284.5,56 L287.1,57.5 L289.3,59.6 L291.3,62 L293.2,64.5 L295.2,67 L297.3,69.2 L299.7,71.1 L302.3,72.6 L305,74 L307.6,75.4 L310.1,77.1 L312.4,79.1 L314.6,81.2 L316.8,83.4 L319.1,85.3 L321.7,86.7 L324.7,87.8 L327.8,88.5 L331,89 L334.1,89.8 L336.9,90.9 L339.5,92.5 L341.8,94.4 L344,96.5 L346.2,98.6 L348.6,100.5 L351.2,102 L353.9,103.4 L356.5,104.8 L359.1,106.3 L361.4,108.3 L363.5,110.6 L365.4,113.2 L367.3,115.7 L369.3,118.1 L371.7,120 L374.3,121.5 L377.2,122.5 L380.2,123.4 L383.2,124.3 L386,125.5 L388.6,127 L391,128.8 L393.4,130.6 L395.9,132.3 L398.6,133.7 L401.5,134.7 L404.5,135.6 L407.4,136.6 L410.2,137.8 L412.8,139.4 L414.9,141.5 L416.7,143.8 C421.2,145.3 421.2,154.6 414.5,155.1 L414.5,155.1 L413.6,154.6 L411.1,152.9 L408.6,151.3 L406.1,149.6 L403.6,148 L401,146.5 L397.9,145.8 L394,146.2 L391.1,145.1 L389.9,141.5 L388.3,138.5 L386,136.6 L383.5,134.9 L380.9,133.3 L378.4,131.7 L375.9,130 L373.4,128.4 L370.9,126.8 L368.2,125.4 L364.7,125.2 L360.9,125.5 L358.8,123.4 L357.6,119.6 L355.7,117.1 L353.3,115.3 L350.8,113.7 L348.2,112 L345.7,110.4 L343.2,108.8 L340.7,107.1 L338.2,105.5 L335.7,103.9 L333.1,102.2 L330.5,100.7 L327.4,100 L323.6,100.5 L320.7,99.4 L319.5,95.7 L317.9,92.7 L315.5,90.8 L313,89.2 L310.5,87.5 L308,85.9 L305.5,84.2 L303,82.6 L300.4,81 L297.9,79.3 L295.4,77.7 L292.9,76.1 L290,75 L286.3,75.2 L282.8,75 L281.3,72 L279.9,68.5 L277.8,66.3 L275.3,64.6 L272.8,63 L270.3,61.4 L267.7,59.7 L265.2,58.1 L262.7,56.5 L260.2,54.8 L257.7,53.2 L255.2,51.6 L252.6,50 L249.7,48.9 L246,49.1 L242.6,48.9 L241,45.8 L239.7,42.3 L237.5,40.2 L235,38.5 L232.5,36.8 L230,35.2 L227.5,33.6 L225,31.9 L222.5,30.3 L220,28.7 L217.4,27 L214.9,25.4 L212.4,23.8 L209.9,22.1 L207.4,20.5 L204.9,18.8 L202.3,17.2 L200,15.7 L197.7,17.2 L195.1,18.8 L192.6,20.5 L190.1,22.1 L187.6,23.8 L185.1,25.4 L182.6,27 L180,28.7 L177.5,30.3 L175,31.9 L172.5,33.6 L170,35.2 L167.5,36.8 L165,38.5 L162.5,40.2 L160.3,42.3 L159,45.8 L157.4,48.9 L154,49.1 L150.3,48.9 L147.4,50 L144.8,51.6 L142.3,53.2 L139.8,54.8 L137.3,56.5 L134.8,58.1 L132.3,59.7 L129.7,61.4 L127.2,63 L124.7,64.6 L122.2,66.3 L120.1,68.5 L118.7,72 L117.2,75 L113.7,75.2 L110,75 L107.1,76.1 L104.6,77.7 L102.1,79.3 L99.6,81 L97,82.6 L94.5,84.2 L92,85.9 L89.5,87.5 L87,89.2 L84.5,90.8 L82.1,92.7 L80.5,95.7 L79.3,99.4 L76.4,100.5 L72.6,100 L69.5,100.7 L66.9,102.2 L64.3,103.9 L61.8,105.5 L59.3,107.1 L56.8,108.8 L54.3,110.4 L51.8,112 L49.2,113.7 L46.7,115.3 L44.3,117.1 L42.4,119.6 L41.2,123.4 L39.1,125.5 L35.3,125.2 L31.8,125.4 L29.1,126.8 L26.6,128.4 L24.1,130 L21.6,131.7 L19.1,133.3 L16.5,134.9 L14,136.6 L11.7,138.5 L10.1,141.5 L8.9,145.1 L6,146.2 L2.1,145.8 L-1,146.5 L-3.6,148 L-6.1,149.6 L-8.6,151.3 L-11.1,152.9 L-13.6,154.6 L-14.5,155.1 C-21.2,154.6 -21.2,145.3 -16.7,143.8Z" fill="#FFFDF8"/><polygon points="200,12.8 198.9,13.6 196.3,15.2 193.8,16.8 191.3,18.5 188.8,20.1 186.3,21.7 183.8,23.4 181.3,25 178.7,26.6 176.2,28.3 173.7,29.9 171.2,31.6 168.7,33.2 166.2,34.8 163.6,36.5 161.2,38.1 159,40.3 157.7,43.8 156.1,46.9 152.6,47.1 148.9,46.9 146.1,48 143.5,49.5 141,51.2 138.5,52.8 136,54.4 133.5,56.1 130.9,57.7 128.4,59.3 125.9,61 123.4,62.6 120.9,64.3 118.8,66.5 117.4,69.9 115.8,73 112.4,73.2 108.7,73 105.8,74.1 103.3,75.7 100.8,77.3 98.2,79 95.7,80.6 93.2,82.2 90.7,83.9 88.2,85.5 85.7,87.1 83.2,88.8 80.8,90.7 79.2,93.7 78,97.3 75.1,98.5 71.3,98 68.2,98.7 65.6,100.2 63,101.9 60.5,103.5 58,105.1 55.5,106.8 53,108.4 50.5,110 47.9,111.7 45.4,113.3 43,115.1 41.1,117.6 39.9,121.3 37.7,123.5 33.9,123.2 30.5,123.4 27.8,124.8 25.3,126.4 22.8,128 20.3,129.6 17.8,131.3 15.2,132.9 12.7,134.6 10.4,136.5 8.8,139.5 7.6,143.1 4.7,144.2 0.8,143.8 -2.3,144.5 -4.9,146 -7.4,147.6 -9.9,149.3 -12.4,150.9 -13.7,151.7 -12.4,153.8 -11.1,152.9 -8.6,151.3 -6.1,149.6 -3.6,148 -1,146.5 2.1,145.8 6,146.2 8.9,145.1 10.1,141.5 11.7,138.5 14,136.6 16.5,134.9 19.1,133.3 21.6,131.7 24.1,130 26.6,128.4 29.1,126.8 31.8,125.4 35.3,125.2 39.1,125.5 41.2,123.4 42.4,119.6 44.3,117.1 46.7,115.3 49.2,113.7 51.8,112 54.3,110.4 56.8,108.8 59.3,107.1 61.8,105.5 64.3,103.9 66.9,102.2 69.5,100.7 72.6,100 76.4,100.5 79.3,99.4 80.5,95.7 82.1,92.7 84.5,90.8 87,89.2 89.5,87.5 92,85.9 94.5,84.2 97,82.6 99.6,81 102.1,79.3 104.6,77.7 107.1,76.1 110,75 113.7,75.2 117.2,75 118.7,72 120.1,68.5 122.2,66.3 124.7,64.6 127.2,63 129.7,61.4 132.3,59.7 134.8,58.1 137.3,56.5 139.8,54.8 142.3,53.2 144.8,51.6 147.4,50 150.3,48.9 154,49.1 157.4,48.9 159,45.8 160.3,42.3 162.5,40.2 165,38.5 167.5,36.8 170,35.2 172.5,33.6 175,31.9 177.5,30.3 180,28.7 182.6,27 185.1,25.4 187.6,23.8 190.1,22.1 192.6,20.5 195.1,18.8 197.7,17.2 200,15.7" fill="#DDE8EE"/><polygon points="200,12.8 201.1,13.6 203.7,15.2 206.2,16.8 208.7,18.5 211.2,20.1 213.7,21.7 216.2,23.4 218.7,25 221.3,26.6 223.8,28.3 226.3,29.9 228.8,31.6 231.3,33.2 233.8,34.8 236.4,36.5 238.8,38.1 241,40.3 242.3,43.8 243.9,46.9 247.4,47.1 251.1,46.9 253.9,48 256.5,49.5 259,51.2 261.5,52.8 264,54.4 266.5,56.1 269.1,57.7 271.6,59.3 274.1,61 276.6,62.6 279.1,64.3 281.2,66.5 282.6,69.9 284.2,73 287.6,73.2 291.3,73 294.2,74.1 296.7,75.7 299.2,77.3 301.8,79 304.3,80.6 306.8,82.2 309.3,83.9 311.8,85.5 314.3,87.1 316.8,88.8 319.2,90.7 320.8,93.7 322,97.3 324.9,98.5 328.7,98 331.8,98.7 334.4,100.2 337,101.9 339.5,103.5 342,105.1 344.5,106.8 347,108.4 349.5,110 352.1,111.7 354.6,113.3 357,115.1 358.9,117.6 360.1,121.3 362.3,123.5 366.1,123.2 369.5,123.4 372.2,124.8 374.7,126.4 377.2,128 379.7,129.6 382.2,131.3 384.8,132.9 387.3,134.6 389.6,136.5 391.2,139.5 392.4,143.1 395.3,144.2 399.2,143.8 402.3,144.5 404.9,146 407.4,147.6 409.9,149.3 412.4,150.9 413.7,151.7 412.4,153.8 411.1,152.9 408.6,151.3 406.1,149.6 403.6,148 401,146.5 397.9,145.8 394,146.2 391.1,145.1 389.9,141.5 388.3,138.5 386,136.6 383.5,134.9 380.9,133.3 378.4,131.7 375.9,130 373.4,128.4 370.9,126.8 368.2,125.4 364.7,125.2 360.9,125.5 358.8,123.4 357.6,119.6 355.7,117.1 353.3,115.3 350.8,113.7 348.2,112 345.7,110.4 343.2,108.8 340.7,107.1 338.2,105.5 335.7,103.9 333.1,102.2 330.5,100.7 327.4,100 323.6,100.5 320.7,99.4 319.5,95.7 317.9,92.7 315.5,90.8 313,89.2 310.5,87.5 308,85.9 305.5,84.2 303,82.6 300.4,81 297.9,79.3 295.4,77.7 292.9,76.1 290,75 286.3,75.2 282.8,75 281.3,72 279.9,68.5 277.8,66.3 275.3,64.6 272.8,63 270.3,61.4 267.7,59.7 265.2,58.1 262.7,56.5 260.2,54.8 257.7,53.2 255.2,51.6 252.6,50 249.7,48.9 246,49.1 242.6,48.9 241,45.8 239.7,42.3 237.5,40.2 235,38.5 232.5,36.8 230,35.2 227.5,33.6 225,31.9 222.5,30.3 220,28.7 217.4,27 214.9,25.4 212.4,23.8 209.9,22.1 207.4,20.5 204.9,18.8 202.3,17.2 200,15.7" fill="#DDE8EE"/><polyline points="200,7.8 198.9,8.1 195.7,8.7 192.6,9.4 189.7,10.4 187,11.9 184.7,13.8 182.4,15.8 180.2,17.8 177.8,19.7 175.2,21.2 172.5,22.5 169.8,23.8 167.2,25.3 164.8,27.2 162.7,29.5 160.8,32.1 158.9,34.7 156.9,37.1 154.7,39.2 152.1,40.7 149.3,41.9 146.3,42.8 143.4,43.8 140.6,45 138,46.5 135.5,48.2 133.1,50.1 130.7,51.8 128,53.2 125.1,54.3 122.1,55.1 119.1,55.9 116.2,57 113.6,58.6 111.3,60.6 109.3,63 107.4,65.5 105.5,68 103.3,70.3 100.9,72.1 98.3,73.6 95.6,75 93,76.4 90.5,78.1 88.2,80.1 86.1,82.2 83.9,84.4 81.5,86.3 78.9,87.7 76,88.8 72.9,89.5 69.7,90.1 66.6,90.8 63.7,91.9 61.2,93.5 58.9,95.4 56.7,97.6 54.4,99.6 52,101.5 49.5,103 46.8,104.4 44.1,105.8 41.6,107.3 39.2,109.3 37.2,111.6 35.2,114.2 33.4,116.8 31.3,119.1 29,121 26.3,122.5 23.4,123.5 20.4,124.4 17.4,125.3 14.6,126.5 12.1,128 9.6,129.8 7.2,131.6 4.7,133.3 2.1,134.7 -0.8,135.7 -3.8,136.6 -6.8,137.6 -9.6,138.8 -11.9,140.3" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" opacity=".9"/><polyline points="200,7.8 201.1,8.1 204.3,8.7 207.4,9.4 210.3,10.4 213,11.9 215.3,13.8 217.6,15.8 219.8,17.8 222.2,19.7 224.8,21.2 227.5,22.5 230.2,23.8 232.8,25.3 235.2,27.2 237.3,29.5 239.2,32.1 241.1,34.7 243.1,37.1 245.3,39.2 247.9,40.7 250.7,41.9 253.7,42.8 256.6,43.8 259.4,45 262,46.5 264.5,48.2 266.9,50.1 269.3,51.8 272,53.2 274.9,54.3 277.9,55.1 280.9,55.9 283.8,57 286.4,58.6 288.7,60.6 290.7,63 292.6,65.5 294.5,68 296.7,70.3 299.1,72.1 301.7,73.6 304.4,75 307,76.4 309.5,78.1 311.8,80.1 313.9,82.2 316.1,84.4 318.5,86.3 321.1,87.7 324,88.8 327.1,89.5 330.3,90.1 333.4,90.8 336.3,91.9 338.8,93.5 341.1,95.4 343.3,97.6 345.6,99.6 348,101.5 350.5,103 353.2,104.4 355.9,105.8 358.4,107.3 360.8,109.3 362.8,111.6 364.8,114.2 366.6,116.8 368.7,119.1 371,121 373.7,122.5 376.6,123.5 379.6,124.4 382.6,125.3 385.4,126.5 387.9,128 390.4,129.8 392.8,131.6 395.3,133.3 397.9,134.7 400.8,135.7 403.8,136.6 406.8,137.6 409.6,138.8 411.9,140.3" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" opacity=".9"/><ellipse cx="200" cy="5.3" rx="10" ry="5" fill="#FFFDF8"/><path d="M66.1,115.8 L69.3,115.8 Q68.4,119.4 67.8,121.9 Q67.2,119.4 66.1,115.8Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M67.1,117 L67.5,119.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M330.7,115.8 L333.9,115.8 Q333,119.4 332.5,121.9 Q331.8,119.4 330.7,115.8Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M331.7,117 L332.2,119.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M46.8,128.3 L50,128.3 Q49.1,133.8 48.6,137.9 Q47.9,133.8 46.8,128.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M47.8,129.5 L48.3,133.8" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M350,128.3 L353.2,128.3 Q352.3,133.8 351.7,137.9 Q351.1,133.8 350,128.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M351,129.5 L351.4,133.8" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M28.4,140.3 L31.6,140.3 Q30.7,144.5 30.1,147.4 Q29.5,144.5 28.4,140.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M29.4,141.5 L29.8,144.5" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M368.4,140.3 L371.6,140.3 Q370.7,144.5 370.2,147.4 Q369.5,144.5 368.4,140.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M369.4,141.5 L369.9,144.5" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M12.4,150.6 L15.6,150.6 Q14.7,157.6 14.2,162.7 Q13.5,157.6 12.4,150.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M13.4,151.8 L13.9,157.6" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M384.4,150.6 L387.6,150.6 Q386.7,157.6 386.1,162.7 Q385.5,157.6 384.4,150.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M385.4,151.8 L385.8,157.6" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M-2.7,160.4 L0.5,160.4 Q-0.4,165.2 -0.9,168.5 Q-1.6,165.2 -2.7,160.4Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M-1.7,161.6 L-1.2,165.2" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M399.5,160.4 L402.7,160.4 Q401.8,165.2 401.2,168.5 Q400.6,165.2 399.5,160.4Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M400.5,161.6 L400.9,165.2" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M-11.4,166.6 L-8.2,166.6 Q-9.1,174.4 -9.7,180.2 Q-10.3,174.4 -11.4,166.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M-10.4,167.8 L-10,174.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M408.2,166.6 L411.4,166.6 Q410.5,174.4 409.9,180.2 Q409.3,174.4 408.2,166.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M409.2,167.8 L409.7,174.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M187.5,40.1 Q176,57.5 164.6,54.9 Q153.2,72.3 141.8,69.8 Q130.3,87.2 118.9,84.6 Q107.5,102 96.1,99.5 Q84.6,116.9 73.2,114.3 Q61.8,131.7 50.4,129.2 Q38.9,146.6 27.5,144 Q16.1,161.4 4.7,158.9" fill="none" stroke="#2A1A12" stroke-width=".9"/><circle class="lamp" style="animation-delay:-0.00s" cx="176" cy="57.9" r="10" fill="url(#l-oro)"/><rect x="174.6" y="52.1" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="176" cy="57.8" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="175.1" cy="56.6" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.73s" cx="153.2" cy="72.7" r="10" fill="url(#l-rosso)"/><rect x="151.8" y="66.9" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="153.2" cy="72.6" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="152.3" cy="71.4" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-1.46s" cx="130.3" cy="87.6" r="10" fill="url(#l-bianco)"/><rect x="128.9" y="81.8" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="130.3" cy="87.5" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="129.4" cy="86.3" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.19s" cx="107.5" cy="102.4" r="10" fill="url(#l-verde)"/><rect x="106.1" y="96.6" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="107.5" cy="102.3" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="106.6" cy="101.1" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.12s" cx="84.6" cy="117.3" r="10" fill="url(#l-oro)"/><rect x="83.2" y="111.5" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="84.6" cy="117.2" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="83.7" cy="116" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.85s" cx="61.8" cy="132.1" r="10" fill="url(#l-rosso)"/><rect x="60.4" y="126.3" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="61.8" cy="132" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="60.9" cy="130.8" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-1.58s" cx="38.9" cy="147" r="10" fill="url(#l-bianco)"/><rect x="37.5" y="141.2" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="38.9" cy="146.9" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="38" cy="145.7" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.31s" cx="16.1" cy="161.8" r="10" fill="url(#l-verde)"/><rect x="14.7" y="156" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="16.1" cy="161.7" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="15.2" cy="160.5" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><path d="M212.5,40.1 Q224,57.5 235.4,54.9 Q246.8,72.3 258.2,69.8 Q269.7,87.2 281.1,84.6 Q292.5,102 303.9,99.5 Q315.4,116.9 326.8,114.3 Q338.2,131.7 349.6,129.2 Q361.1,146.6 372.5,144 Q383.9,161.4 395.3,158.9" fill="none" stroke="#2A1A12" stroke-width=".9"/><circle class="lamp" style="animation-delay:-1.30s" cx="224" cy="57.9" r="10" fill="url(#l-bianco)"/><rect x="222.6" y="52.1" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="224" cy="57.8" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="223.1" cy="56.6" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.03s" cx="246.8" cy="72.7" r="10" fill="url(#l-verde)"/><rect x="245.4" y="66.9" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="246.8" cy="72.6" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="245.9" cy="71.4" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.76s" cx="269.7" cy="87.6" r="10" fill="url(#l-oro)"/><rect x="268.3" y="81.8" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="269.7" cy="87.5" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="268.8" cy="86.3" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.69s" cx="292.5" cy="102.4" r="10" fill="url(#l-rosso)"/><rect x="291.1" y="96.6" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="292.5" cy="102.3" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="291.6" cy="101.1" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-1.42s" cx="315.4" cy="117.3" r="10" fill="url(#l-bianco)"/><rect x="314" y="111.5" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="315.4" cy="117.2" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="314.5" cy="116" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.15s" cx="338.2" cy="132.1" r="10" fill="url(#l-verde)"/><rect x="336.8" y="126.3" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="338.2" cy="132" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="337.3" cy="130.8" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.08s" cx="361.1" cy="147" r="10" fill="url(#l-oro)"/><rect x="359.7" y="141.2" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="361.1" cy="146.9" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="360.2" cy="145.7" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.81s" cx="383.9" cy="161.8" r="10" fill="url(#l-rosso)"/><rect x="382.5" y="156" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="383.9" cy="161.7" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="383" cy="160.5" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><rect class="comignolo" x="244" y="-8" width="58" height="70" fill="transparent"/></svg>
+    <div class="tavola"><div class="griglia" id="griglia"></div></div>
+    <svg class="zoccolo" aria-hidden="true"><defs><pattern id="pietre" width="30" height="18" patternUnits="userSpaceOnUse"><rect width="30" height="18" fill="#4B504E"/><rect x="1" y="1" width="13" height="7.5" rx="2.6" fill="#8D928F"/><rect x="16" y="1" width="13" height="7.5" rx="2.6" fill="#7C817E"/><rect x="-7.5" y="10" width="13" height="7.5" rx="2.6" fill="#7C817E"/><rect x="7.5" y="10" width="13" height="7.5" rx="2.6" fill="#8D928F"/><rect x="22.5" y="10" width="13" height="7.5" rx="2.6" fill="#7C817E"/><rect x="2" y="1.6" width="9" height="1.2" rx=".6" fill="#FFF" opacity=".18"/><rect x="9" y="10.6" width="9" height="1.2" rx=".6" fill="#FFF" opacity=".18"/></pattern></defs><rect width="100%" height="100%" fill="url(#pietre)"/><rect width="100%" height="3.5" rx="1.7" fill="#FFFDF8"/><rect y="3.5" width="100%" height="2" fill="#000" opacity=".2"/></svg>
+    <svg class="terra" viewBox="0 0 1000 64" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="neveTerra" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".34" stop-color="#EEF4F6"/><stop offset=".66" stop-color="#D9E4E9" stop-opacity=".55"/><stop offset="1" stop-color="#D9E4E9" stop-opacity="0"/></linearGradient></defs><path d="M0 19C150 15 320 12.5 420 12C460 11.8 540 11.8 580 12C680 12.5 850 15 1000 19V64H0Z" fill="url(#neveTerra)"/></svg>
+    <div class="ombra-casa"></div>
+    <svg class="abete ab-sx" viewBox="0 0 60 96" aria-hidden="true"><defs><clipPath id="cl-ab-sx-m"><rect x="30" y="0" width="30" height="96"/></clipPath><clipPath id="cl-ab-sx-0"><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z"/></clipPath><clipPath id="cl-ab-sx-1"><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z"/></clipPath><clipPath id="cl-ab-sx-2"><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z"/></clipPath><clipPath id="cl-ab-sx-3"><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z"/></clipPath></defs><ellipse cx="30" cy="92" rx="21" ry="3.4" fill="#5E7C8C" opacity=".38"/><rect x="27.4" y="80" width="5.2" height="12" fill="#5A3A24"/><rect x="30" y="80" width="2.6" height="12" fill="#3F2817"/><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z" fill="#2F5E40"/><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z" fill="#1F4630" clip-path="url(#cl-ab-sx-m)"/><g clip-path="url(#cl-ab-sx-3)"><path d="M0.5,38 H59.5 V68.2 Q49.7,72.4 39.8,68.2 Q30,70.8 20.2,68.2 Q10.3,72.4 0.5,68.2Z" fill="#FFFDF8"/><path d="M0.5,38 H59.5 V68.2 Q49.7,72.4 39.8,68.2 Q30,70.8 20.2,68.2 Q10.3,72.4 0.5,68.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-sx-m)" opacity=".75"/></g><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z" fill="#2F5E40"/><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z" fill="#1F4630" clip-path="url(#cl-ab-sx-m)"/><g clip-path="url(#cl-ab-sx-2)"><path d="M5.5,24 H54.5 V50.2 Q46.3,54.4 38.2,50.2 Q30,52.8 21.8,50.2 Q13.7,54.4 5.5,50.2Z" fill="#FFFDF8"/><path d="M5.5,24 H54.5 V50.2 Q46.3,54.4 38.2,50.2 Q30,52.8 21.8,50.2 Q13.7,54.4 5.5,50.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-sx-m)" opacity=".75"/></g><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z" fill="#2F5E40"/><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z" fill="#1F4630" clip-path="url(#cl-ab-sx-m)"/><g clip-path="url(#cl-ab-sx-1)"><path d="M10.5,11 H49.5 V32.2 Q43,36.4 36.5,32.2 Q30,34.8 23.5,32.2 Q17,36.4 10.5,32.2Z" fill="#FFFDF8"/><path d="M10.5,11 H49.5 V32.2 Q43,36.4 36.5,32.2 Q30,34.8 23.5,32.2 Q17,36.4 10.5,32.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-sx-m)" opacity=".75"/></g><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z" fill="#2F5E40"/><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z" fill="#1F4630" clip-path="url(#cl-ab-sx-m)"/><g clip-path="url(#cl-ab-sx-0)"><path d="M16,0 H44 V14.2 Q39.3,18.4 34.7,14.2 Q30,16.8 25.3,14.2 Q20.7,18.4 16,14.2Z" fill="#FFFDF8"/><path d="M16,0 H44 V14.2 Q39.3,18.4 34.7,14.2 Q30,16.8 25.3,14.2 Q20.7,18.4 16,14.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-sx-m)" opacity=".75"/></g></svg><svg class="abete ab-dx" viewBox="0 0 60 96" aria-hidden="true"><defs><clipPath id="cl-ab-dx-m"><rect x="30" y="0" width="30" height="96"/></clipPath><clipPath id="cl-ab-dx-0"><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z"/></clipPath><clipPath id="cl-ab-dx-1"><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z"/></clipPath><clipPath id="cl-ab-dx-2"><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z"/></clipPath><clipPath id="cl-ab-dx-3"><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z"/></clipPath></defs><ellipse cx="30" cy="92" rx="21" ry="3.4" fill="#5E7C8C" opacity=".38"/><rect x="27.4" y="80" width="5.2" height="12" fill="#5A3A24"/><rect x="30" y="80" width="2.6" height="12" fill="#3F2817"/><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z" fill="#2F5E40"/><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z" fill="#1F4630" clip-path="url(#cl-ab-dx-m)"/><g clip-path="url(#cl-ab-dx-3)"><path d="M0.5,38 H59.5 V68.2 Q49.7,72.4 39.8,68.2 Q30,70.8 20.2,68.2 Q10.3,72.4 0.5,68.2Z" fill="#FFFDF8"/><path d="M0.5,38 H59.5 V68.2 Q49.7,72.4 39.8,68.2 Q30,70.8 20.2,68.2 Q10.3,72.4 0.5,68.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-dx-m)" opacity=".75"/></g><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z" fill="#2F5E40"/><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z" fill="#1F4630" clip-path="url(#cl-ab-dx-m)"/><g clip-path="url(#cl-ab-dx-2)"><path d="M5.5,24 H54.5 V50.2 Q46.3,54.4 38.2,50.2 Q30,52.8 21.8,50.2 Q13.7,54.4 5.5,50.2Z" fill="#FFFDF8"/><path d="M5.5,24 H54.5 V50.2 Q46.3,54.4 38.2,50.2 Q30,52.8 21.8,50.2 Q13.7,54.4 5.5,50.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-dx-m)" opacity=".75"/></g><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z" fill="#2F5E40"/><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z" fill="#1F4630" clip-path="url(#cl-ab-dx-m)"/><g clip-path="url(#cl-ab-dx-1)"><path d="M10.5,11 H49.5 V32.2 Q43,36.4 36.5,32.2 Q30,34.8 23.5,32.2 Q17,36.4 10.5,32.2Z" fill="#FFFDF8"/><path d="M10.5,11 H49.5 V32.2 Q43,36.4 36.5,32.2 Q30,34.8 23.5,32.2 Q17,36.4 10.5,32.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-dx-m)" opacity=".75"/></g><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z" fill="#2F5E40"/><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z" fill="#1F4630" clip-path="url(#cl-ab-dx-m)"/><g clip-path="url(#cl-ab-dx-0)"><path d="M16,0 H44 V14.2 Q39.3,18.4 34.7,14.2 Q30,16.8 25.3,14.2 Q20.7,18.4 16,14.2Z" fill="#FFFDF8"/><path d="M16,0 H44 V14.2 Q39.3,18.4 34.7,14.2 Q30,16.8 25.3,14.2 Q20.7,18.4 16,14.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-dx-m)" opacity=".75"/></g></svg>
+  </main>
+
+  <footer>
+    <div class="firma"><div class="fn">Dott.ssa Sara Savelli</div><div class="ft"><span class="fl"></span><span class="fw">PEDAGOGISTA</span><span class="fl"></span></div></div>
+    <p class="profilo"><a href="https://www.instagram.com/sara.azzurra_pedagogista" target="_blank" rel="noopener">@sara.azzurra_pedagogista</a><span>su Instagram</span></p>
+    <p class="nota">Per ritrovarlo ogni giorno, aggiungi questa pagina alla schermata Home del telefono.</p>
+  </footer>
+</div>
+
+<div class="lettera" id="lettera" hidden role="dialog" aria-modal="true" aria-labelledby="titoloLettera">
+  <article class="foglio">
+    <div class="scorre">
+    <h2 id="titoloLettera">Perché questo calendario</h2>
+    <div class="regola"><b>La regola d’oro dell’aria:</b> “In caso di decompressione in aereo, l’adulto deve sempre indossare la propria maschera d’ossigeno prima di poter aiutare il bambino.”</div>
+    <p class="t">Nella genitorialità quotidiana facciamo quasi sempre l’opposto: prosciughiamo le nostre riserve di pazienza ed energia, cercando di essere impeccabili e dimenticando che <i>non si può versare nulla da una brocca vuota</i>.</p>
+    <p class="t">Questo calendario non è un manuale di istruzioni né una lista di cose da fare. È una <b>boccata d’aria quotidiana</b>. Dal 1° al 24 dicembre, prenditi un minuto: apri la carta del giorno, accogli la frase guida e lascia che la riflessione ti sollevi, ti alleggerisca del senso di colpa e ti ricordi che stai già facendo un lavoro straordinario.</p>
+    <div class="passi">
+      <div class="passo"><div class="n">1</div><div><h3>Apri la finestrella</h3><p>Ogni giorno tocca la finestrella con il numero di oggi, poi tocca la carta per girarla.</p></div></div>
+      <div class="passo"><div class="n">2</div><div><h3>Un rito quotidiano</h3><p>La mattina o la sera, prenditi un minuto di pausa solo per te.</p></div></div>
+      <div class="passo"><div class="n">3</div><div><h3>Respira e sostieni</h3><p>Porta con te la frase della giornata e regalati la cura che meriti.</p></div></div>
+    </div>
+    <div class="firma"><div class="fn">Dott.ssa Sara Savelli</div><div class="ft"><span class="fl"></span><span class="fw">PEDAGOGISTA</span><span class="fl"></span></div></div>
+    </div>
+    <div class="piede"><button class="entra" id="entra">Apri il calendario</button></div>
+  </article>
+</div>
+
+<div class="scena" id="scena" hidden role="dialog" aria-modal="true" aria-label="La carta del giorno">
+  <div class="alone"></div>
+  <button class="chiudi" id="chiudi" aria-label="Chiudi la carta"><span>×</span></button>
+  <button class="carta" id="carta" aria-label="Gira la carta"><span class="fluttua" id="fluttua"><span class="inclina" id="inclina"><span class="giro" id="giro"></span></span></span></button>
+  <p class="sugg" id="sugg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.6"/><path d="M20 4v4.6h-4.6"/><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15.4"/><path d="M4 20v-4.6h4.6"/></svg><span>Tocca la carta per girarla</span></p>
+  <div class="azioni"><button class="manda piena" id="condividi">Condividi la carta</button><button class="manda" id="manda">Manda il calendario</button></div>
+</div>
+<div class="storia" id="storia" hidden role="dialog" aria-modal="true" aria-label="Immagine della carta da condividere">
+  <img id="storiaImg" alt="">
+  <p id="storiaTesto">Tieni premuto sull’immagine per salvarla, poi mettila nella tua storia.</p>
+  <div class="azioni"><button class="manda piena" id="storiaCondividi" hidden>Condividi</button><a class="manda" id="storiaScarica" download>Scarica</a><button class="manda" id="storiaChiudi">Chiudi</button></div>
+</div>
+<button class="musica" id="musica" aria-label="Spegni musica e suoni" aria-pressed="true">♪</button>
+<div class="avviso" id="avviso" role="status"></div>
+
+<script>
+const T=[{"giorno": 1, "titoletto": "Tu sei abbastanza", "frase": "Non esiste il genitore perfetto, esiste il genitore reale. E per tuo figlio, tu sei abbastanza.", "etichetta": "Boccata d’aria", "testo": "Oggi liberati dall’aspettativa di dover fare tutto e bene. Quando senti salire il giudizio su di te, fai un respiro profondo e ripetiti: “Sto facendo del mio meglio con le risorse che ho oggi. E questo basta.”"}, {"giorno": 2, "titoletto": "I piatti possono aspettare", "frase": "La stanchezza che senti è legittima. Prendersi cura di un figlio richiede un’energia immensa, non colpevolizzarti se ti senti senza energie.", "etichetta": "Micro-rituale", "testo": "Stasera, delega una piccola incombenza o accetta che i piatti rimangano nel lavandino. Il tuo riposo vale di più."}, {"giorno": 3, "titoletto": "Prima la tua maschera", "frase": "Prenderti uno spazio per te non toglie nulla a tuo figlio: aggiunge ossigeno al genitore che sei.", "etichetta": "Boccata d’aria", "testo": "Come in aereo, la maschera d’ossigeno si indossa prima su di sé per poter salvare gli altri. Regalati 10 minuti di totale solitudine oggi, senza sensi di colpa."}, {"giorno": 4, "titoletto": "Non ce l’ha con te", "frase": "I capricci e le urla di tuo figlio non sono un fallimento educativo. Sono il suo modo frammentato di chiedere aiuto per regolare un’emozione più grande di lui.", "etichetta": "Micro-rituale", "testo": "Quando la tensione sale, ripetiti mentalmente come un mantra: “Mio figlio non ce l’ha con me, sta solo avendo un momento difficile”."}, {"giorno": 5, "titoletto": "Si impara insieme", "frase": "Nessuno nasce genitore: è un vestito che si impara a indossare giorno per giorno, insieme.", "etichetta": "Boccata d’aria", "testo": "Smetti di chiederti se stai sbagliando tutto. La genitorialità non è una meta da raggiungere senza errori, ma un laboratorio continuo. Celebra la strada che avete già fatto insieme da quando è nato."}, {"giorno": 6, "titoletto": "L’amore sa riparare", "frase": "Sbagliare e chiedere scusa a tuo figlio è uno dei più grandi insegnamenti di vita che puoi donargli.", "etichetta": "Boccata d’aria", "testo": "Se oggi hai alzato la voce o perso la pazienza, non restare nel rimpianto. Avvicinati a lui, abbassati alla sua altezza e di’: “Scusami, oggi ho perso la pazienza”. Gli insegnerai che l’amore sa riparare tutto."}, {"giorno": 7, "titoletto": "La tua presenza calma", "frase": "Tuo figlio non ha bisogno di giocattoli perfetti o di attività straordinarie. Ha bisogno della tua presenza calma.", "etichetta": "Micro-rituale", "testo": "Stasera metti il telefono in un’altra stanza per un’ora. Goditi la libertà di essere solo lì, senza notifiche."}, {"giorno": 8, "titoletto": "Tu lo conosci meglio", "frase": "I giudizi degli altri parlano delle loro aspettative, non del tuo valore come genitore.", "etichetta": "Boccata d’aria", "testo": "Durante le feste incontrerai parenti o conoscenti pronti a dispensare consigli non richiesti. Ricordati che nessuno vive la tua quotidianità: sorridi, annuisci e lascia scivolare via le parole. Tu conosci tuo figlio meglio di chiunque altro."}, {"giorno": 9, "titoletto": "Semi che crescono", "frase": "Educare significa seminare. Non sempre vedrai i frutti domani, ma i semi di amore che stai piantando oggi metteranno radici profonde.", "etichetta": "Micro-rituale", "testo": "Nota un piccolo gesto di gentilezza o autonomia che tuo figlio ha fatto oggi. È il frutto silenzioso del tuo lavoro."}, {"giorno": 10, "titoletto": "Lascia andare la colpa", "frase": "Il senso di colpa è il compagno d’ombra di ogni genitore. Ringrazialo perché mostra quanto ci tieni, e poi lascialo andare.", "etichetta": "Micro-rituale", "testo": "Scrivi su un foglietto il motivo per cui ti senti in colpa oggi. Appallottolalo e gettalo via. Meriti clemenza."}, {"giorno": 11, "titoletto": "Un momento piccolo", "frase": "Anche nella giornata più faticosa c’è un momento piccolo che vale la pena ricordare: una risata, un abbraccio, una mano piccola nella tua.", "etichetta": "Micro-rituale", "testo": "Stasera, prima di dormire, ripensa a un momento bello di oggi con tuo figlio, anche minuscolo. Non serve che la giornata sia andata bene: basta quel momento."}, {"giorno": 12, "titoletto": "Tracce di felicità", "frase": "La tua casa non deve sembrare la pagina di una rivista. Un po’ di disordine è il segno che lì dentro si sta vivendo e giocando.", "etichetta": "Micro-rituale", "testo": "Guarda i giochi sparsi sul pavimento e prova a vederli non come “caos da riordinare”, ma come tracce di felicità."}, {"giorno": 13, "titoletto": "Il suo porto sicuro", "frase": "Tu sei il porto sicuro di tuo figlio. Se si sfoga così tanto con te, è perché sa che il tuo amore è incondizionato e lì è al sicuro.", "etichetta": "Micro-rituale", "testo": "Accogli un pianto o una protesta senza cercare di bloccarla subito. Siediti lì vicino, respira e fai da ancora."}, {"giorno": 14, "titoletto": "Chiedi una mano", "frase": "Chiedere aiuto non è un segno di debolezza, ma di grande saggezza e maturità genitoriale.", "etichetta": "Micro-rituale", "testo": "Alza il telefono e chiedi un piccolo supporto (al partner, a un nonno, a un amico) per alleggerire il carico di questa settimana."}, {"giorno": 15, "titoletto": "Anche tu conti", "frase": "Prima di essere genitore, sei una persona. Ricordati di nutrire anche la parte di te che non si occupa di pannolini, cene e nanna.", "etichetta": "Micro-rituale", "testo": "Ascolta la tua canzone preferita (quella che non ha nulla a che fare con i bambini!) a tutto volume in macchina o nelle cuffie."}, {"giorno": 16, "titoletto": "Una bella squadra", "frase": "Ogni squadra si nutre di piccoli gesti. Condividere le fatiche alleggerisce il cuore.", "etichetta": "Micro-rituale", "testo": "Stasera ringrazia chi ti aiuta, il partner, un nonno o un’amica: “Grazie per quello che fai, siamo una bella squadra”."}, {"giorno": 17, "titoletto": "Il riposo è carburante", "frase": "Il riposo non è un premio che devi meritarti: è il carburante indispensabile della tua pazienza.", "etichetta": "Boccata d’aria", "testo": "Proteggi le tue ore di sonno e i tuoi momenti di scarico. Un genitore riposato è in grado di accogliere le tempeste con uno spirito completamente diverso."}, {"giorno": 18, "titoletto": "Il legame non si misura", "frase": "Le ore che passi lontano da tuo figlio, per lavoro o per te, non sono ore rubate. Il legame che avete non si misura in minuti.", "etichetta": "Boccata d’aria", "testo": "Se oggi ti pesa il tempo che non hai potuto dargli, pensa a quello che gli hai dato: un bacio prima di uscire, una storia la sera, uno sguardo."}, {"giorno": 19, "titoletto": "Il permesso di rallentare", "frase": "Rallentare il ritmo non è pigrizia, è salvaguardia. Il Natale non deve essere una corsa a ostacoli di impegni.", "etichetta": "Micro-rituale", "testo": "Cancella un impegno non strettamente necessario dal weekend per regalare alla famiglia una mezza giornata di totale e lento far nulla."}, {"giorno": 20, "titoletto": "L’esempio che dai", "frase": "Tu sei il modello di come ci si prende cura di sé. Mostrare a tuo figlio che sai riposare gli insegna a rispettare se stesso.", "etichetta": "Micro-rituale", "testo": "Di’ apertamente a tuo figlio: “Adesso mi siedo cinque minuti sul divano a riposare, perché ne ho bisogno”. Dai l’esempio."}, {"giorno": 21, "titoletto": "È una fase", "frase": "Le regressioni o i momenti no di tuo figlio sono passaggi evolutivi. Tutto passa, anche questa fase difficile.", "etichetta": "Micro-rituale", "testo": "Ripetiti la frase magica dei pedagogisti nei momenti di crisi: “È una fase, passerà”."}, {"giorno": 22, "titoletto": "Un passo alla volta", "frase": "Non devi amare ogni momento per amare tuo figlio. Anche i genitori più affettuosi hanno giornate in cui non vedono l’ora che arrivi sera.", "etichetta": "Boccata d’aria", "testo": "Se oggi hai contato le ore fino alla nanna, non sentirti in colpa: non toglie niente al tuo amore. Domani si ricomincia, un passo alla volta."}, {"giorno": 23, "titoletto": "Una mano sul cuore", "frase": "Sei il genitore migliore che tuo figlio potesse desiderare. Ti ha scelto per la tua unicità, non per la tua perfezione.", "etichetta": "Micro-rituale", "testo": "Mettiti una mano sul cuore e ringraziati per l’amore, l’energia e la dedizione che hai messo in quest’anno."}, {"giorno": 24, "titoletto": "Tu sei il suo mondo", "frase": "La magia della Vigilia è custodita nello sguardo di chi sa di essere amato incondizionatamente.", "etichetta": "Boccata d’aria", "testo": "Stasera spegni ogni pensiero di giudizio o controllo. Abbassati, abbraccia forte tuo figlio e goditi la luce nei suoi occhi. Tu sei tutto il suo mondo."}];
+const COL='sogcgsogogsoscgscscgococ';
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const PORTA=(()=>{
+  let s='<svg class="facciata" viewBox="0 0 60 98" preserveAspectRatio="none" aria-hidden="true"><defs>'+
+    '<linearGradient id="pLegno" x1="0" x2="1"><stop offset="0" stop-color="#2F583C"/><stop offset="1" stop-color="#1F3E2A"/></linearGradient>'+
+    '<radialGradient id="pOttone" cx=".35" cy=".35" r=".75"><stop offset="0" stop-color="#FFF2BE"/><stop offset=".55" stop-color="#C9A24B"/><stop offset="1" stop-color="#6E5019"/></radialGradient></defs>'+
+    '<rect width="60" height="98" fill="url(#pLegno)"/>';
+  const pannello=d=>'<path d="'+d+'" fill="#2A5037"/><path d="'+d+'" fill="none" stroke="#000" stroke-opacity=".3" stroke-width=".8" transform="translate(.6 .6)"/><path d="'+d+'" fill="none" stroke="#E3C77D" stroke-opacity=".7" stroke-width=".7"/>';
+  s+=pannello('M11 55V31A19 19 0 0 1 49 31V55Z')+pannello('M10 62H27V89H10Z')+pannello('M33 62H50V89H33Z');
+  s+='<rect x="29.1" y="0" width="1.8" height="24" fill="#B0282B"/><rect x="29.1" y="0" width=".6" height="24" fill="#FFF" opacity=".2"/>';
+  for(let i=0;i<22;i++){
+    const a=i/22*Math.PI*2, x=(30+12*Math.cos(a)).toFixed(2), y=(36+12*Math.sin(a)).toFixed(2), r=(a*180/Math.PI+(i%2?26:-26)).toFixed(0);
+    s+='<ellipse cx="'+x+'" cy="'+y+'" rx="2.7" ry="5.4" transform="rotate('+r+' '+x+' '+y+')" fill="'+(i%2?'#7DB287':'#4C8A5C')+'"/>';
+  }
+  for(let i=0;i<8;i++){const a=i/8*Math.PI*2+.4;s+='<circle cx="'+(30+12.3*Math.cos(a)).toFixed(2)+'" cy="'+(36+12.3*Math.sin(a)).toFixed(2)+'" r="1.45" fill="#D3292F"/><circle cx="'+(29.6+12.3*Math.cos(a)).toFixed(2)+'" cy="'+(35.6+12.3*Math.sin(a)).toFixed(2)+'" r=".45" fill="#FFF" opacity=".7"/>';}
+  s+='<path d="M30 46.8L24.2 43.6C23 46.3 23.7 49.6 26.8 49.4ZM30 46.8L35.8 43.6C37 46.3 36.3 49.6 33.2 49.4Z" fill="#C3272E"/>'+
+     '<path d="M29 47.6L26 54.4L28.6 53.2L30 55.4ZM31 47.6L34 54.4L31.4 53.2L30 55.4Z" fill="#9C1C22"/><circle cx="30" cy="47" r="2" fill="#C3272E"/>';
+  s+='<text x="30" y="39.4" text-anchor="middle" font-family="Alegreya,Georgia,serif" font-weight="700" font-size="10" fill="#FFF4D6">24</text>';
+  s+='<rect x="47.6" y="53" width="4.8" height="12" rx="2.2" fill="#A9853A"/><circle cx="50" cy="56.6" r="2.1" fill="url(#pOttone)"/>'+
+     '<circle cx="50" cy="61.2" r=".8" fill="#2A1E10"/><rect x="49.65" y="61.2" width=".7" height="1.9" fill="#2A1E10"/>';
+  s+='<rect x="3" y="92" width="54" height="3.6" rx=".8" fill="#A9853A"/><rect x="3" y="92" width="54" height=".7" fill="#FFF2BE" opacity=".55"/>';
+  s+='<rect width="1.2" height="98" fill="#FFF" opacity=".08"/><rect x="58.6" width="1.4" height="98" fill="#000" opacity=".28"/></svg>';
+  return s;
+})();
+const ilGiorno=g=>(g===8||g===11)?'l’'+g:'il '+(g===1?'1°':g);
+const calmo=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* --- che giorno è --- */
+let adesso=new Date(), inProva=false, sbloccati=0, giornoOggi=0, CHIAVE='', viste=[];
+function dataDiProva(){
+  const q=new URLSearchParams(location.search).get('prova')||(location.hash.match(/^#prova-(\d{4}-\d{1,2}-\d{1,2})$/)||[])[1];
+  const m=q&&q.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  return m?new Date(+m[1],m[2]-1,+m[3]):null;
+}
+const salva=()=>{try{localStorage.setItem(CHIAVE,JSON.stringify(viste));}catch(e){}};
+
+/* --- la riga sotto il titolo --- */
+function scriviStato(){
+  const mese=adesso.getMonth(), giornoMese=adesso.getDate(), anno=adesso.getFullYear();
+  let h;
+  if(sbloccati===0){
+    const n=Math.round((new Date(anno,11,1)-new Date(anno,mese,giornoMese))/86400000);
+    h='La prima finestrella si apre il <b>1° dicembre</b>.<br>'+(n===1?'Manca <b>1 giorno</b>.':'Mancano <b>'+n+' giorni</b>.');
+  }else if(giornoOggi){
+    h= viste.includes(giornoOggi)
+      ? (giornoOggi===24 ? 'Hai aperto l’ultima carta.<br>Puoi rileggerle tutte quando vuoi.' : 'Hai aperto la carta di oggi.<br>La prossima ti aspetta <b>domani</b>.')
+      : giornoOggi===24 ? 'Oggi è la <b>Vigilia</b>.<br>Apri la porta di casa.'
+      : 'Oggi è '+ilGiorno(giornoOggi).replace(/(\S+)$/,'<b>$1 dicembre</b>')+'.<br>Apri la finestrella di oggi.';
+  }else{
+    h='Tutte le finestrelle sono aperte.<br>Puoi rileggere le carte quando vuoi.';
+  }
+  $('stato').innerHTML=h;
+}
+
+/* --- le finestrelle --- */
+const griglia=$('griglia');
+function etichetta(g){
+  if(g>sbloccati) return 'Giorno '+g+', si apre '+ilGiorno(g)+' dicembre';
+  return 'Giorno '+g+(viste.includes(g)?', già aperta':', da aprire');
+}
+function avvia(data,prova){
+  adesso=data; inProva=prova;
+  const mese=adesso.getMonth(), giornoMese=adesso.getDate(), anno=adesso.getFullYear();
+  sbloccati= mese===11 ? Math.min(giornoMese,24) : (mese===0 ? 24 : 0);
+  giornoOggi= (mese===11 && giornoMese<=24) ? giornoMese : 0;
+  CHIAVE='respiri-aperte-'+(mese===0?anno-1:anno)+(inProva?'-prova':'');
+  viste=[];
+  try{viste=JSON.parse(localStorage.getItem(CHIAVE)||'[]')||[];}catch(e){}
+  $('prova').hidden=!inProva;
+  $('prova').textContent='Modalità prova · '+giornoMese+'/'+(mese+1)+'/'+anno;
+  griglia.className='griglia'+(sbloccati===0?' attesa':'');
+  griglia.innerHTML='';
+  T.forEach((t,i)=>{
+    const g=t.giorno, b=document.createElement('button');
+    b.className='fin col-'+COL[i]+(g>sbloccati?' chiusa':'')+(viste.includes(g)&&g<=sbloccati?' aperta':'')+(g===giornoOggi?' oggi':'');
+    b.dataset.g=g; b.setAttribute('aria-label',etichetta(g));
+    const anta=l=>'<span class="anta '+l+'"><span class="dav"><span class="num">'+g+'</span></span><span class="die"></span><span class="lato"></span></span>';
+    const dentro='<span class="dentro"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#d'+g+'"/></svg></span>';
+    if(g===24){b.classList.add('porta');b.innerHTML=dentro+'<span class="anta unica"><span class="dav">'+PORTA+'</span><span class="die"></span><span class="lato"></span></span><span class="soglia"></span>';}
+    else b.innerHTML=dentro+anta('sx')+anta('dx')+'<span class="arch"></span><span class="soglia"></span>';
+    b.addEventListener('click',()=>tocca(g,b));
+    griglia.appendChild(b);
+  });
+  scriviStato();
+}
+
+/* --- la barra per provare un giorno qualsiasi (solo in modalità prova) --- */
+const barra=$('barra');
+barra.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  const a=new Date().getFullYear(), d=b.dataset.d;
+  if(d==='oggi'){avvia(new Date(),false);return;}
+  if(d==='zero'){try{localStorage.removeItem(CHIAVE);}catch(e){} avvia(adesso,inProva);return;}
+  const [m,g]=d.split('-').map(Number);
+  avvia(new Date(m===1?a+1:a,m-1,g),true);
+});
+
+let tAvviso;
+function avviso(testo){const a=$('avviso');a.textContent=testo;a.classList.add('su');clearTimeout(tAvviso);tAvviso=setTimeout(()=>a.classList.remove('su'),2600);}
+
+/* zoom: la casetta si avvicina alla finestrella toccata */
+const casa=$('casa');
+let occupato=false;
+const ZOOM=1700;
+function zooma(b){
+  if(calmo) return;
+  casa.style.transition='transform '+ZOOM+'ms cubic-bezier(.6,.04,.22,1)';
+  const r=b.getBoundingClientRect(), c=casa.getBoundingClientRect();
+  const s=Math.min(2.7,(innerWidth*.58)/r.width);
+  casa.style.transformOrigin=(r.left+r.width/2-c.left)+'px '+(r.top+r.height/2-c.top)+'px';
+  casa.style.transform='translate('+(innerWidth/2-(r.left+r.width/2))+'px,'+(innerHeight*.44-(r.top+r.height/2))+'px) scale('+s.toFixed(3)+')';
+}
+function apri(g,b){
+  b.classList.add('aperta');Suono.spalanca();
+  if(!viste.includes(g))viste.push(g);
+  salva();b.setAttribute('aria-label',etichetta(g));scriviStato();
+}
+function tocca(g,b){
+  if(occupato) return;
+  if(g>sbloccati){
+    b.classList.remove('trema');void b.offsetWidth;b.classList.add('trema');
+    avviso(g===24?'La porta si apre il 24 dicembre, la Vigilia':'Questa finestrella si apre '+ilGiorno(g)+' dicembre');
+    return;
+  }
+  occupato=true; griglia.classList.add('ferma');
+  document.documentElement.classList.add('fermo');
+  const giaAperta=b.classList.contains('aperta');
+  document.documentElement.classList.add('zoom');
+  zooma(b);
+  if(giaAperta){setTimeout(()=>mostra(g,b,false),calmo?0:ZOOM*.7);return;}
+  if(calmo){apri(g,b);mostra(g,b,true);return;}
+  b.classList.remove('oggi');
+  /* 1. la casa si avvicina; 2. le ante tremano e la luce filtra; 3. si spalancano con un lampo; 4. esce la carta */
+  const T1=ZOOM+80, T2=T1+780;
+  setTimeout(()=>{b.classList.add('scuote');Suono.bussa();},T1);
+  setTimeout(()=>{b.classList.remove('scuote');b.classList.add('esplode');apri(g,b);},T2);
+  setTimeout(()=>b.classList.remove('esplode'),T2+1250);
+  setTimeout(()=>mostra(g,b,true),T2+820);
+}
+
+/* --- la carta --- */
+const scena=$('scena'), carta=$('carta'), giro=$('giro'), fluttua=$('fluttua'), inclina=$('inclina');
+let daDove=null, giornoCarta=1;
+const angoli='<svg class="cn tl"><use href="#corner"/></svg><svg class="cn tr"><use href="#corner"/></svg><svg class="cn bl"><use href="#corner"/></svg><svg class="cn br"><use href="#corner"/></svg>';
+function mostra(g,b,primaVolta){
+  const t=T[g-1]; daDove=b; giornoCarta=g;
+  giro.innerHTML=
+   '<span class="faccia fronte"><span class="fr1"></span><span class="fr2"></span>'+angoli+
+     '<span class="giorno">Giorno '+g+'</span><svg class="art" viewBox="0 0 100 100" aria-hidden="true"><use href="#d'+g+'"/></svg>'+
+     '<span class="tit"><span class="tin">'+esc(t.titoletto)+'</span></span><span class="luce"></span><span class="lampo"></span></span>'+
+   '<span class="faccia retro"><span class="fr1"></span><span class="fr2"></span>'+angoli+
+     '<span class="date"><svg class="rl" aria-hidden="true"><use href="#ramo"/></svg><span>'+g+' Dicembre</span><svg class="rr" aria-hidden="true"><use href="#ramo"/></svg></span>'+
+     '<span class="rbody"><span class="in"><span class="frase">“'+esc(t.frase)+'”</span><svg class="sep" aria-hidden="true"><use href="#sep"/></svg>'+
+     '<span class="eti">'+esc(t.etichetta)+'</span><span class="testo">'+esc(t.testo)+'</span></span></span><span class="luce"></span></span>';
+  carta.classList.remove('girata','tocco');
+  raddrizza();
+  $('sugg').lastElementChild.textContent='Tocca la carta per girarla';
+  scena.classList.remove('via');scena.hidden=false;
+  document.documentElement.classList.add('fermo');
+  adatta();
+  /* la carta parte dalla finestrella, vola al centro e si assesta */
+  const r=b.getBoundingClientRect(), c=carta.getBoundingClientRect();
+  const dx=r.left+r.width/2-(c.left+c.width/2), dy=r.top+r.height/2-(c.top+c.height/2), s=r.width/c.width;
+  carta.style.transition='none';
+  carta.style.transform='translate('+dx+'px,'+dy+'px) scale('+s+')';
+  carta.style.opacity='0';
+  fluttua.classList.remove('viva');
+  void carta.offsetWidth;
+  carta.style.transition='transform .95s cubic-bezier(.2,.8,.2,1), opacity .22s';
+  carta.style.transform='';carta.style.opacity='1';
+  fluttua.classList.add('viva');
+  requestAnimationFrame(()=>scena.classList.add('viva'));
+  if(primaVolta&&!calmo) setTimeout(scintille,620);
+  if(!primaVolta) setTimeout(()=>Suono.campanella(),520);
+  carta.focus({preventScroll:true});
+}
+function adatta(){
+  const body=giro.querySelector('.rbody'), inn=giro.querySelector('.in');
+  let fs=2.82; body.style.fontSize='calc('+fs+' * var(--u))';
+  while(inn.offsetHeight>body.clientHeight && fs>2.4){fs-=0.06;body.style.fontSize='calc('+fs+' * var(--u))';}
+}
+function scintille(){
+  if(scena.hidden) return;
+  const r=carta.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+  for(let i=0;i<22;i++){
+    const s=document.createElement('span'), a=Math.random()*Math.PI*2, d=r.width*(.5+Math.random()*.55);
+    s.className='scint'; s.textContent=i%3?'✦':'✧';
+    s.style.left=cx+'px'; s.style.top=cy+'px';
+    s.style.fontSize=(9+Math.random()*15)+'px';
+    s.style.setProperty('--dx',Math.cos(a)*d+'px'); s.style.setProperty('--dy',(Math.sin(a)*d*1.25-20)+'px');
+    s.style.animationDelay=(Math.random()*.25)+'s';
+    scena.appendChild(s); setTimeout(()=>s.remove(),1700);
+  }
+}
+
+/* la carta segue il dito: si inclina e il riflesso si sposta */
+let giu=false, mosso=false, x0=0, y0=0;
+function raddrizza(){['--rx','--ry','--lx','--ly'].forEach(p=>carta.style.removeProperty(p));}
+function segui(e){
+  const r=carta.getBoundingClientRect();
+  const nx=Math.max(-1,Math.min(1,(e.clientX-(r.left+r.width/2))/(r.width/2)));
+  const ny=Math.max(-1,Math.min(1,(e.clientY-(r.top+r.height/2))/(r.height/2)));
+  carta.style.setProperty('--ry',(nx*20).toFixed(2)+'deg');
+  carta.style.setProperty('--rx',(-ny*15).toFixed(2)+'deg');
+  carta.style.setProperty('--lx',(50+nx*48).toFixed(1)+'%');
+  carta.style.setProperty('--ly',(50+ny*48).toFixed(1)+'%');
+}
+scena.addEventListener('pointerdown',e=>{
+  if(e.target.closest('.chiudi,.manda')) return;
+  giu=true; mosso=false; x0=e.clientX; y0=e.clientY;
+});
+scena.addEventListener('pointermove',e=>{
+  if(calmo) return;
+  if(giu&&Math.hypot(e.clientX-x0,e.clientY-y0)>9) mosso=true;
+  if((giu&&mosso)||e.pointerType==='mouse'){carta.classList.add('tocco');segui(e);}
+});
+function lascia(){giu=false;carta.classList.remove('tocco');raddrizza();}
+scena.addEventListener('pointerup',lascia);
+scena.addEventListener('pointercancel',lascia);
+scena.addEventListener('pointerleave',lascia);
+
+carta.addEventListener('click',()=>{
+  if(mosso){mosso=false;return;}
+  carta.classList.toggle('girata');
+  Suono.fruscio();
+  inclina.classList.add('su');setTimeout(()=>inclina.classList.remove('su'),430);
+  $('sugg').lastElementChild.textContent=carta.classList.contains('girata')?'Tocca ancora per tornare al disegno':'Tocca la carta per girarla';
+});
+function chiudi(){
+  if(scena.hidden) return;
+  scena.classList.add('via');
+  casa.style.transition='transform 1s cubic-bezier(.45,.05,.2,1)';
+  casa.style.transform='';
+  document.documentElement.classList.remove('zoom');
+  setTimeout(()=>{scena.hidden=true;scena.classList.remove('viva','via');fluttua.classList.remove('viva');if(daDove)daDove.focus({preventScroll:true});},240);
+  setTimeout(()=>{document.documentElement.classList.remove('fermo');griglia.classList.remove('ferma');occupato=false;},calmo?260:1050);
+}
+$('chiudi').addEventListener('click',chiudi);
+scena.addEventListener('click',e=>{if(mosso){mosso=false;return;} if(e.target===scena)chiudi();});
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return; if(!$('storia').hidden)chiudiStoria();else if(!lettera.hidden)chiudiLettera();else chiudi();});
+
+$('manda').addEventListener('click',async()=>{
+  const url=location.origin+location.pathname;
+  const dati={title:'24 Respiri per Genitori',text:'24 Respiri per Genitori: un calendario dell’Avvento per mamme e papà, della Dott.ssa Sara Savelli.',url};
+  try{
+    if(navigator.share){
+      try{await navigator.share(dati);return;}catch(e){if(e&&e.name==='AbortError')return;}
+    }
+    await navigator.clipboard.writeText(url);avviso('Link copiato: incollalo dove vuoi');
+  }catch(e){ avviso('Copia il link dalla barra in alto'); }
+});
+
+/* --- l'immagine della carta per le storie (1080 x 1920), disegnata al momento --- */
+const immagini={};
+function simbolo(id,px){
+  if(immagini[id]) return immagini[id];
+  return immagini[id]=new Promise((ok,no)=>{
+    const sy=document.getElementById(id), vb=sy.getAttribute('viewBox').split(/\s+/).map(Number), xs=new XMLSerializer();
+    const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+vb.join(' ')+'" width="'+px+'" height="'+Math.round(px*vb[3]/vb[2])+'">'+Array.from(sy.childNodes).map(n=>xs.serializeToString(n)).join('')+'</svg>';
+    const im=new Image(); im.onload=()=>ok(im); im.onerror=no;
+    im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  });
+}
+function aCapo(c,testo,largo){
+  const out=[]; let r='';
+  for(const p of testo.split(' ')){const t=r?r+' '+p:p; if(r&&c.measureText(t).width>largo){out.push(r);r=p;}else r=t;}
+  if(r) out.push(r); return out;
+}
+function rett(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function spaziato(c,testo,x,y,em){
+  if('letterSpacing' in c){c.letterSpacing=em;c.fillText(testo,x,y);c.letterSpacing='0px';}else c.fillText(testo,x,y);
+}
+async function creaStoria(g,retro){
+  const W=1080,H=1920,cv=document.createElement('canvas'),c=cv.getContext('2d'),t=T[g-1];
+  cv.width=W;cv.height=H;
+  if(document.fonts&&document.fonts.load) await Promise.all(['700 40px Alegreya','500 40px Alegreya','400 40px Alegreya','italic 500 40px Alegreya','500 40px "Cormorant Garamond"'].map(f=>document.fonts.load(f).catch(()=>0)));
+  const AL='Alegreya,Georgia,serif', CO='"Cormorant Garamond",Georgia,serif', ROSSO='#8E1B1E', TESTO='#2E2A26';
+  /* sera e neve */
+  const gr=c.createRadialGradient(W/2,0,0,W/2,0,H);
+  gr.addColorStop(0,'#2C4C3B');gr.addColorStop(.42,'#1F382C');gr.addColorStop(1,'#111E18');
+  c.fillStyle=gr;c.fillRect(0,0,W,H);
+  let seme=g*7919+13; const caso=()=>(seme=(seme*16807)%2147483647)/2147483647;
+  c.fillStyle='#FFF7E6';
+  for(let i=0;i<120;i++){c.globalAlpha=.18+caso()*.55;c.beginPath();c.arc(caso()*W,caso()*H,1.5+caso()*5,0,6.283);c.fill();}
+  c.globalAlpha=1;
+  /* titolo */
+  c.textAlign='center';c.textBaseline='alphabetic';
+  c.fillStyle='#FBF6EC';c.font='700 70px '+AL;c.fillText('24 Respiri per Genitori',W/2,232);
+  c.fillStyle='#E8CD86';c.font='700 22px '+AL;spaziato(c,'IL TUO CALENDARIO DELL’AVVENTO DI CONSAPEVOLEZZA E CURA',W/2,280,'3.4px');
+  /* la carta */
+  const u=12, cw=64*u, ch=92*u, x0=(W-cw)/2, y0=340;
+  const al=c.createRadialGradient(W/2,y0+ch/2,0,W/2,y0+ch/2,cw*.95);
+  al.addColorStop(0,'rgba(255,214,140,.30)');al.addColorStop(1,'rgba(255,214,140,0)');
+  c.fillStyle=al;c.fillRect(0,y0-200,W,ch+400);
+  c.save();c.shadowColor='rgba(0,0,0,.6)';c.shadowBlur=70;c.shadowOffsetY=34;c.fillStyle='#FBF6EC';rett(c,x0,y0,cw,ch,4.4*u);c.fill();c.restore();
+  c.lineWidth=.6*u;c.strokeStyle='#A0222A';rett(c,x0+2.8*u,y0+2.8*u,cw-5.6*u,ch-5.6*u,3.1*u);c.stroke();
+  c.lineWidth=.35*u;c.strokeStyle='#C49A45';rett(c,x0+4.875*u,y0+4.875*u,cw-9.75*u,ch-9.75*u,2.03*u);c.stroke();
+  const ang=await simbolo('corner',240), k=8*u, m=5.5*u;
+  [[x0+m,y0+m,1,1],[x0+cw-m,y0+m,-1,1],[x0+m,y0+ch-m,1,-1],[x0+cw-m,y0+ch-m,-1,-1]].forEach(([x,y,sx,sy])=>{c.save();c.translate(x,y);c.scale(sx,sy);c.drawImage(ang,0,0,k,k);c.restore();});
+  const cx=W/2;
+  if(!retro){
+    c.fillStyle=ROSSO;c.font='700 '+(8.11*u)+'px '+AL;c.fillText('Giorno '+g,cx,y0+12*u+8.11*u*.8);
+    c.drawImage(await simbolo('d'+g,480),x0+16*u,y0+31*u,32*u,32*u);
+    const fs=4.23*u;c.fillStyle=TESTO;c.font='500 '+fs+'px '+AL;
+    const rr=aCapo(c,t.titoletto,49*u), lh=fs*1.12, top=y0+68*u+(14*u-rr.length*lh)/2;
+    rr.forEach((r,i)=>c.fillText(r,cx,top+i*lh+lh/2+fs*.32));
+  }else{
+    const fd=5.29*u;c.fillStyle=ROSSO;c.font='700 '+fd+'px '+AL;
+    const data=g+' Dicembre', lw=c.measureText(data).width;c.fillText(data,cx,y0+14*u+fd*.33);
+    const ramo=await simbolo('ramo',270), rw=9*u, rh=3*u;
+    c.drawImage(ramo,cx-lw/2-1.4*u-rw,y0+14*u-rh/2,rw,rh);
+    c.save();c.translate(cx+lw/2+1.4*u+rw,y0+14*u-rh/2);c.scale(-1,1);c.drawImage(ramo,0,0,rw,rh);c.restore();
+    const largo=49*u, sep=await simbolo('sep',420);
+    let fs=2.82*u, pezzi, alto;
+    for(let giro=0;giro<12;giro++){
+      const lh=fs*1.24; pezzi=[];alto=0;
+      c.font='italic 500 '+(fs*1.0625)+'px '+AL;
+      for(const r of aCapo(c,'“'+t.frase+'”',largo)){pezzi.push(['f',r,alto,lh*1.0625,fs*1.0625]);alto+=lh*1.0625;}
+      alto+=2.4*u;pezzi.push(['s',null,alto]);alto+=4.2*u+2.2*u;
+      pezzi.push(['e',t.etichetta.toUpperCase(),alto,lh*.82,fs*.82]);alto+=lh*.82+.8*u;
+      c.font='400 '+fs+'px '+AL;
+      for(const r of aCapo(c,t.testo,largo)){pezzi.push(['t',r,alto,lh,fs]);alto+=lh;}
+      if(alto<=59*u) break; fs*=.97;
+    }
+    const top=y0+21*u+(59*u-alto)/2;
+    for(const [tipo,r,y,lh,f] of pezzi){
+      if(tipo==='s'){c.drawImage(sep,cx-10.5*u,top+y,21*u,4.2*u);continue;}
+      const yy=top+y+lh/2+f*.32;
+      if(tipo==='f'){c.fillStyle=TESTO;c.font='italic 500 '+f+'px '+AL;c.fillText(r,cx,yy);}
+      else if(tipo==='e'){c.fillStyle=ROSSO;c.font='700 '+f+'px '+AL;spaziato(c,r,cx,yy,(f*.14).toFixed(1)+'px');}
+      else{c.fillStyle=TESTO;c.font='400 '+f+'px '+AL;c.fillText(r,cx,yy);}
+    }
+  }
+  /* firma */
+  c.fillStyle='#FBF6EC';c.font='500 60px '+CO;spaziato(c,'Dott.ssa Sara Savelli',cx,1568,'3px');
+  c.fillStyle='#B9C4B4';c.font='500 23px '+CO;spaziato(c,'PEDAGOGISTA',cx+4,1618,'7.8px');
+  c.strokeStyle='#B9C4B4';c.lineWidth=1.5;c.beginPath();c.moveTo(cx-270,1610);c.lineTo(cx-140,1610);c.moveTo(cx+140,1610);c.lineTo(cx+270,1610);c.stroke();
+  c.fillStyle='#E8CD86';c.font='700 34px '+AL;c.fillText('@sara.azzurra_pedagogista',cx,1686);
+  return new Promise((ok,no)=>cv.toBlob(b=>b?ok(b):no(new Error('immagine vuota')),'image/png'));
+}
+let storiaFile=null, storiaUrl='';
+function chiudiStoria(){$('storia').hidden=true;if(storiaUrl){URL.revokeObjectURL(storiaUrl);storiaUrl='';}}
+function puoCondividere(f){try{return !!(navigator.canShare&&navigator.canShare({files:[f]}));}catch(e){return false;}}
+$('condividi').addEventListener('click',async e=>{
+  const b=e.currentTarget; if(b.disabled) return;
+  b.disabled=true;
+  try{
+    const g=giornoCarta, blob=await creaStoria(g,carta.classList.contains('girata'));
+    storiaFile=new File([blob],'24-respiri-giorno-'+g+'.png',{type:'image/png'});
+    const si=puoCondividere(storiaFile);
+    if(si){ try{await navigator.share({files:[storiaFile]});return;}catch(er){if(er&&er.name==='AbortError')return;} }
+    /* se il telefono non apre il menu da solo, mostro l'immagine: si condivide o si salva da qui */
+    storiaUrl=URL.createObjectURL(blob);
+    $('storiaImg').src=storiaUrl; $('storiaImg').alt='Carta del giorno '+g+' di 24 Respiri per Genitori';
+    $('storiaCondividi').hidden=!si;
+    const sc=$('storiaScarica'); sc.hidden=!!window.ANTEPRIMA; sc.href=storiaUrl; sc.download=storiaFile.name;
+    $('storia').hidden=false;
+  }catch(er){avviso('Su questo telefono non riesco a creare l’immagine');}
+  finally{b.disabled=false;}
+});
+$('storiaCondividi').addEventListener('click',()=>{if(storiaFile)navigator.share({files:[storiaFile]}).catch(()=>{});});
+$('storiaChiudi').addEventListener('click',chiudiStoria);
+$('storia').addEventListener('click',e=>{if(e.target===$('storia'))chiudiStoria();});
+
+/* --- musica e suoni, fatti in codice (nessun file audio) ---
+   La melodia è «Astro del ciel» (Stille Nacht, 1818, di pubblico dominio) suonata come un carillon. */
+const Suono=(()=>{
+  let ac=null, master=null, acceso=true, t0=0, k=0;
+  try{acceso=localStorage.getItem('respiri-musica')!=='no';}catch(e){}
+  const B=.62, F={C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,B4:493.88,C5:523.25,D5:587.33,E5:659.25,F5:698.46};
+  const M=[['G4',1.5],['A4',.5],['G4',1],['E4',3],['G4',1.5],['A4',.5],['G4',1],['E4',3],
+    ['D5',2],['D5',1],['B4',3],['C5',2],['C5',1],['G4',3],
+    ['A4',2],['A4',1],['C5',1.5],['B4',.5],['A4',1],['G4',1.5],['A4',.5],['G4',1],['E4',3],
+    ['A4',2],['A4',1],['C5',1.5],['B4',.5],['A4',1],['G4',1.5],['A4',.5],['G4',1],['E4',3],
+    ['D5',2],['D5',1],['F5',1.5],['D5',.5],['B4',1],['C5',3],['E5',3],
+    ['C5',1],['G4',1],['E4',1],['G4',1.5],['F4',.5],['D4',1],['C4',3]];
+  const ACC={C:[130.81,164.81,196],G:[146.83,196,246.94],F:[174.61,220,261.63]}, BARRE='CCCCGGCCFFCCFFCCGGCCCGCC';
+  const EV=[]; let t=0;
+  for(const [n,d] of M){EV.push([t,F[n]*2,.2,2]);t+=d;}
+  for(let i=0;i<24;i++){const a=ACC[BARRE[i]];EV.push([i*3,a[0]*2,.07,1.6],[i*3+1,a[1]*2,.045,1.2],[i*3+2,a[2]*2,.045,1.2]);}
+  EV.sort((a,b)=>a[0]-b[0]);
+  const LUNGO=78;
+  function nota(f,q,g,dur){
+    const o=ac.createOscillator(), o2=ac.createOscillator(), v=ac.createGain(), v2=ac.createGain();
+    o.type='sine';o.frequency.value=f; o2.type='sine';o2.frequency.value=f*3.01; v2.gain.value=.1;
+    v.gain.setValueAtTime(0,q); v.gain.linearRampToValueAtTime(g,q+.006); v.gain.exponentialRampToValueAtTime(.0008,q+dur);
+    o.connect(v);o2.connect(v2);v2.connect(v);v.connect(master);
+    o.start(q);o2.start(q);o.stop(q+dur+.05);o2.stop(q+dur+.05);
+  }
+  function programma(){
+    if(!ac||!acceso||ac.state!=='running') return;
+    for(let i=0;i<40;i++){
+      const e=EV[k%EV.length], q=t0+(Math.floor(k/EV.length)*LUNGO+e[0])*B;
+      if(q>ac.currentTime+.9) break;
+      if(q>ac.currentTime-.05) nota(e[1],Math.max(q,ac.currentTime+.01),e[2],e[3]);
+      k++;
+    }
+  }
+  function avvia(){
+    if(!acceso) return;
+    if(!ac){
+      const A=window.AudioContext||window.webkitAudioContext; if(!A) return;
+      try{ac=new A();}catch(e){return;}
+      master=ac.createGain();master.gain.value=.5;master.connect(ac.destination);
+      t0=ac.currentTime+.5;k=0;setInterval(programma,200);
+    }
+    if(ac.state==='suspended') ac.resume();
+  }
+  const pronto=()=>ac&&acceso&&ac.state==='running';
+  function disegnaTasto(){
+    const b=$('musica'); b.classList.toggle('spenta',!acceso); b.setAttribute('aria-pressed',acceso);
+    b.setAttribute('aria-label',acceso?'Spegni musica e suoni':'Accendi musica e suoni');
+  }
+  return {
+    avvia, disegnaTasto,
+    cambia(){acceso=!acceso;try{localStorage.setItem('respiri-musica',acceso?'si':'no');}catch(e){} if(acceso)avvia();else if(ac)ac.suspend();disegnaTasto();},
+    pausa(nascosta){if(!ac)return; if(nascosta)ac.suspend();else if(acceso)ac.resume();},
+    campanella(){if(!pronto())return;const n=ac.currentTime+.02;nota(1318.5,n,.13,1.5);nota(1568,n+.1,.11,1.7);nota(2093,n+.2,.1,2);},
+    ante(){if(!pronto())return;const n=ac.currentTime+.02;nota(170,n,.16,.16);nota(140,n+.1,.12,.2);nota(1046.5,n+.05,.05,1.2);nota(1568,n+.12,.04,1.4);},
+    spalanca(){
+      if(!pronto())return;
+      const n=ac.currentTime+.01;
+      nota(190,n,.14,.09);nota(620,n,.035,.05);
+      const len=Math.floor(ac.sampleRate*.75), buf=ac.createBuffer(1,len,ac.sampleRate), d=buf.getChannelData(0);
+      for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+      const src=ac.createBufferSource(), fl=ac.createBiquadFilter(), v=ac.createGain();
+      src.buffer=buf;fl.type='bandpass';fl.Q.value=1.1;
+      fl.frequency.setValueAtTime(420,n+.03);fl.frequency.exponentialRampToValueAtTime(3400,n+.5);
+      v.gain.setValueAtTime(0,n+.03);v.gain.linearRampToValueAtTime(.1,n+.16);v.gain.exponentialRampToValueAtTime(.001,n+.72);
+      src.connect(fl);fl.connect(v);v.connect(master);src.start(n+.03);src.stop(n+.76);
+      [1046.5,1318.5,1568,2093,2637.0].forEach((f,i)=>nota(f,n+.1+i*.075,.075-i*.008,1.5));
+    },
+    bussa(){if(!pronto())return;const n=ac.currentTime+.02;[.09,.33,.56].forEach((t,i)=>{nota(156-i*10,n+t,.15,.13);nota(320+i*12,n+t,.035,.07);});},
+    fruscio(){
+      if(!pronto())return;
+      const n=ac.currentTime+.01, len=Math.floor(ac.sampleRate*.22), buf=ac.createBuffer(1,len,ac.sampleRate), d=buf.getChannelData(0);
+      for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*(1-i/len);
+      const src=ac.createBufferSource(), fl=ac.createBiquadFilter(), v=ac.createGain();
+      src.buffer=buf;fl.type='bandpass';fl.frequency.value=2600;fl.Q.value=.7;v.gain.value=.09;
+      src.connect(fl);fl.connect(v);v.connect(master);src.start(n);
+    }
+  };
+})();
+Suono.disegnaTasto();
+$('musica').addEventListener('click',e=>{e.stopPropagation();Suono.cambia();});
+/* la musica può partire solo dopo il primo tocco: lo chiedono i telefoni */
+document.addEventListener('click',()=>Suono.avvia());
+document.addEventListener('touchend',()=>Suono.avvia(),{passive:true});
+document.addEventListener('visibilitychange',()=>Suono.pausa(document.hidden));
+
+/* --- la neve --- */
+(function(){
+  const cv=$('neve'), cx=cv.getContext('2d');
+  let W=0,H=0,fiocchi=[],prima=0;
+  function misura(){
+    const d=Math.min(devicePixelRatio||1,2);
+    W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0);
+    const n=Math.round(Math.min(90,Math.max(28,W*H/11000)));
+    fiocchi=Array.from({length:n},()=>nuovo(true));
+    if(calmo) disegna(0);
+  }
+  function nuovo(ovunque){
+    const z=Math.random();
+    return {x:Math.random()*W,y:ovunque?Math.random()*H:-8,r:.7+z*2.3,v:10+z*30,a:.25+z*.6,f:Math.random()*6.28,o:.3+Math.random()*.9};
+  }
+  function disegna(dt){
+    cx.clearRect(0,0,W,H);
+    for(const f of fiocchi){
+      f.y+=f.v*dt; f.f+=f.o*dt; f.x+=Math.sin(f.f)*12*dt;
+      if(f.y>H+8) Object.assign(f,nuovo(false));
+      cx.globalAlpha=f.a; cx.fillStyle='#FFF7E6';
+      cx.beginPath(); cx.arc(f.x,f.y,f.r,0,6.283); cx.fill();
+    }
+  }
+  function passo(t){
+    const dt=Math.min(.05,(t-prima)/1000||0); prima=t;
+    if(!document.hidden&&scena.hidden) disegna(dt);
+    requestAnimationFrame(passo);
+  }
+  addEventListener('resize',misura); misura();
+  if(!calmo) requestAnimationFrame(passo);
+})();
+
+/* --- la lettera di Sara --- */
+const lettera=$('lettera');
+function versoBottone(f){
+  const r=f.getBoundingClientRect(), t=$('rileggi').getBoundingClientRect();
+  f.style.transformOrigin='50% 50%';
+  return 'translate('+(t.left+t.width/2-(r.left+r.width/2))+'px,'+(t.top+t.height/2-(r.top+r.height/2))+'px) scale('+(t.width/r.width).toFixed(3)+','+(t.height/r.height).toFixed(3)+')';
+}
+function apriLettera(dalBottone){
+  if(!lettera.hidden||occupato) return;
+  const f=lettera.querySelector('.foglio');
+  lettera.hidden=false;
+  document.documentElement.classList.add('fermo');
+  lettera.querySelector('.scorre').scrollTop=0;
+  if(dalBottone===true&&!calmo){
+    /* esce dal pulsante con la busta */
+    f.style.transition='none'; f.style.transform='none'; f.style.opacity='1';
+    const da=versoBottone(f);
+    f.style.transform=da; f.style.opacity='0'; void f.offsetWidth;
+    f.style.transition='transform .75s cubic-bezier(.2,.8,.25,1),opacity .3s';
+    f.style.transform='none'; f.style.opacity='1';
+    setTimeout(()=>{f.style.cssText='';},720);
+  }
+  requestAnimationFrame(()=>requestAnimationFrame(()=>lettera.classList.add('viva')));
+  setTimeout(()=>$('entra').focus({preventScroll:true}),calmo?0:700);
+}
+function chiudiLettera(){
+  if(lettera.hidden) return;
+  try{localStorage.setItem('respiri-lettera','letta');}catch(e){}
+  const f=lettera.querySelector('.foglio'), b=$('rileggi');
+  lettera.classList.remove('viva');
+  if(!calmo){
+    /* il foglio si rimpicciolisce e vola dentro il pulsante con la busta */
+    const t=versoBottone(f);
+    f.style.transition='transform .7s cubic-bezier(.6,0,.3,1),opacity .28s ease-in .48s';
+    f.style.transform=t; f.style.opacity='0';
+  }
+  setTimeout(()=>{
+    lettera.hidden=true; f.style.cssText='';
+    if(scena.hidden)document.documentElement.classList.remove('fermo');
+    b.classList.remove('nascosta');
+    if(!calmo){b.classList.remove('arriva');void b.offsetWidth;b.classList.add('arriva');}
+  },calmo?0:720);
+}
+$('entra').addEventListener('click',chiudiLettera);
+$('rileggi').addEventListener('click',()=>apriLettera(true));
+lettera.addEventListener('click',e=>{if(e.target===lettera)chiudiLettera();});
+
+/* --- modalità prova nascosta: tieni premuti Q W E e clicca il comignolo, oppure tocca il comignolo 5 volte di fila --- */
+const tasti=new Set();
+addEventListener('keydown',e=>{if(e.key)tasti.add(e.key.toLowerCase());});
+addEventListener('keyup',e=>{if(e.key)tasti.delete(e.key.toLowerCase());});
+addEventListener('blur',()=>tasti.clear());
+let colpi=[];
+function modoProva(acceso){
+  barra.hidden=!acceso;
+  if(acceso){avviso('Modalità prova: scegli un giorno sotto il titolo');scrollTo({top:0,behavior:calmo?'auto':'smooth'});}
+  else{avvia(new Date(),false);avviso('Modalità prova spenta');}
+}
+document.querySelectorAll('.comignolo').forEach(el=>el.addEventListener('click',e=>{
+  if(occupato) return;
+  e.stopPropagation();
+  const ora=Date.now();
+  colpi=colpi.filter(t=>ora-t<2500); colpi.push(ora);
+  if(['q','w','e'].every(k=>tasti.has(k))||colpi.length>=5){colpi=[];modoProva(barra.hidden);}
+}));
+
+{const d=dataDiProva();avvia(d||new Date(),!!d);if(d)barra.hidden=false;}
+{let letta=false;try{letta=localStorage.getItem('respiri-lettera')==='letta';}catch(e){} if(!letta){$('rileggi').classList.add('nascosta');setTimeout(apriLettera,calmo?0:650);}}
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!scena.hidden)adatta();});
+</script>
+</body>
+</html>
