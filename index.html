@@ -1264,15 +1264,23 @@ function disegnaScena(){
   let c='';
   const duna=(y,a,f)=>{let d='';for(let x=-24;x<=W+24;x+=24)d+=(d?'L':'M')+n(x)+','+n(y+a*Math.sin(x*f+y));return '<path d="'+d+'" fill="none" stroke="#B7C6CE" stroke-width="'+n(.03*D)+'" opacity=".45"/><path d="'+d+'" fill="none" stroke="#FFFFFF" stroke-width="'+n(.035*D)+'" opacity=".8" transform="translate(0 '+n(-.03*D)+')"/>';};
   {const nt=prato.querySelector('.nota'), sotto=nt?nt.offsetTop+nt.offsetHeight:Hf*.8; c+=duna(sotto+.3*D,.05*D,.009);}
+  /* le righe di testo del prato: gli abeti in primo piano non devono coprirle */
+  const righe=[];{const pf=prato.getBoundingClientRect(), m=10;
+    prato.querySelectorAll('.promemoria-box,.firma,.profilo,.nota').forEach(el=>{const r=document.createRange();r.selectNodeContents(el);
+      for(const q of r.getClientRects()) if(q.width>0) righe.push({l:q.left-pf.left-m,r:q.right-pf.left+m,t:q.top-pf.top-m,b:q.bottom-pf.top+m});
+      const q=el.getBoundingClientRect(); if(el.matches('.promemoria-box')) righe.push({l:q.left-pf.left-m,r:q.right-pf.left+m,t:q.top-pf.top-m,b:q.bottom-pf.top+m});});}
+  const tocca=(x,by,h)=>{const w=h*60/96, top=by-h*92/96;
+    return righe.some(q=>{if(q.b<=top||q.t>=by)return false; const y=Math.min(q.b,by), mezza=(w/2)*(y-top)/(by-top); return x-mezza<q.r&&x+mezza>q.l;});};
+  const libero=(x,by,h,gira)=>{while(h>=.6*D&&tocca(x,by,h))h*=.93; return h>=.6*D?abete(x,by,h,gira):'';};
   const ciuffo=(x,y)=>'<path d="M'+n(x)+','+n(y)+'q'+n(-.03*D)+','+n(-.09*D)+' '+n(-.07*D)+','+n(-.13*D)+'M'+n(x)+','+n(y)+'q0,'+n(-.1*D)+' '+n(.012*D)+','+n(-.17*D)+'M'+n(x)+','+n(y)+'q'+n(.04*D)+','+n(-.08*D)+' '+n(.08*D)+','+n(-.11*D)+'" fill="none" stroke="#8C7B62" stroke-width="'+n(.014*D)+'" stroke-linecap="round" opacity=".8"/><ellipse cx="'+n(x)+'" cy="'+n(y)+'" rx="'+n(.07*D)+'" ry="'+n(.018*D)+'" fill="#FFFFFF"/>';
   if(largo){
     const margine=360;
     for(let k=0;k<7;k++){const lato=k%2?1:-1, x=W/2+lato*(margine+caso()*Math.max(0,W/2-margine-.6*D)), y=Hf*(.3+caso()*.6); if(x>.3*D&&x<W-.3*D)c+=ciuffo(x,y);}
-    c+=abete(.25*D,Hf+.12*D,Math.min(3.1*D,Hf*.92),0)+abete(1.45*D,Hf+.3*D,Math.min(2.1*D,Hf*.7),1)+abete(2.5*D,Hf+.25*D,Math.min(1.35*D,Hf*.5),0);
-    c+=abete(W-.2*D,Hf+.15*D,Math.min(2.7*D,Hf*.85),1)+abete(W-1.4*D,Hf+.28*D,Math.min(1.8*D,Hf*.62),0)+abete(W-2.45*D,Hf+.22*D,Math.min(1.2*D,Hf*.45),1);
+    c+=libero(.25*D,Hf+.12*D,Math.min(3.1*D,Hf*.92),0)+libero(1.45*D,Hf+.3*D,Math.min(2.1*D,Hf*.7),1)+libero(2.5*D,Hf+.25*D,Math.min(1.35*D,Hf*.5),0);
+    c+=libero(W-.2*D,Hf+.15*D,Math.min(2.7*D,Hf*.85),1)+libero(W-1.4*D,Hf+.28*D,Math.min(1.8*D,Hf*.62),0)+libero(W-2.45*D,Hf+.22*D,Math.min(1.2*D,Hf*.45),1);
   }else{
     c+=ciuffo(W*.2,Hf-.5*D)+ciuffo(W*.74,Hf-.34*D);
-    c+=abete(-.18*D,Hf+.1*D,Math.min(1.9*D,Hf*.5),0)+abete(W+.2*D,Hf+.14*D,Math.min(1.55*D,Hf*.42),1)+abete(W-.62*D,Hf+.28*D,.95*D,0);
+    c+=libero(-.18*D,Hf+.1*D,Math.min(1.9*D,Hf*.5),0)+libero(W+.2*D,Hf+.14*D,Math.min(1.55*D,Hf*.42),1)+libero(W-.62*D,Hf+.28*D,.95*D,0);
   }
   co.innerHTML=c;
 }
