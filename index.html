@@ -8,6 +8,13 @@
 <meta property="og:title" content="24 Respiri per Genitori">
 <meta property="og:description" content="Un calendario dell’Avvento per mamme e papà: ogni giorno una carta, una frase e un piccolo gesto di cura.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://24respiri.github.io/">
+<meta property="og:locale" content="it_IT">
+<meta property="og:image" content="https://24respiri.github.io/anteprima.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="La casetta innevata del calendario dell’Avvento 24 Respiri per Genitori">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#16271F">
 <meta name="apple-mobile-web-app-title" content="24 Respiri">
 <link rel="icon" href="icona.svg" type="image/svg+xml">
@@ -35,13 +42,14 @@ body{overflow-x:clip;font-family:'Alegreya',Georgia,serif;color:var(--chiaro);ba
 html.fermo,html.fermo body{overflow:hidden}
 button{font:inherit;color:inherit}
 #neve{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-.pagina{position:relative;z-index:1;max-width:640px;margin:0 auto;padding-block:22px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.pagina{position:relative;z-index:1;max-width:640px;margin:0 auto;padding-block:22px 0;min-height:100dvh;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#neve-davanti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
 
 /* testata */
 .testata{text-align:center;padding:10px 0 20px}
 /* mentre la casa si avvicina, le scritte intorno svaniscono */
-.testata,footer{transition:opacity .55s ease}
-html.zoom .testata,html.zoom footer{opacity:0;pointer-events:none}
+.testata,footer>*{transition:opacity .55s ease}
+html.zoom .testata,html.zoom footer>*{opacity:0;pointer-events:none}
 h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-height:1.02;letter-spacing:-0.005em;text-shadow:0 0 26px rgba(255,214,140,.28)}
 .sotto{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px}
 .sotto span{font-size:clamp(9.5px,2.75vw,12px);letter-spacing:.15em;text-transform:uppercase;color:var(--oro-chiaro);font-weight:700;line-height:1.35;max-width:270px}
@@ -62,6 +70,9 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
 .fumo.f2{animation-delay:1.4s}.fumo.f3{animation-delay:2.8s}
 @keyframes fumo{0%{transform:translate(0,6px) scale(.5);opacity:0}18%{opacity:.55}100%{transform:translate(-18px,-36px) scale(1.9);opacity:0}}
 .lamp{animation:brilla 2.8s ease-in-out infinite}
+/* nelle folate di vento il fumo si piega e gli abeti ondeggiano */
+.fumi{transform-box:fill-box;transform-origin:50% 100%;transition:transform 1.6s cubic-bezier(.4,0,.3,1)}
+.folata .fumi{transform:skewX(-36deg) translateX(5px)}
 @keyframes brilla{0%,100%{opacity:1}50%{opacity:.35}}
 .tavola{position:relative;margin:0 8px;padding:20px 4px 0;border-left:7px solid #F2E6CC;border-right:7px solid #F2E6CC;
   background:
@@ -75,9 +86,13 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
 .zoccolo{display:block;width:calc(100% - 6px);height:20px;margin:0 3px}
 .terra{display:block;width:100vw;height:64px;margin:-16px 0 0 calc(50% - 50vw);position:relative;z-index:2}
 .ombra-casa{position:absolute;left:-6px;right:-6px;bottom:46px;height:14px;z-index:2;pointer-events:none;background:radial-gradient(ellipse 52% 60% at 50% 30%,rgba(70,100,125,.42),rgba(70,100,125,0) 72%)}
-.abete{position:absolute;bottom:28px;height:auto;z-index:3;pointer-events:none}
-.ab-sx{left:-18px;width:48px}
-.ab-dx{right:-16px;width:41px;transform:scaleX(-1);transform-origin:center}
+.abete{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+.albero{transition:transform 1.5s cubic-bezier(.4,0,.3,1)}
+.folata .albero{transform:rotate(2.6deg)}
+
+
+
+
 
 /* una finestrella: cornice, architrave con la neve, davanzale innevato, due ante sui cardini */
 .fin{position:relative;aspect-ratio:3/4;border:0;background:none;padding:0;perspective:560px;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:6px;touch-action:manipulation;transition:transform .16s}
@@ -100,6 +115,11 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
   box-shadow:inset 0 4px 9px rgba(70,35,0,.55),inset 0 -1px 2px rgba(70,35,0,.25),inset 0 0 0 1px rgba(70,35,0,.3)}
 .dentro svg{width:70%;height:70%;opacity:0;transform:scale(.6);transition:opacity .4s .25s,transform .7s .25s cubic-bezier(.2,.9,.3,1.35);filter:drop-shadow(0 2px 2px rgba(70,35,0,.3))}
 .aperta .dentro svg{opacity:1;transform:none}
+/* la luce delle finestre aperte tremola appena, come una candela */
+.fin.aperta:not(.esplode) .dentro{animation:candela 3.7s ease-in-out infinite}
+.fin.aperta:nth-child(3n):not(.esplode) .dentro{animation-duration:4.6s;animation-delay:-1.3s}
+.fin.aperta:nth-child(3n+1):not(.esplode) .dentro{animation-duration:3.1s;animation-delay:-2.1s}
+@keyframes candela{0%,100%{filter:brightness(1)}18%{filter:brightness(1.06)}33%{filter:brightness(.96)}52%{filter:brightness(1.04)}70%{filter:brightness(.98)}86%{filter:brightness(1.05)}}
 .anta{--t:4.5px;position:absolute;top:0;bottom:0;width:50%;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.3,1.25,.45,1)}
 /* l'anta è un blocchetto: faccia esterna davanti, faccia interna dietro, bordo di spessore sul lato libero */
 .fin.aperta{z-index:1}
@@ -108,8 +128,8 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
 .dav,.die,.lato{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
 .dav{transform:translateZ(var(--t))}
 .lato{left:auto;right:auto;width:var(--t);background:linear-gradient(90deg,rgba(0,0,0,.42),rgba(0,0,0,.2) 45%,rgba(255,255,255,.1)),var(--c)}
-.sx .lato,.unica .lato{left:calc(100% - var(--t) / 2);transform:translateZ(calc(var(--t) / 2)) rotateY(90deg)}
-.dx .lato{left:calc(var(--t) / -2);transform:translateZ(calc(var(--t) / 2)) rotateY(-90deg)}
+.sx .lato{left:calc(100% - var(--t) / 2);transform:translateZ(calc(var(--t) / 2)) rotateY(90deg)}
+.dx .lato,.unica .lato{left:calc(var(--t) / -2);transform:translateZ(calc(var(--t) / 2)) rotateY(-90deg)}
 .sx .dav,.sx .die{border-radius:6px 0 0 6px}
 .dx .dav,.dx .die{border-radius:0 6px 6px 0}
 .dav{background:
@@ -127,8 +147,8 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
 .die{transform:rotateY(180deg);background:linear-gradient(270deg,rgba(255,196,100,0),rgba(255,196,100,0)),linear-gradient(90deg,rgba(0,0,0,.26),rgba(0,0,0,.08) 70%),var(--grana),var(--c)}
 .die::before{content:'';position:absolute;inset:6px 5px;border-radius:3px;border:1px solid rgba(0,0,0,.2);box-shadow:inset 1px 1px 0 rgba(255,255,255,.16),1px 1px 0 rgba(255,255,255,.14)}
 /* la luce della finestra illumina il lato interno dell'anta aperta */
-.aperta .sx .die,.aperta .unica .die{background:linear-gradient(270deg,rgba(255,196,100,.38),rgba(255,196,100,0) 60%),linear-gradient(90deg,rgba(0,0,0,.2),rgba(0,0,0,.05) 70%),var(--grana),var(--c)}
-.aperta .dx .die{background:linear-gradient(90deg,rgba(255,196,100,.38),rgba(255,196,100,0) 60%),linear-gradient(270deg,rgba(0,0,0,.2),rgba(0,0,0,.05) 70%),var(--grana),var(--c)}
+.aperta .sx .die{background:linear-gradient(270deg,rgba(255,196,100,.38),rgba(255,196,100,0) 60%),linear-gradient(90deg,rgba(0,0,0,.2),rgba(0,0,0,.05) 70%),var(--grana),var(--c)}
+.aperta .dx .die,.aperta .unica .die{background:linear-gradient(90deg,rgba(255,196,100,.38),rgba(255,196,100,0) 60%),linear-gradient(270deg,rgba(0,0,0,.2),rgba(0,0,0,.05) 70%),var(--grana),var(--c)}
 .dx .die{background:linear-gradient(270deg,rgba(0,0,0,.26),rgba(0,0,0,.08) 70%),var(--grana),var(--c)}
 .num{position:absolute;top:0;bottom:0;width:200%;display:grid;place-items:center;font-weight:700;font-size:clamp(22px,7.2vw,32px);color:var(--n);line-height:1;text-shadow:0 1px 0 rgba(0,0,0,.14)}
 .sx .num{left:0}.dx .num{right:0}
@@ -146,14 +166,13 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
 .porta::after{content:'';position:absolute;left:-7px;right:-7px;top:-9px;height:60%;border-top:4px solid #FFFFFF;border-radius:50% 50% 0 0 / 52% 52% 0 0;filter:drop-shadow(0 1px 0 rgba(140,165,180,.55));pointer-events:none}
 .porta .anta{width:100%;--t:5px;--c:#24452F}
 .porta .lato{top:29%}
-.unica{left:0;transform-origin:left center}
+.unica{right:0;left:auto;transform-origin:right center}
 .porta .dav{background:linear-gradient(90deg,rgba(255,255,255,.1),rgba(0,0,0,.14)),var(--grana),#24452F}
 .porta .dav::before,.porta .dav::after{display:none}
 .facciata{position:absolute;inset:0;width:100%;height:100%}
 .porta .die::before{inset:10% 14% 8%;border-radius:40% 40% 3px 3px / 22% 22% 3px 3px;border-color:rgba(227,199,125,.45)}
-/* la porta di casa si apre verso l'interno: si vede la ghirlanda di scorcio */
-.aperta .unica{transform:rotateY(74deg)}
-.aperta .unica .dav::after{content:'';display:block;position:absolute;inset:0;width:auto;height:auto;top:0;border-radius:inherit;background:linear-gradient(90deg,rgba(0,0,0,.05),rgba(0,0,0,.4));box-shadow:none}
+/* la porta di casa: cardini a destra, si apre verso l'angolo della casa */
+.aperta .unica{transform:rotateY(104deg)}
 .porta .soglia{left:-10px;right:-10px;bottom:-9px;height:9px;border-radius:2px 2px 1px 1px;background:linear-gradient(#E4E6E1 0 3px,#AEB2AD 3px,#8E928D);box-shadow:0 2px 3px rgba(0,0,0,.4)}
 .porta .soglia::before{display:none}
 
@@ -164,7 +183,7 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
 .attesa .chiusa .dentro{box-shadow:none}
 /* la finestrella di oggi si socchiude da sola e lascia uscire la luce */
 .oggi:not(.aperta) .sx{animation:socchiudi-s 3.4s ease-in-out infinite}
-.oggi:not(.aperta) .unica{animation:socchiudi-p 3.4s ease-in-out infinite}
+.oggi:not(.aperta) .unica{animation:socchiudi-d 3.4s ease-in-out infinite}
 .oggi:not(.aperta) .dx{animation:socchiudi-d 3.4s ease-in-out infinite}
 .oggi:not(.aperta) .dentro{animation:bagliore 3.4s ease-in-out infinite}
 @keyframes socchiudi-s{0%,58%,100%{transform:rotateY(0)}72%{transform:rotateY(-24deg)}84%{transform:rotateY(-10deg)}92%{transform:rotateY(-15deg)}}
@@ -177,7 +196,7 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
 .fin.scuote{animation:tremito .78s linear both}
 .fin.scuote .sx{animation:scuoti-s .78s ease-in-out both}
 .fin.scuote .dx{animation:scuoti-d .78s ease-in-out both}
-.fin.scuote .unica{animation:scuoti-p .78s ease-in-out both}
+.fin.scuote .unica{animation:scuoti-d .78s ease-in-out both}
 .fin.scuote .dentro{animation:filtra .78s ease-in both}
 .fin.esplode .dentro{animation:esplode 1.2s ease-out both}
 @keyframes tremito{0%,100%{transform:none}8%{transform:translate(-.5px,.2px)}16%{transform:translate(.5px,-.2px)}38%{transform:translate(-.6px,0)}46%{transform:translate(.6px,.2px)}68%{transform:translate(-.7px,-.2px)}76%{transform:translate(.7px,0)}}
@@ -232,16 +251,39 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
 .entra{display:block;width:100%;margin-top:0;border:0;border-radius:99px;background:var(--rosso);color:#FFF8EA;font-size:18px;font-weight:700;padding:14px 20px;cursor:pointer;box-shadow:0 8px 18px -8px rgba(80,10,10,.7);transition:transform .15s}
 .entra:active{transform:scale(.97)}
 
+/* il prato innevato sotto la casa continua fino in fondo: firma e consigli stanno sulla neve */
+footer{position:relative;overflow:hidden;flex:1 0 auto;margin:-2px calc(50% - 50vw) 0;padding:2px calc(50vw - 50%) calc(56px + env(safe-area-inset-bottom,0px));background:radial-gradient(70% 34% at 18% 52%,rgba(140,165,180,.16),rgba(140,165,180,0) 70%),radial-gradient(60% 30% at 86% 72%,rgba(140,165,180,.14),rgba(140,165,180,0) 70%),radial-gradient(90% 26% at 50% 96%,rgba(255,255,255,.35),rgba(255,255,255,0) 70%),linear-gradient(180deg,#EEF3F5 0,#E2EAEE 45%,#CFDBE1 100%);color:#2B3B35;text-align:center}
+/* il giardino davanti alla casa: vialetto, impronte, staccionata, lampione */
+.cortile,.bosco{position:absolute;left:calc(50% - 50vw);width:100vw;pointer-events:none;overflow:visible}
+.cortile{z-index:2}
+.bosco{z-index:0}
+.cornice{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+footer>.promemoria-box,footer>.firma,footer>.profilo,footer>.nota{position:relative;z-index:1}
+.lume{animation:lume 3.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes lume{0%,100%{opacity:.9}22%{opacity:1}41%{opacity:.82}63%{opacity:.97}80%{opacity:.86}}
+html.social .cortile,html.social .bosco{display:none}
+.luccica{position:absolute;width:3px;height:3px;border-radius:50%;background:#FFF;box-shadow:0 0 5px 2px rgba(255,255,255,.95),0 0 1px 1px #FFF;opacity:0;pointer-events:none;animation:luccica 5s ease-in-out infinite}
+@keyframes luccica{0%,72%,100%{opacity:0;transform:scale(.3)}84%{opacity:1;transform:scale(1)}}
 /* firma */
 .firma{margin-top:38px;text-align:center;font-family:'Cormorant Garamond',Georgia,serif;color:var(--crema)}
+footer .firma{margin-top:30px;color:#22352C}
+footer .fw{color:#4D5D57}
+footer .fl{border-top-color:#7E8E88}
 .fn{font-size:27px;font-weight:500;letter-spacing:.05em;line-height:1}
 .ft{display:flex;align-items:center;justify-content:center;gap:13px;margin-top:10px}
 .fw{font-size:11.5px;font-weight:500;letter-spacing:.34em;margin-right:-.34em;color:var(--tenue);line-height:1}
 .fl{display:block;width:56px;border-top:1px solid var(--tenue)}
 .profilo{margin-top:18px;text-align:center;font-size:17px;line-height:1.3}
-.profilo a{color:var(--oro-chiaro);font-weight:700;text-decoration:underline;text-underline-offset:3px;display:inline-block;padding:8px 6px}
-.profilo span{display:block;font-size:13.5px;color:var(--tenue);margin-top:-4px}
-.nota{margin-top:26px;text-align:center;font-size:14.5px;color:var(--tenue);line-height:1.4}
+.profilo a{color:#8E1B1E;font-weight:700;text-decoration:underline;text-underline-offset:3px;display:inline-block;padding:8px 6px}
+.profilo span{display:block;font-size:13.5px;color:#4D5D57;margin-top:-4px}
+.nota{margin-top:22px;text-align:center;font-size:14.5px;color:#3F4F49;line-height:1.4}
+/* promemoria serale */
+.promemoria-box{margin-top:0;display:flex;flex-direction:column;align-items:center;gap:8px}
+.pillola.rossa{margin-top:0;background:#8E1B1E;border-color:#8E1B1E;color:#FFF8EA;box-shadow:0 8px 18px -10px rgba(80,10,10,.8)}
+.pillola.rossa:active{background:#7A1518}
+.pillola.rossa svg{width:16px;height:17px}
+.promemoria-nota{font-size:14px;color:#3F4F49;line-height:1.35}
+.link-promemoria{margin-top:6px;border:0;background:none;padding:4px 0;color:var(--rosso-scuro);font:inherit;font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 
 /* scena con la carta */
 .scena{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:18px 12px calc(18px + env(safe-area-inset-bottom));background:rgba(8,15,11,0);transition:background .4s,backdrop-filter .4s,-webkit-backdrop-filter .4s;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);touch-action:none;overflow:hidden}
@@ -261,6 +303,9 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
 @keyframes ondeggia{0%,100%{transform:none}25%{transform:rotateY(-6deg) rotateX(2.5deg) translateY(calc(-.9 * var(--u)))}75%{transform:rotateY(6deg) rotateX(-2.5deg) translateY(calc(.6 * var(--u)))}}
 .inclina{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .6s cubic-bezier(.2,.7,.2,1),scale .45s cubic-bezier(.3,.6,.3,1)}
 .tocco .inclina{transition:transform .09s linear,scale .45s}
+/* sul telefono la carta segue l'inclinazione */
+.giroscopio .inclina{transition:scale .45s}
+.giroscopio .luce{opacity:.8}
 .inclina.su{scale:1.08}
 .giro{transition:transform .9s cubic-bezier(.4,.05,.2,1)}
 .girata .giro{transform:rotateY(180deg)}
@@ -322,6 +367,20 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
 .avviso{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:var(--crema);color:var(--testo);padding:11px 20px;border-radius:99px;font-size:16px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:20;max-width:90vw;text-align:center;line-height:1.25;box-shadow:0 10px 30px -10px rgba(0,0,0,.7)}
 .avviso.su{opacity:1;transform:translate(-50%,0)}
 
+/* modalità per fotografare l'immagine di anteprima del link (?social) */
+html.social,html.social body{overflow:hidden}
+html.social .pagina{max-width:none;width:1200px;height:630px;min-height:0;padding:0;display:grid;grid-template-columns:540px 660px;align-items:center}
+html.social .testata{padding:0 20px 0 76px;text-align:left;align-self:center}
+html.social h1{font-size:70px;line-height:1.02;text-wrap:balance}
+html.social .sotto{justify-content:flex-start;margin-top:18px}
+html.social .sotto span{font-size:15px;max-width:none}
+html.social .sotto svg{display:none}
+html.social .testata::after{content:'Dott.ssa Sara Savelli';display:block;margin-top:44px;font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;letter-spacing:.05em;color:var(--crema)}
+html.social .stato,html.social .pillola,html.social .prova,html.social .barra,html.social #musica,html.social footer,html.social .lettera,html.social #neve-davanti{display:none!important}
+html.social .casa{transition:none;width:640px;zoom:.62;margin:46px 0 0 120px;align-self:start;justify-self:start}
+html.social .terra,html.social .ombra-casa{display:none}
+html.social .abete{bottom:-14px}
+html.social body{background:linear-gradient(180deg,rgba(0,0,0,0) 0 558px,#F6F9FA 566px,#E4ECEF 600px,#D5E0E5 630px),radial-gradient(130% 70% at 50% 0%,var(--notte-3) 0%,var(--notte-2) 38%,var(--notte) 100%) var(--notte)}
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important}
 }
@@ -341,20 +400,29 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
   </header>
 
   <main class="casa" id="casa">
-    <svg class="tetto" viewBox="0 0 400 168" aria-hidden="true"><defs><pattern id="assi" width="13" height="10" patternUnits="userSpaceOnUse"><rect width="13" height="10" fill="#8E1B1E"/><rect width="1.3" height="10" fill="#5C0F12"/><rect x="1.3" width=".8" height="10" fill="#A8343A" opacity=".55"/></pattern><linearGradient id="ombraFr" gradientUnits="userSpaceOnUse" x1="0" y1="30" x2="0" y2="160"><stop offset="0" stop-color="#1A0000" stop-opacity=".55"/><stop offset=".55" stop-color="#1A0000" stop-opacity=".12"/><stop offset="1" stop-color="#1A0000" stop-opacity="0"/></linearGradient><radialGradient id="caldo"><stop offset="0" stop-color="#FFC86A" stop-opacity=".42"/><stop offset="1" stop-color="#FFC86A" stop-opacity="0"/></radialGradient><radialGradient id="vetro" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#FFF6D8"/><stop offset=".6" stop-color="#FCE2A0"/><stop offset="1" stop-color="#E9B55E"/></radialGradient><linearGradient id="cornicione" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF4E3"/><stop offset="1" stop-color="#DCCCA8"/></linearGradient><linearGradient id="ghiaccio" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#CFE6F0"/><stop offset="1" stop-color="#CFE6F0" stop-opacity=".15"/></linearGradient><linearGradient id="latoCamino" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".32"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#FFF" stop-opacity=".08"/></linearGradient><pattern id="mattoni" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="translate(258 18)"><rect width="12" height="12" fill="#9A4F35"/><path d="M0 .5H12M0 6.5H12M.5 0V6M6.5 6V12" stroke="#66301F" stroke-width="1"/></pattern><radialGradient id="l-oro"><stop offset="0" stop-color="#F6C95A" stop-opacity=".95"/><stop offset=".35" stop-color="#F6C95A" stop-opacity=".45"/><stop offset="1" stop-color="#F6C95A" stop-opacity="0"/></radialGradient><radialGradient id="l-rosso"><stop offset="0" stop-color="#EA4F48" stop-opacity=".95"/><stop offset=".35" stop-color="#EA4F48" stop-opacity=".45"/><stop offset="1" stop-color="#EA4F48" stop-opacity="0"/></radialGradient><radialGradient id="l-bianco"><stop offset="0" stop-color="#FFF1CF" stop-opacity=".95"/><stop offset=".35" stop-color="#FFF1CF" stop-opacity=".45"/><stop offset="1" stop-color="#FFF1CF" stop-opacity="0"/></radialGradient><radialGradient id="l-verde"><stop offset="0" stop-color="#79C788" stop-opacity=".95"/><stop offset=".35" stop-color="#79C788" stop-opacity=".45"/><stop offset="1" stop-color="#79C788" stop-opacity="0"/></radialGradient></defs><circle class="fumo" cx="273" cy="4" r="7" fill="#DDE5E2"/><circle class="fumo f2" cx="273" cy="4" r="7" fill="#DDE5E2"/><circle class="fumo f3" cx="273" cy="4" r="7" fill="#DDE5E2"/><rect x="258" y="18" width="30" height="64" fill="url(#mattoni)"/><rect x="258" y="18" width="30" height="64" fill="url(#latoCamino)"/><rect x="254" y="12" width="38" height="8" rx="1.5" fill="#5A2D20"/><rect x="254" y="12" width="38" height="1.6" rx=".8" fill="#7E4430"/><path d="M251.5 14.5C251 9 256.5 6.6 260.5 8.6C263.5 4.4 271 4.2 274 7.6C278.5 3.8 286.5 5.6 288.6 9.8C293.5 9.6 295 14 292 15.2Z" fill="#B9CCD5" transform="translate(0 1.6)"/><path d="M251.5 14.5C251 9 256.5 6.6 260.5 8.6C263.5 4.4 271 4.2 274 7.6C278.5 3.8 286.5 5.6 288.6 9.8C293.5 9.6 295 14 292 15.2Z" fill="#FFFDF8"/><polygon points="0,160 400,160 200,30" fill="url(#assi)"/><polygon points="0,160 400,160 200,30" fill="url(#ombraFr)"/><circle cx="200" cy="103" r="50" fill="url(#caldo)"/><circle cx="200" cy="105" r="22.5" fill="#1A0000" opacity=".28"/><circle cx="200" cy="103" r="22" fill="url(#cornicione)"/><circle cx="200" cy="103" r="16" fill="url(#vetro)"/><circle cx="200" cy="103" r="16" fill="none" stroke="#9C7A3E" stroke-opacity=".45" stroke-width="1"/><path d="M200 87V119M184 103H216" stroke="#F3E7CB" stroke-width="3"/><path d="M178.8 98.5A22 22 0 0 1 221.2 98.5C219 95 214 93.2 211 94.8C207 89.6 197 89 192.5 93.6C188 91.6 181 93.6 178.8 98.5Z" fill="#FFFDF8"/><ellipse cx="193" cy="125.5" rx="6.5" ry="2.8" transform="rotate(-28 193 125.5)" fill="#3E7A4E"/><ellipse cx="207" cy="125.5" rx="6.5" ry="2.8" transform="rotate(28 207 125.5)" fill="#3E7A4E"/><circle cx="197.6" cy="124.2" r="2.1" fill="#C3272E"/><circle cx="202.4" cy="124.2" r="2.1" fill="#C3272E"/><circle cx="200" cy="127" r="2.1" fill="#C3272E"/><rect x="-12" y="157" width="424" height="11" fill="url(#cornicione)"/><rect x="-12" y="157" width="424" height="1.2" fill="#FFFFFF" opacity=".5"/><rect x="-12" y="166.4" width="424" height="1.6" fill="#1A0000" opacity=".3"/><polygon points="200,38.3 0,168.3 0,160 200,30" fill="#1A0000" opacity=".26"/><polygon points="200,38.3 400,168.3 400,160 200,30" fill="#1A0000" opacity=".26"/><polygon points="200,30 -12,167.8 -12,161.2 200,23.4" fill="url(#cornicione)"/><polygon points="200,30 412,167.8 412,161.2 200,23.4" fill="url(#cornicione)"/><polygon points="200,23.4 -12,161.2 -12,152.3 200,14.5" fill="#4A1512"/><polygon points="200,23.4 412,161.2 412,152.3 200,14.5" fill="#4A1512"/><polygon points="-12,167.8 -12,161.2 -10.4,161.2 -10.4,167.8" fill="#CDBB94"/><polygon points="412,167.8 412,161.2 410.4,161.2 410.4,167.8" fill="#CDBB94"/><polygon points="-12,161.2 -12,152.3 -10.4,152.3 -10.4,161.2" fill="#3A0F0D"/><polygon points="412,161.2 412,152.3 410.4,152.3 410.4,161.2" fill="#3A0F0D"/><polygon points="200,15.7 -12,153.5 -12,152.3 200,14.5" fill="#6E2A22"/><polygon points="200,15.7 412,153.5 412,152.3 200,14.5" fill="#6E2A22"/><path d="M-16.7,143.8 L-14.9,141.5 L-12.8,139.4 L-10.2,137.8 L-7.4,136.6 L-4.5,135.6 L-1.5,134.7 L1.4,133.7 L4.1,132.3 L6.6,130.6 L9,128.8 L11.4,127 L14,125.5 L16.8,124.3 L19.8,123.4 L22.8,122.5 L25.7,121.5 L28.3,120 L30.7,118.1 L32.7,115.7 L34.6,113.2 L36.5,110.6 L38.6,108.3 L40.9,106.3 L43.5,104.8 L46.1,103.4 L48.8,102 L51.4,100.5 L53.8,98.6 L56,96.5 L58.2,94.4 L60.5,92.5 L63.1,90.9 L65.9,89.8 L69,89 L72.2,88.5 L75.3,87.8 L78.3,86.7 L80.9,85.3 L83.2,83.4 L85.4,81.2 L87.6,79.1 L89.9,77.1 L92.4,75.4 L95,74 L97.7,72.6 L100.3,71.1 L102.7,69.2 L104.8,67 L106.8,64.5 L108.7,62 L110.7,59.6 L112.9,57.5 L115.5,56 L118.4,54.9 L121.4,54.1 L124.5,53.3 L127.3,52.2 L130,50.8 L132.5,49.1 L134.9,47.2 L137.3,45.5 L139.9,44 L142.7,42.8 L145.7,41.8 L148.6,40.9 L151.5,39.7 L154,38.2 L156.3,36.1 L158.3,33.7 L160.1,31 L162,28.5 L164.1,26.2 L166.5,24.3 L169.1,22.8 L171.8,21.5 L174.5,20.2 L177.1,18.7 L179.5,16.8 L181.8,14.8 L184,12.8 L186.4,10.9 L189,9.4 L191.9,8.4 L195,7.7 L198.2,7.1 L200,6.7 L201.8,7.1 L205,7.7 L208.1,8.4 L211,9.4 L213.6,10.9 L216,12.8 L218.2,14.8 L220.5,16.8 L222.9,18.7 L225.5,20.2 L228.2,21.5 L230.9,22.8 L233.5,24.3 L235.9,26.2 L238,28.5 L239.9,31 L241.7,33.7 L243.7,36.1 L246,38.2 L248.5,39.7 L251.4,40.9 L254.3,41.8 L257.3,42.8 L260.1,44 L262.7,45.5 L265.1,47.2 L267.5,49.1 L270,50.8 L272.7,52.2 L275.5,53.3 L278.6,54.1 L281.6,54.9 L284.5,56 L287.1,57.5 L289.3,59.6 L291.3,62 L293.2,64.5 L295.2,67 L297.3,69.2 L299.7,71.1 L302.3,72.6 L305,74 L307.6,75.4 L310.1,77.1 L312.4,79.1 L314.6,81.2 L316.8,83.4 L319.1,85.3 L321.7,86.7 L324.7,87.8 L327.8,88.5 L331,89 L334.1,89.8 L336.9,90.9 L339.5,92.5 L341.8,94.4 L344,96.5 L346.2,98.6 L348.6,100.5 L351.2,102 L353.9,103.4 L356.5,104.8 L359.1,106.3 L361.4,108.3 L363.5,110.6 L365.4,113.2 L367.3,115.7 L369.3,118.1 L371.7,120 L374.3,121.5 L377.2,122.5 L380.2,123.4 L383.2,124.3 L386,125.5 L388.6,127 L391,128.8 L393.4,130.6 L395.9,132.3 L398.6,133.7 L401.5,134.7 L404.5,135.6 L407.4,136.6 L410.2,137.8 L412.8,139.4 L414.9,141.5 L416.7,143.8 C421.2,145.3 421.2,154.6 414.5,155.1 L414.5,155.1 L413.6,154.6 L411.1,152.9 L408.6,151.3 L406.1,149.6 L403.6,148 L401,146.5 L397.9,145.8 L394,146.2 L391.1,145.1 L389.9,141.5 L388.3,138.5 L386,136.6 L383.5,134.9 L380.9,133.3 L378.4,131.7 L375.9,130 L373.4,128.4 L370.9,126.8 L368.2,125.4 L364.7,125.2 L360.9,125.5 L358.8,123.4 L357.6,119.6 L355.7,117.1 L353.3,115.3 L350.8,113.7 L348.2,112 L345.7,110.4 L343.2,108.8 L340.7,107.1 L338.2,105.5 L335.7,103.9 L333.1,102.2 L330.5,100.7 L327.4,100 L323.6,100.5 L320.7,99.4 L319.5,95.7 L317.9,92.7 L315.5,90.8 L313,89.2 L310.5,87.5 L308,85.9 L305.5,84.2 L303,82.6 L300.4,81 L297.9,79.3 L295.4,77.7 L292.9,76.1 L290,75 L286.3,75.2 L282.8,75 L281.3,72 L279.9,68.5 L277.8,66.3 L275.3,64.6 L272.8,63 L270.3,61.4 L267.7,59.7 L265.2,58.1 L262.7,56.5 L260.2,54.8 L257.7,53.2 L255.2,51.6 L252.6,50 L249.7,48.9 L246,49.1 L242.6,48.9 L241,45.8 L239.7,42.3 L237.5,40.2 L235,38.5 L232.5,36.8 L230,35.2 L227.5,33.6 L225,31.9 L222.5,30.3 L220,28.7 L217.4,27 L214.9,25.4 L212.4,23.8 L209.9,22.1 L207.4,20.5 L204.9,18.8 L202.3,17.2 L200,15.7 L197.7,17.2 L195.1,18.8 L192.6,20.5 L190.1,22.1 L187.6,23.8 L185.1,25.4 L182.6,27 L180,28.7 L177.5,30.3 L175,31.9 L172.5,33.6 L170,35.2 L167.5,36.8 L165,38.5 L162.5,40.2 L160.3,42.3 L159,45.8 L157.4,48.9 L154,49.1 L150.3,48.9 L147.4,50 L144.8,51.6 L142.3,53.2 L139.8,54.8 L137.3,56.5 L134.8,58.1 L132.3,59.7 L129.7,61.4 L127.2,63 L124.7,64.6 L122.2,66.3 L120.1,68.5 L118.7,72 L117.2,75 L113.7,75.2 L110,75 L107.1,76.1 L104.6,77.7 L102.1,79.3 L99.6,81 L97,82.6 L94.5,84.2 L92,85.9 L89.5,87.5 L87,89.2 L84.5,90.8 L82.1,92.7 L80.5,95.7 L79.3,99.4 L76.4,100.5 L72.6,100 L69.5,100.7 L66.9,102.2 L64.3,103.9 L61.8,105.5 L59.3,107.1 L56.8,108.8 L54.3,110.4 L51.8,112 L49.2,113.7 L46.7,115.3 L44.3,117.1 L42.4,119.6 L41.2,123.4 L39.1,125.5 L35.3,125.2 L31.8,125.4 L29.1,126.8 L26.6,128.4 L24.1,130 L21.6,131.7 L19.1,133.3 L16.5,134.9 L14,136.6 L11.7,138.5 L10.1,141.5 L8.9,145.1 L6,146.2 L2.1,145.8 L-1,146.5 L-3.6,148 L-6.1,149.6 L-8.6,151.3 L-11.1,152.9 L-13.6,154.6 L-14.5,155.1 C-21.2,154.6 -21.2,145.3 -16.7,143.8Z" fill="#FFFDF8"/><polygon points="200,12.8 198.9,13.6 196.3,15.2 193.8,16.8 191.3,18.5 188.8,20.1 186.3,21.7 183.8,23.4 181.3,25 178.7,26.6 176.2,28.3 173.7,29.9 171.2,31.6 168.7,33.2 166.2,34.8 163.6,36.5 161.2,38.1 159,40.3 157.7,43.8 156.1,46.9 152.6,47.1 148.9,46.9 146.1,48 143.5,49.5 141,51.2 138.5,52.8 136,54.4 133.5,56.1 130.9,57.7 128.4,59.3 125.9,61 123.4,62.6 120.9,64.3 118.8,66.5 117.4,69.9 115.8,73 112.4,73.2 108.7,73 105.8,74.1 103.3,75.7 100.8,77.3 98.2,79 95.7,80.6 93.2,82.2 90.7,83.9 88.2,85.5 85.7,87.1 83.2,88.8 80.8,90.7 79.2,93.7 78,97.3 75.1,98.5 71.3,98 68.2,98.7 65.6,100.2 63,101.9 60.5,103.5 58,105.1 55.5,106.8 53,108.4 50.5,110 47.9,111.7 45.4,113.3 43,115.1 41.1,117.6 39.9,121.3 37.7,123.5 33.9,123.2 30.5,123.4 27.8,124.8 25.3,126.4 22.8,128 20.3,129.6 17.8,131.3 15.2,132.9 12.7,134.6 10.4,136.5 8.8,139.5 7.6,143.1 4.7,144.2 0.8,143.8 -2.3,144.5 -4.9,146 -7.4,147.6 -9.9,149.3 -12.4,150.9 -13.7,151.7 -12.4,153.8 -11.1,152.9 -8.6,151.3 -6.1,149.6 -3.6,148 -1,146.5 2.1,145.8 6,146.2 8.9,145.1 10.1,141.5 11.7,138.5 14,136.6 16.5,134.9 19.1,133.3 21.6,131.7 24.1,130 26.6,128.4 29.1,126.8 31.8,125.4 35.3,125.2 39.1,125.5 41.2,123.4 42.4,119.6 44.3,117.1 46.7,115.3 49.2,113.7 51.8,112 54.3,110.4 56.8,108.8 59.3,107.1 61.8,105.5 64.3,103.9 66.9,102.2 69.5,100.7 72.6,100 76.4,100.5 79.3,99.4 80.5,95.7 82.1,92.7 84.5,90.8 87,89.2 89.5,87.5 92,85.9 94.5,84.2 97,82.6 99.6,81 102.1,79.3 104.6,77.7 107.1,76.1 110,75 113.7,75.2 117.2,75 118.7,72 120.1,68.5 122.2,66.3 124.7,64.6 127.2,63 129.7,61.4 132.3,59.7 134.8,58.1 137.3,56.5 139.8,54.8 142.3,53.2 144.8,51.6 147.4,50 150.3,48.9 154,49.1 157.4,48.9 159,45.8 160.3,42.3 162.5,40.2 165,38.5 167.5,36.8 170,35.2 172.5,33.6 175,31.9 177.5,30.3 180,28.7 182.6,27 185.1,25.4 187.6,23.8 190.1,22.1 192.6,20.5 195.1,18.8 197.7,17.2 200,15.7" fill="#DDE8EE"/><polygon points="200,12.8 201.1,13.6 203.7,15.2 206.2,16.8 208.7,18.5 211.2,20.1 213.7,21.7 216.2,23.4 218.7,25 221.3,26.6 223.8,28.3 226.3,29.9 228.8,31.6 231.3,33.2 233.8,34.8 236.4,36.5 238.8,38.1 241,40.3 242.3,43.8 243.9,46.9 247.4,47.1 251.1,46.9 253.9,48 256.5,49.5 259,51.2 261.5,52.8 264,54.4 266.5,56.1 269.1,57.7 271.6,59.3 274.1,61 276.6,62.6 279.1,64.3 281.2,66.5 282.6,69.9 284.2,73 287.6,73.2 291.3,73 294.2,74.1 296.7,75.7 299.2,77.3 301.8,79 304.3,80.6 306.8,82.2 309.3,83.9 311.8,85.5 314.3,87.1 316.8,88.8 319.2,90.7 320.8,93.7 322,97.3 324.9,98.5 328.7,98 331.8,98.7 334.4,100.2 337,101.9 339.5,103.5 342,105.1 344.5,106.8 347,108.4 349.5,110 352.1,111.7 354.6,113.3 357,115.1 358.9,117.6 360.1,121.3 362.3,123.5 366.1,123.2 369.5,123.4 372.2,124.8 374.7,126.4 377.2,128 379.7,129.6 382.2,131.3 384.8,132.9 387.3,134.6 389.6,136.5 391.2,139.5 392.4,143.1 395.3,144.2 399.2,143.8 402.3,144.5 404.9,146 407.4,147.6 409.9,149.3 412.4,150.9 413.7,151.7 412.4,153.8 411.1,152.9 408.6,151.3 406.1,149.6 403.6,148 401,146.5 397.9,145.8 394,146.2 391.1,145.1 389.9,141.5 388.3,138.5 386,136.6 383.5,134.9 380.9,133.3 378.4,131.7 375.9,130 373.4,128.4 370.9,126.8 368.2,125.4 364.7,125.2 360.9,125.5 358.8,123.4 357.6,119.6 355.7,117.1 353.3,115.3 350.8,113.7 348.2,112 345.7,110.4 343.2,108.8 340.7,107.1 338.2,105.5 335.7,103.9 333.1,102.2 330.5,100.7 327.4,100 323.6,100.5 320.7,99.4 319.5,95.7 317.9,92.7 315.5,90.8 313,89.2 310.5,87.5 308,85.9 305.5,84.2 303,82.6 300.4,81 297.9,79.3 295.4,77.7 292.9,76.1 290,75 286.3,75.2 282.8,75 281.3,72 279.9,68.5 277.8,66.3 275.3,64.6 272.8,63 270.3,61.4 267.7,59.7 265.2,58.1 262.7,56.5 260.2,54.8 257.7,53.2 255.2,51.6 252.6,50 249.7,48.9 246,49.1 242.6,48.9 241,45.8 239.7,42.3 237.5,40.2 235,38.5 232.5,36.8 230,35.2 227.5,33.6 225,31.9 222.5,30.3 220,28.7 217.4,27 214.9,25.4 212.4,23.8 209.9,22.1 207.4,20.5 204.9,18.8 202.3,17.2 200,15.7" fill="#DDE8EE"/><polyline points="200,7.8 198.9,8.1 195.7,8.7 192.6,9.4 189.7,10.4 187,11.9 184.7,13.8 182.4,15.8 180.2,17.8 177.8,19.7 175.2,21.2 172.5,22.5 169.8,23.8 167.2,25.3 164.8,27.2 162.7,29.5 160.8,32.1 158.9,34.7 156.9,37.1 154.7,39.2 152.1,40.7 149.3,41.9 146.3,42.8 143.4,43.8 140.6,45 138,46.5 135.5,48.2 133.1,50.1 130.7,51.8 128,53.2 125.1,54.3 122.1,55.1 119.1,55.9 116.2,57 113.6,58.6 111.3,60.6 109.3,63 107.4,65.5 105.5,68 103.3,70.3 100.9,72.1 98.3,73.6 95.6,75 93,76.4 90.5,78.1 88.2,80.1 86.1,82.2 83.9,84.4 81.5,86.3 78.9,87.7 76,88.8 72.9,89.5 69.7,90.1 66.6,90.8 63.7,91.9 61.2,93.5 58.9,95.4 56.7,97.6 54.4,99.6 52,101.5 49.5,103 46.8,104.4 44.1,105.8 41.6,107.3 39.2,109.3 37.2,111.6 35.2,114.2 33.4,116.8 31.3,119.1 29,121 26.3,122.5 23.4,123.5 20.4,124.4 17.4,125.3 14.6,126.5 12.1,128 9.6,129.8 7.2,131.6 4.7,133.3 2.1,134.7 -0.8,135.7 -3.8,136.6 -6.8,137.6 -9.6,138.8 -11.9,140.3" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" opacity=".9"/><polyline points="200,7.8 201.1,8.1 204.3,8.7 207.4,9.4 210.3,10.4 213,11.9 215.3,13.8 217.6,15.8 219.8,17.8 222.2,19.7 224.8,21.2 227.5,22.5 230.2,23.8 232.8,25.3 235.2,27.2 237.3,29.5 239.2,32.1 241.1,34.7 243.1,37.1 245.3,39.2 247.9,40.7 250.7,41.9 253.7,42.8 256.6,43.8 259.4,45 262,46.5 264.5,48.2 266.9,50.1 269.3,51.8 272,53.2 274.9,54.3 277.9,55.1 280.9,55.9 283.8,57 286.4,58.6 288.7,60.6 290.7,63 292.6,65.5 294.5,68 296.7,70.3 299.1,72.1 301.7,73.6 304.4,75 307,76.4 309.5,78.1 311.8,80.1 313.9,82.2 316.1,84.4 318.5,86.3 321.1,87.7 324,88.8 327.1,89.5 330.3,90.1 333.4,90.8 336.3,91.9 338.8,93.5 341.1,95.4 343.3,97.6 345.6,99.6 348,101.5 350.5,103 353.2,104.4 355.9,105.8 358.4,107.3 360.8,109.3 362.8,111.6 364.8,114.2 366.6,116.8 368.7,119.1 371,121 373.7,122.5 376.6,123.5 379.6,124.4 382.6,125.3 385.4,126.5 387.9,128 390.4,129.8 392.8,131.6 395.3,133.3 397.9,134.7 400.8,135.7 403.8,136.6 406.8,137.6 409.6,138.8 411.9,140.3" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" opacity=".9"/><ellipse cx="200" cy="5.3" rx="10" ry="5" fill="#FFFDF8"/><path d="M66.1,115.8 L69.3,115.8 Q68.4,119.4 67.8,121.9 Q67.2,119.4 66.1,115.8Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M67.1,117 L67.5,119.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M330.7,115.8 L333.9,115.8 Q333,119.4 332.5,121.9 Q331.8,119.4 330.7,115.8Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M331.7,117 L332.2,119.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M46.8,128.3 L50,128.3 Q49.1,133.8 48.6,137.9 Q47.9,133.8 46.8,128.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M47.8,129.5 L48.3,133.8" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M350,128.3 L353.2,128.3 Q352.3,133.8 351.7,137.9 Q351.1,133.8 350,128.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M351,129.5 L351.4,133.8" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M28.4,140.3 L31.6,140.3 Q30.7,144.5 30.1,147.4 Q29.5,144.5 28.4,140.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M29.4,141.5 L29.8,144.5" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M368.4,140.3 L371.6,140.3 Q370.7,144.5 370.2,147.4 Q369.5,144.5 368.4,140.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M369.4,141.5 L369.9,144.5" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M12.4,150.6 L15.6,150.6 Q14.7,157.6 14.2,162.7 Q13.5,157.6 12.4,150.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M13.4,151.8 L13.9,157.6" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M384.4,150.6 L387.6,150.6 Q386.7,157.6 386.1,162.7 Q385.5,157.6 384.4,150.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M385.4,151.8 L385.8,157.6" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M-2.7,160.4 L0.5,160.4 Q-0.4,165.2 -0.9,168.5 Q-1.6,165.2 -2.7,160.4Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M-1.7,161.6 L-1.2,165.2" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M399.5,160.4 L402.7,160.4 Q401.8,165.2 401.2,168.5 Q400.6,165.2 399.5,160.4Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M400.5,161.6 L400.9,165.2" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M-11.4,166.6 L-8.2,166.6 Q-9.1,174.4 -9.7,180.2 Q-10.3,174.4 -11.4,166.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M-10.4,167.8 L-10,174.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M408.2,166.6 L411.4,166.6 Q410.5,174.4 409.9,180.2 Q409.3,174.4 408.2,166.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M409.2,167.8 L409.7,174.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M187.5,40.1 Q176,57.5 164.6,54.9 Q153.2,72.3 141.8,69.8 Q130.3,87.2 118.9,84.6 Q107.5,102 96.1,99.5 Q84.6,116.9 73.2,114.3 Q61.8,131.7 50.4,129.2 Q38.9,146.6 27.5,144 Q16.1,161.4 4.7,158.9" fill="none" stroke="#2A1A12" stroke-width=".9"/><circle class="lamp" style="animation-delay:-0.00s" cx="176" cy="57.9" r="10" fill="url(#l-oro)"/><rect x="174.6" y="52.1" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="176" cy="57.8" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="175.1" cy="56.6" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.73s" cx="153.2" cy="72.7" r="10" fill="url(#l-rosso)"/><rect x="151.8" y="66.9" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="153.2" cy="72.6" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="152.3" cy="71.4" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-1.46s" cx="130.3" cy="87.6" r="10" fill="url(#l-bianco)"/><rect x="128.9" y="81.8" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="130.3" cy="87.5" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="129.4" cy="86.3" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.19s" cx="107.5" cy="102.4" r="10" fill="url(#l-verde)"/><rect x="106.1" y="96.6" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="107.5" cy="102.3" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="106.6" cy="101.1" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.12s" cx="84.6" cy="117.3" r="10" fill="url(#l-oro)"/><rect x="83.2" y="111.5" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="84.6" cy="117.2" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="83.7" cy="116" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.85s" cx="61.8" cy="132.1" r="10" fill="url(#l-rosso)"/><rect x="60.4" y="126.3" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="61.8" cy="132" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="60.9" cy="130.8" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-1.58s" cx="38.9" cy="147" r="10" fill="url(#l-bianco)"/><rect x="37.5" y="141.2" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="38.9" cy="146.9" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="38" cy="145.7" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.31s" cx="16.1" cy="161.8" r="10" fill="url(#l-verde)"/><rect x="14.7" y="156" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="16.1" cy="161.7" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="15.2" cy="160.5" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><path d="M212.5,40.1 Q224,57.5 235.4,54.9 Q246.8,72.3 258.2,69.8 Q269.7,87.2 281.1,84.6 Q292.5,102 303.9,99.5 Q315.4,116.9 326.8,114.3 Q338.2,131.7 349.6,129.2 Q361.1,146.6 372.5,144 Q383.9,161.4 395.3,158.9" fill="none" stroke="#2A1A12" stroke-width=".9"/><circle class="lamp" style="animation-delay:-1.30s" cx="224" cy="57.9" r="10" fill="url(#l-bianco)"/><rect x="222.6" y="52.1" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="224" cy="57.8" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="223.1" cy="56.6" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.03s" cx="246.8" cy="72.7" r="10" fill="url(#l-verde)"/><rect x="245.4" y="66.9" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="246.8" cy="72.6" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="245.9" cy="71.4" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.76s" cx="269.7" cy="87.6" r="10" fill="url(#l-oro)"/><rect x="268.3" y="81.8" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="269.7" cy="87.5" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="268.8" cy="86.3" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.69s" cx="292.5" cy="102.4" r="10" fill="url(#l-rosso)"/><rect x="291.1" y="96.6" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="292.5" cy="102.3" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="291.6" cy="101.1" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-1.42s" cx="315.4" cy="117.3" r="10" fill="url(#l-bianco)"/><rect x="314" y="111.5" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="315.4" cy="117.2" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="314.5" cy="116" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.15s" cx="338.2" cy="132.1" r="10" fill="url(#l-verde)"/><rect x="336.8" y="126.3" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="338.2" cy="132" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="337.3" cy="130.8" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.08s" cx="361.1" cy="147" r="10" fill="url(#l-oro)"/><rect x="359.7" y="141.2" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="361.1" cy="146.9" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="360.2" cy="145.7" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.81s" cx="383.9" cy="161.8" r="10" fill="url(#l-rosso)"/><rect x="382.5" y="156" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="383.9" cy="161.7" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="383" cy="160.5" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><rect class="comignolo" x="244" y="-8" width="58" height="70" fill="transparent"/></svg>
+    <svg class="bosco" id="bosco" aria-hidden="true"></svg>
+    <svg class="tetto" viewBox="0 0 400 168" aria-hidden="true"><defs><pattern id="assi" width="13" height="10" patternUnits="userSpaceOnUse"><rect width="13" height="10" fill="#8E1B1E"/><rect width="1.3" height="10" fill="#5C0F12"/><rect x="1.3" width=".8" height="10" fill="#A8343A" opacity=".55"/></pattern><linearGradient id="ombraFr" gradientUnits="userSpaceOnUse" x1="0" y1="30" x2="0" y2="160"><stop offset="0" stop-color="#1A0000" stop-opacity=".55"/><stop offset=".55" stop-color="#1A0000" stop-opacity=".12"/><stop offset="1" stop-color="#1A0000" stop-opacity="0"/></linearGradient><radialGradient id="caldo"><stop offset="0" stop-color="#FFC86A" stop-opacity=".42"/><stop offset="1" stop-color="#FFC86A" stop-opacity="0"/></radialGradient><radialGradient id="vetro" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#FFF6D8"/><stop offset=".6" stop-color="#FCE2A0"/><stop offset="1" stop-color="#E9B55E"/></radialGradient><linearGradient id="cornicione" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF4E3"/><stop offset="1" stop-color="#DCCCA8"/></linearGradient><linearGradient id="ghiaccio" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#CFE6F0"/><stop offset="1" stop-color="#CFE6F0" stop-opacity=".15"/></linearGradient><linearGradient id="latoCamino" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".32"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#FFF" stop-opacity=".08"/></linearGradient><pattern id="mattoni" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="translate(258 18)"><rect width="12" height="12" fill="#9A4F35"/><path d="M0 .5H12M0 6.5H12M.5 0V6M6.5 6V12" stroke="#66301F" stroke-width="1"/></pattern><radialGradient id="l-oro"><stop offset="0" stop-color="#F6C95A" stop-opacity=".95"/><stop offset=".35" stop-color="#F6C95A" stop-opacity=".45"/><stop offset="1" stop-color="#F6C95A" stop-opacity="0"/></radialGradient><radialGradient id="l-rosso"><stop offset="0" stop-color="#EA4F48" stop-opacity=".95"/><stop offset=".35" stop-color="#EA4F48" stop-opacity=".45"/><stop offset="1" stop-color="#EA4F48" stop-opacity="0"/></radialGradient><radialGradient id="l-bianco"><stop offset="0" stop-color="#FFF1CF" stop-opacity=".95"/><stop offset=".35" stop-color="#FFF1CF" stop-opacity=".45"/><stop offset="1" stop-color="#FFF1CF" stop-opacity="0"/></radialGradient><radialGradient id="l-verde"><stop offset="0" stop-color="#79C788" stop-opacity=".95"/><stop offset=".35" stop-color="#79C788" stop-opacity=".45"/><stop offset="1" stop-color="#79C788" stop-opacity="0"/></radialGradient></defs><g class="fumi"><circle class="fumo" cx="273" cy="4" r="7" fill="#DDE5E2"/><circle class="fumo f2" cx="273" cy="4" r="7" fill="#DDE5E2"/><circle class="fumo f3" cx="273" cy="4" r="7" fill="#DDE5E2"/></g><rect x="258" y="18" width="30" height="64" fill="url(#mattoni)"/><rect x="258" y="18" width="30" height="64" fill="url(#latoCamino)"/><rect x="254" y="12" width="38" height="8" rx="1.5" fill="#5A2D20"/><rect x="254" y="12" width="38" height="1.6" rx=".8" fill="#7E4430"/><path d="M251.5 14.5C251 9 256.5 6.6 260.5 8.6C263.5 4.4 271 4.2 274 7.6C278.5 3.8 286.5 5.6 288.6 9.8C293.5 9.6 295 14 292 15.2Z" fill="#B9CCD5" transform="translate(0 1.6)"/><path d="M251.5 14.5C251 9 256.5 6.6 260.5 8.6C263.5 4.4 271 4.2 274 7.6C278.5 3.8 286.5 5.6 288.6 9.8C293.5 9.6 295 14 292 15.2Z" fill="#FFFDF8"/><polygon points="0,160 400,160 200,30" fill="url(#assi)"/><polygon points="0,160 400,160 200,30" fill="url(#ombraFr)"/><circle cx="200" cy="103" r="50" fill="url(#caldo)"/><circle cx="200" cy="105" r="22.5" fill="#1A0000" opacity=".28"/><circle cx="200" cy="103" r="22" fill="url(#cornicione)"/><circle cx="200" cy="103" r="16" fill="url(#vetro)"/><circle cx="200" cy="103" r="16" fill="none" stroke="#9C7A3E" stroke-opacity=".45" stroke-width="1"/><path d="M200 87V119M184 103H216" stroke="#F3E7CB" stroke-width="3"/><path d="M178.8 98.5A22 22 0 0 1 221.2 98.5C219 95 214 93.2 211 94.8C207 89.6 197 89 192.5 93.6C188 91.6 181 93.6 178.8 98.5Z" fill="#FFFDF8"/><ellipse cx="193" cy="125.5" rx="6.5" ry="2.8" transform="rotate(-28 193 125.5)" fill="#3E7A4E"/><ellipse cx="207" cy="125.5" rx="6.5" ry="2.8" transform="rotate(28 207 125.5)" fill="#3E7A4E"/><circle cx="197.6" cy="124.2" r="2.1" fill="#C3272E"/><circle cx="202.4" cy="124.2" r="2.1" fill="#C3272E"/><circle cx="200" cy="127" r="2.1" fill="#C3272E"/><rect x="-12" y="157" width="424" height="11" fill="url(#cornicione)"/><rect x="-12" y="157" width="424" height="1.2" fill="#FFFFFF" opacity=".5"/><rect x="-12" y="166.4" width="424" height="1.6" fill="#1A0000" opacity=".3"/><polygon points="200,38.3 0,168.3 0,160 200,30" fill="#1A0000" opacity=".26"/><polygon points="200,38.3 400,168.3 400,160 200,30" fill="#1A0000" opacity=".26"/><polygon points="200,30 -12,167.8 -12,161.2 200,23.4" fill="url(#cornicione)"/><polygon points="200,30 412,167.8 412,161.2 200,23.4" fill="url(#cornicione)"/><polygon points="200,23.4 -12,161.2 -12,152.3 200,14.5" fill="#4A1512"/><polygon points="200,23.4 412,161.2 412,152.3 200,14.5" fill="#4A1512"/><polygon points="-12,167.8 -12,161.2 -10.4,161.2 -10.4,167.8" fill="#CDBB94"/><polygon points="412,167.8 412,161.2 410.4,161.2 410.4,167.8" fill="#CDBB94"/><polygon points="-12,161.2 -12,152.3 -10.4,152.3 -10.4,161.2" fill="#3A0F0D"/><polygon points="412,161.2 412,152.3 410.4,152.3 410.4,161.2" fill="#3A0F0D"/><polygon points="200,15.7 -12,153.5 -12,152.3 200,14.5" fill="#6E2A22"/><polygon points="200,15.7 412,153.5 412,152.3 200,14.5" fill="#6E2A22"/><path d="M-16.7,143.8 L-14.9,141.5 L-12.8,139.4 L-10.2,137.8 L-7.4,136.6 L-4.5,135.6 L-1.5,134.7 L1.4,133.7 L4.1,132.3 L6.6,130.6 L9,128.8 L11.4,127 L14,125.5 L16.8,124.3 L19.8,123.4 L22.8,122.5 L25.7,121.5 L28.3,120 L30.7,118.1 L32.7,115.7 L34.6,113.2 L36.5,110.6 L38.6,108.3 L40.9,106.3 L43.5,104.8 L46.1,103.4 L48.8,102 L51.4,100.5 L53.8,98.6 L56,96.5 L58.2,94.4 L60.5,92.5 L63.1,90.9 L65.9,89.8 L69,89 L72.2,88.5 L75.3,87.8 L78.3,86.7 L80.9,85.3 L83.2,83.4 L85.4,81.2 L87.6,79.1 L89.9,77.1 L92.4,75.4 L95,74 L97.7,72.6 L100.3,71.1 L102.7,69.2 L104.8,67 L106.8,64.5 L108.7,62 L110.7,59.6 L112.9,57.5 L115.5,56 L118.4,54.9 L121.4,54.1 L124.5,53.3 L127.3,52.2 L130,50.8 L132.5,49.1 L134.9,47.2 L137.3,45.5 L139.9,44 L142.7,42.8 L145.7,41.8 L148.6,40.9 L151.5,39.7 L154,38.2 L156.3,36.1 L158.3,33.7 L160.1,31 L162,28.5 L164.1,26.2 L166.5,24.3 L169.1,22.8 L171.8,21.5 L174.5,20.2 L177.1,18.7 L179.5,16.8 L181.8,14.8 L184,12.8 L186.4,10.9 L189,9.4 L191.9,8.4 L195,7.7 L198.2,7.1 L200,6.7 L201.8,7.1 L205,7.7 L208.1,8.4 L211,9.4 L213.6,10.9 L216,12.8 L218.2,14.8 L220.5,16.8 L222.9,18.7 L225.5,20.2 L228.2,21.5 L230.9,22.8 L233.5,24.3 L235.9,26.2 L238,28.5 L239.9,31 L241.7,33.7 L243.7,36.1 L246,38.2 L248.5,39.7 L251.4,40.9 L254.3,41.8 L257.3,42.8 L260.1,44 L262.7,45.5 L265.1,47.2 L267.5,49.1 L270,50.8 L272.7,52.2 L275.5,53.3 L278.6,54.1 L281.6,54.9 L284.5,56 L287.1,57.5 L289.3,59.6 L291.3,62 L293.2,64.5 L295.2,67 L297.3,69.2 L299.7,71.1 L302.3,72.6 L305,74 L307.6,75.4 L310.1,77.1 L312.4,79.1 L314.6,81.2 L316.8,83.4 L319.1,85.3 L321.7,86.7 L324.7,87.8 L327.8,88.5 L331,89 L334.1,89.8 L336.9,90.9 L339.5,92.5 L341.8,94.4 L344,96.5 L346.2,98.6 L348.6,100.5 L351.2,102 L353.9,103.4 L356.5,104.8 L359.1,106.3 L361.4,108.3 L363.5,110.6 L365.4,113.2 L367.3,115.7 L369.3,118.1 L371.7,120 L374.3,121.5 L377.2,122.5 L380.2,123.4 L383.2,124.3 L386,125.5 L388.6,127 L391,128.8 L393.4,130.6 L395.9,132.3 L398.6,133.7 L401.5,134.7 L404.5,135.6 L407.4,136.6 L410.2,137.8 L412.8,139.4 L414.9,141.5 L416.7,143.8 C421.2,145.3 421.2,154.6 414.5,155.1 L414.5,155.1 L413.6,154.6 L411.1,152.9 L408.6,151.3 L406.1,149.6 L403.6,148 L401,146.5 L397.9,145.8 L394,146.2 L391.1,145.1 L389.9,141.5 L388.3,138.5 L386,136.6 L383.5,134.9 L380.9,133.3 L378.4,131.7 L375.9,130 L373.4,128.4 L370.9,126.8 L368.2,125.4 L364.7,125.2 L360.9,125.5 L358.8,123.4 L357.6,119.6 L355.7,117.1 L353.3,115.3 L350.8,113.7 L348.2,112 L345.7,110.4 L343.2,108.8 L340.7,107.1 L338.2,105.5 L335.7,103.9 L333.1,102.2 L330.5,100.7 L327.4,100 L323.6,100.5 L320.7,99.4 L319.5,95.7 L317.9,92.7 L315.5,90.8 L313,89.2 L310.5,87.5 L308,85.9 L305.5,84.2 L303,82.6 L300.4,81 L297.9,79.3 L295.4,77.7 L292.9,76.1 L290,75 L286.3,75.2 L282.8,75 L281.3,72 L279.9,68.5 L277.8,66.3 L275.3,64.6 L272.8,63 L270.3,61.4 L267.7,59.7 L265.2,58.1 L262.7,56.5 L260.2,54.8 L257.7,53.2 L255.2,51.6 L252.6,50 L249.7,48.9 L246,49.1 L242.6,48.9 L241,45.8 L239.7,42.3 L237.5,40.2 L235,38.5 L232.5,36.8 L230,35.2 L227.5,33.6 L225,31.9 L222.5,30.3 L220,28.7 L217.4,27 L214.9,25.4 L212.4,23.8 L209.9,22.1 L207.4,20.5 L204.9,18.8 L202.3,17.2 L200,15.7 L197.7,17.2 L195.1,18.8 L192.6,20.5 L190.1,22.1 L187.6,23.8 L185.1,25.4 L182.6,27 L180,28.7 L177.5,30.3 L175,31.9 L172.5,33.6 L170,35.2 L167.5,36.8 L165,38.5 L162.5,40.2 L160.3,42.3 L159,45.8 L157.4,48.9 L154,49.1 L150.3,48.9 L147.4,50 L144.8,51.6 L142.3,53.2 L139.8,54.8 L137.3,56.5 L134.8,58.1 L132.3,59.7 L129.7,61.4 L127.2,63 L124.7,64.6 L122.2,66.3 L120.1,68.5 L118.7,72 L117.2,75 L113.7,75.2 L110,75 L107.1,76.1 L104.6,77.7 L102.1,79.3 L99.6,81 L97,82.6 L94.5,84.2 L92,85.9 L89.5,87.5 L87,89.2 L84.5,90.8 L82.1,92.7 L80.5,95.7 L79.3,99.4 L76.4,100.5 L72.6,100 L69.5,100.7 L66.9,102.2 L64.3,103.9 L61.8,105.5 L59.3,107.1 L56.8,108.8 L54.3,110.4 L51.8,112 L49.2,113.7 L46.7,115.3 L44.3,117.1 L42.4,119.6 L41.2,123.4 L39.1,125.5 L35.3,125.2 L31.8,125.4 L29.1,126.8 L26.6,128.4 L24.1,130 L21.6,131.7 L19.1,133.3 L16.5,134.9 L14,136.6 L11.7,138.5 L10.1,141.5 L8.9,145.1 L6,146.2 L2.1,145.8 L-1,146.5 L-3.6,148 L-6.1,149.6 L-8.6,151.3 L-11.1,152.9 L-13.6,154.6 L-14.5,155.1 C-21.2,154.6 -21.2,145.3 -16.7,143.8Z" fill="#FFFDF8"/><polygon points="200,12.8 198.9,13.6 196.3,15.2 193.8,16.8 191.3,18.5 188.8,20.1 186.3,21.7 183.8,23.4 181.3,25 178.7,26.6 176.2,28.3 173.7,29.9 171.2,31.6 168.7,33.2 166.2,34.8 163.6,36.5 161.2,38.1 159,40.3 157.7,43.8 156.1,46.9 152.6,47.1 148.9,46.9 146.1,48 143.5,49.5 141,51.2 138.5,52.8 136,54.4 133.5,56.1 130.9,57.7 128.4,59.3 125.9,61 123.4,62.6 120.9,64.3 118.8,66.5 117.4,69.9 115.8,73 112.4,73.2 108.7,73 105.8,74.1 103.3,75.7 100.8,77.3 98.2,79 95.7,80.6 93.2,82.2 90.7,83.9 88.2,85.5 85.7,87.1 83.2,88.8 80.8,90.7 79.2,93.7 78,97.3 75.1,98.5 71.3,98 68.2,98.7 65.6,100.2 63,101.9 60.5,103.5 58,105.1 55.5,106.8 53,108.4 50.5,110 47.9,111.7 45.4,113.3 43,115.1 41.1,117.6 39.9,121.3 37.7,123.5 33.9,123.2 30.5,123.4 27.8,124.8 25.3,126.4 22.8,128 20.3,129.6 17.8,131.3 15.2,132.9 12.7,134.6 10.4,136.5 8.8,139.5 7.6,143.1 4.7,144.2 0.8,143.8 -2.3,144.5 -4.9,146 -7.4,147.6 -9.9,149.3 -12.4,150.9 -13.7,151.7 -12.4,153.8 -11.1,152.9 -8.6,151.3 -6.1,149.6 -3.6,148 -1,146.5 2.1,145.8 6,146.2 8.9,145.1 10.1,141.5 11.7,138.5 14,136.6 16.5,134.9 19.1,133.3 21.6,131.7 24.1,130 26.6,128.4 29.1,126.8 31.8,125.4 35.3,125.2 39.1,125.5 41.2,123.4 42.4,119.6 44.3,117.1 46.7,115.3 49.2,113.7 51.8,112 54.3,110.4 56.8,108.8 59.3,107.1 61.8,105.5 64.3,103.9 66.9,102.2 69.5,100.7 72.6,100 76.4,100.5 79.3,99.4 80.5,95.7 82.1,92.7 84.5,90.8 87,89.2 89.5,87.5 92,85.9 94.5,84.2 97,82.6 99.6,81 102.1,79.3 104.6,77.7 107.1,76.1 110,75 113.7,75.2 117.2,75 118.7,72 120.1,68.5 122.2,66.3 124.7,64.6 127.2,63 129.7,61.4 132.3,59.7 134.8,58.1 137.3,56.5 139.8,54.8 142.3,53.2 144.8,51.6 147.4,50 150.3,48.9 154,49.1 157.4,48.9 159,45.8 160.3,42.3 162.5,40.2 165,38.5 167.5,36.8 170,35.2 172.5,33.6 175,31.9 177.5,30.3 180,28.7 182.6,27 185.1,25.4 187.6,23.8 190.1,22.1 192.6,20.5 195.1,18.8 197.7,17.2 200,15.7" fill="#DDE8EE"/><polygon points="200,12.8 201.1,13.6 203.7,15.2 206.2,16.8 208.7,18.5 211.2,20.1 213.7,21.7 216.2,23.4 218.7,25 221.3,26.6 223.8,28.3 226.3,29.9 228.8,31.6 231.3,33.2 233.8,34.8 236.4,36.5 238.8,38.1 241,40.3 242.3,43.8 243.9,46.9 247.4,47.1 251.1,46.9 253.9,48 256.5,49.5 259,51.2 261.5,52.8 264,54.4 266.5,56.1 269.1,57.7 271.6,59.3 274.1,61 276.6,62.6 279.1,64.3 281.2,66.5 282.6,69.9 284.2,73 287.6,73.2 291.3,73 294.2,74.1 296.7,75.7 299.2,77.3 301.8,79 304.3,80.6 306.8,82.2 309.3,83.9 311.8,85.5 314.3,87.1 316.8,88.8 319.2,90.7 320.8,93.7 322,97.3 324.9,98.5 328.7,98 331.8,98.7 334.4,100.2 337,101.9 339.5,103.5 342,105.1 344.5,106.8 347,108.4 349.5,110 352.1,111.7 354.6,113.3 357,115.1 358.9,117.6 360.1,121.3 362.3,123.5 366.1,123.2 369.5,123.4 372.2,124.8 374.7,126.4 377.2,128 379.7,129.6 382.2,131.3 384.8,132.9 387.3,134.6 389.6,136.5 391.2,139.5 392.4,143.1 395.3,144.2 399.2,143.8 402.3,144.5 404.9,146 407.4,147.6 409.9,149.3 412.4,150.9 413.7,151.7 412.4,153.8 411.1,152.9 408.6,151.3 406.1,149.6 403.6,148 401,146.5 397.9,145.8 394,146.2 391.1,145.1 389.9,141.5 388.3,138.5 386,136.6 383.5,134.9 380.9,133.3 378.4,131.7 375.9,130 373.4,128.4 370.9,126.8 368.2,125.4 364.7,125.2 360.9,125.5 358.8,123.4 357.6,119.6 355.7,117.1 353.3,115.3 350.8,113.7 348.2,112 345.7,110.4 343.2,108.8 340.7,107.1 338.2,105.5 335.7,103.9 333.1,102.2 330.5,100.7 327.4,100 323.6,100.5 320.7,99.4 319.5,95.7 317.9,92.7 315.5,90.8 313,89.2 310.5,87.5 308,85.9 305.5,84.2 303,82.6 300.4,81 297.9,79.3 295.4,77.7 292.9,76.1 290,75 286.3,75.2 282.8,75 281.3,72 279.9,68.5 277.8,66.3 275.3,64.6 272.8,63 270.3,61.4 267.7,59.7 265.2,58.1 262.7,56.5 260.2,54.8 257.7,53.2 255.2,51.6 252.6,50 249.7,48.9 246,49.1 242.6,48.9 241,45.8 239.7,42.3 237.5,40.2 235,38.5 232.5,36.8 230,35.2 227.5,33.6 225,31.9 222.5,30.3 220,28.7 217.4,27 214.9,25.4 212.4,23.8 209.9,22.1 207.4,20.5 204.9,18.8 202.3,17.2 200,15.7" fill="#DDE8EE"/><polyline points="200,7.8 198.9,8.1 195.7,8.7 192.6,9.4 189.7,10.4 187,11.9 184.7,13.8 182.4,15.8 180.2,17.8 177.8,19.7 175.2,21.2 172.5,22.5 169.8,23.8 167.2,25.3 164.8,27.2 162.7,29.5 160.8,32.1 158.9,34.7 156.9,37.1 154.7,39.2 152.1,40.7 149.3,41.9 146.3,42.8 143.4,43.8 140.6,45 138,46.5 135.5,48.2 133.1,50.1 130.7,51.8 128,53.2 125.1,54.3 122.1,55.1 119.1,55.9 116.2,57 113.6,58.6 111.3,60.6 109.3,63 107.4,65.5 105.5,68 103.3,70.3 100.9,72.1 98.3,73.6 95.6,75 93,76.4 90.5,78.1 88.2,80.1 86.1,82.2 83.9,84.4 81.5,86.3 78.9,87.7 76,88.8 72.9,89.5 69.7,90.1 66.6,90.8 63.7,91.9 61.2,93.5 58.9,95.4 56.7,97.6 54.4,99.6 52,101.5 49.5,103 46.8,104.4 44.1,105.8 41.6,107.3 39.2,109.3 37.2,111.6 35.2,114.2 33.4,116.8 31.3,119.1 29,121 26.3,122.5 23.4,123.5 20.4,124.4 17.4,125.3 14.6,126.5 12.1,128 9.6,129.8 7.2,131.6 4.7,133.3 2.1,134.7 -0.8,135.7 -3.8,136.6 -6.8,137.6 -9.6,138.8 -11.9,140.3" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" opacity=".9"/><polyline points="200,7.8 201.1,8.1 204.3,8.7 207.4,9.4 210.3,10.4 213,11.9 215.3,13.8 217.6,15.8 219.8,17.8 222.2,19.7 224.8,21.2 227.5,22.5 230.2,23.8 232.8,25.3 235.2,27.2 237.3,29.5 239.2,32.1 241.1,34.7 243.1,37.1 245.3,39.2 247.9,40.7 250.7,41.9 253.7,42.8 256.6,43.8 259.4,45 262,46.5 264.5,48.2 266.9,50.1 269.3,51.8 272,53.2 274.9,54.3 277.9,55.1 280.9,55.9 283.8,57 286.4,58.6 288.7,60.6 290.7,63 292.6,65.5 294.5,68 296.7,70.3 299.1,72.1 301.7,73.6 304.4,75 307,76.4 309.5,78.1 311.8,80.1 313.9,82.2 316.1,84.4 318.5,86.3 321.1,87.7 324,88.8 327.1,89.5 330.3,90.1 333.4,90.8 336.3,91.9 338.8,93.5 341.1,95.4 343.3,97.6 345.6,99.6 348,101.5 350.5,103 353.2,104.4 355.9,105.8 358.4,107.3 360.8,109.3 362.8,111.6 364.8,114.2 366.6,116.8 368.7,119.1 371,121 373.7,122.5 376.6,123.5 379.6,124.4 382.6,125.3 385.4,126.5 387.9,128 390.4,129.8 392.8,131.6 395.3,133.3 397.9,134.7 400.8,135.7 403.8,136.6 406.8,137.6 409.6,138.8 411.9,140.3" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" opacity=".9"/><ellipse cx="200" cy="5.3" rx="10" ry="5" fill="#FFFDF8"/><path d="M66.1,115.8 L69.3,115.8 Q68.4,119.4 67.8,121.9 Q67.2,119.4 66.1,115.8Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M67.1,117 L67.5,119.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M330.7,115.8 L333.9,115.8 Q333,119.4 332.5,121.9 Q331.8,119.4 330.7,115.8Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M331.7,117 L332.2,119.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M46.8,128.3 L50,128.3 Q49.1,133.8 48.6,137.9 Q47.9,133.8 46.8,128.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M47.8,129.5 L48.3,133.8" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M350,128.3 L353.2,128.3 Q352.3,133.8 351.7,137.9 Q351.1,133.8 350,128.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M351,129.5 L351.4,133.8" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M28.4,140.3 L31.6,140.3 Q30.7,144.5 30.1,147.4 Q29.5,144.5 28.4,140.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M29.4,141.5 L29.8,144.5" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M368.4,140.3 L371.6,140.3 Q370.7,144.5 370.2,147.4 Q369.5,144.5 368.4,140.3Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M369.4,141.5 L369.9,144.5" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M12.4,150.6 L15.6,150.6 Q14.7,157.6 14.2,162.7 Q13.5,157.6 12.4,150.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M13.4,151.8 L13.9,157.6" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M384.4,150.6 L387.6,150.6 Q386.7,157.6 386.1,162.7 Q385.5,157.6 384.4,150.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M385.4,151.8 L385.8,157.6" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M-2.7,160.4 L0.5,160.4 Q-0.4,165.2 -0.9,168.5 Q-1.6,165.2 -2.7,160.4Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M-1.7,161.6 L-1.2,165.2" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M399.5,160.4 L402.7,160.4 Q401.8,165.2 401.2,168.5 Q400.6,165.2 399.5,160.4Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M400.5,161.6 L400.9,165.2" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M-11.4,166.6 L-8.2,166.6 Q-9.1,174.4 -9.7,180.2 Q-10.3,174.4 -11.4,166.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M-10.4,167.8 L-10,174.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M408.2,166.6 L411.4,166.6 Q410.5,174.4 409.9,180.2 Q409.3,174.4 408.2,166.6Z" fill="url(#ghiaccio)" opacity=".92"/><path d="M409.2,167.8 L409.7,174.4" stroke="#FFFFFF" stroke-width=".55" stroke-linecap="round" opacity=".85"/><path d="M187.5,40.1 Q176,57.5 164.6,54.9 Q153.2,72.3 141.8,69.8 Q130.3,87.2 118.9,84.6 Q107.5,102 96.1,99.5 Q84.6,116.9 73.2,114.3 Q61.8,131.7 50.4,129.2 Q38.9,146.6 27.5,144 Q16.1,161.4 4.7,158.9" fill="none" stroke="#2A1A12" stroke-width=".9"/><circle class="lamp" style="animation-delay:-0.00s" cx="176" cy="57.9" r="10" fill="url(#l-oro)"/><rect x="174.6" y="52.1" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="176" cy="57.8" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="175.1" cy="56.6" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.73s" cx="153.2" cy="72.7" r="10" fill="url(#l-rosso)"/><rect x="151.8" y="66.9" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="153.2" cy="72.6" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="152.3" cy="71.4" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-1.46s" cx="130.3" cy="87.6" r="10" fill="url(#l-bianco)"/><rect x="128.9" y="81.8" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="130.3" cy="87.5" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="129.4" cy="86.3" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.19s" cx="107.5" cy="102.4" r="10" fill="url(#l-verde)"/><rect x="106.1" y="96.6" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="107.5" cy="102.3" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="106.6" cy="101.1" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.12s" cx="84.6" cy="117.3" r="10" fill="url(#l-oro)"/><rect x="83.2" y="111.5" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="84.6" cy="117.2" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="83.7" cy="116" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.85s" cx="61.8" cy="132.1" r="10" fill="url(#l-rosso)"/><rect x="60.4" y="126.3" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="61.8" cy="132" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="60.9" cy="130.8" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-1.58s" cx="38.9" cy="147" r="10" fill="url(#l-bianco)"/><rect x="37.5" y="141.2" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="38.9" cy="146.9" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="38" cy="145.7" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.31s" cx="16.1" cy="161.8" r="10" fill="url(#l-verde)"/><rect x="14.7" y="156" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="16.1" cy="161.7" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="15.2" cy="160.5" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><path d="M212.5,40.1 Q224,57.5 235.4,54.9 Q246.8,72.3 258.2,69.8 Q269.7,87.2 281.1,84.6 Q292.5,102 303.9,99.5 Q315.4,116.9 326.8,114.3 Q338.2,131.7 349.6,129.2 Q361.1,146.6 372.5,144 Q383.9,161.4 395.3,158.9" fill="none" stroke="#2A1A12" stroke-width=".9"/><circle class="lamp" style="animation-delay:-1.30s" cx="224" cy="57.9" r="10" fill="url(#l-bianco)"/><rect x="222.6" y="52.1" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="224" cy="57.8" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="223.1" cy="56.6" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.03s" cx="246.8" cy="72.7" r="10" fill="url(#l-verde)"/><rect x="245.4" y="66.9" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="246.8" cy="72.6" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="245.9" cy="71.4" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.76s" cx="269.7" cy="87.6" r="10" fill="url(#l-oro)"/><rect x="268.3" y="81.8" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="269.7" cy="87.5" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="268.8" cy="86.3" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.69s" cx="292.5" cy="102.4" r="10" fill="url(#l-rosso)"/><rect x="291.1" y="96.6" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="292.5" cy="102.3" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="291.6" cy="101.1" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-1.42s" cx="315.4" cy="117.3" r="10" fill="url(#l-bianco)"/><rect x="314" y="111.5" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="315.4" cy="117.2" rx="2.6" ry="3.6" fill="#FFF1CF"/><ellipse cx="314.5" cy="116" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-2.15s" cx="338.2" cy="132.1" r="10" fill="url(#l-verde)"/><rect x="336.8" y="126.3" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="338.2" cy="132" rx="2.6" ry="3.6" fill="#79C788"/><ellipse cx="337.3" cy="130.8" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.08s" cx="361.1" cy="147" r="10" fill="url(#l-oro)"/><rect x="359.7" y="141.2" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="361.1" cy="146.9" rx="2.6" ry="3.6" fill="#F6C95A"/><ellipse cx="360.2" cy="145.7" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><circle class="lamp" style="animation-delay:-0.81s" cx="383.9" cy="161.8" r="10" fill="url(#l-rosso)"/><rect x="382.5" y="156" width="2.8" height="2.6" rx=".5" fill="#2A2018"/><ellipse cx="383.9" cy="161.7" rx="2.6" ry="3.6" fill="#EA4F48"/><ellipse cx="383" cy="160.5" rx=".8" ry="1.3" fill="#FFF" opacity=".75"/><rect class="comignolo" x="244" y="-8" width="58" height="70" fill="transparent"/></svg>
     <div class="tavola"><div class="griglia" id="griglia"></div></div>
     <svg class="zoccolo" aria-hidden="true"><defs><pattern id="pietre" width="30" height="18" patternUnits="userSpaceOnUse"><rect width="30" height="18" fill="#4B504E"/><rect x="1" y="1" width="13" height="7.5" rx="2.6" fill="#8D928F"/><rect x="16" y="1" width="13" height="7.5" rx="2.6" fill="#7C817E"/><rect x="-7.5" y="10" width="13" height="7.5" rx="2.6" fill="#7C817E"/><rect x="7.5" y="10" width="13" height="7.5" rx="2.6" fill="#8D928F"/><rect x="22.5" y="10" width="13" height="7.5" rx="2.6" fill="#7C817E"/><rect x="2" y="1.6" width="9" height="1.2" rx=".6" fill="#FFF" opacity=".18"/><rect x="9" y="10.6" width="9" height="1.2" rx=".6" fill="#FFF" opacity=".18"/></pattern></defs><rect width="100%" height="100%" fill="url(#pietre)"/><rect width="100%" height="3.5" rx="1.7" fill="#FFFDF8"/><rect y="3.5" width="100%" height="2" fill="#000" opacity=".2"/></svg>
-    <svg class="terra" viewBox="0 0 1000 64" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="neveTerra" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".34" stop-color="#EEF4F6"/><stop offset=".66" stop-color="#D9E4E9" stop-opacity=".55"/><stop offset="1" stop-color="#D9E4E9" stop-opacity="0"/></linearGradient></defs><path d="M0 19C150 15 320 12.5 420 12C460 11.8 540 11.8 580 12C680 12.5 850 15 1000 19V64H0Z" fill="url(#neveTerra)"/></svg>
+    <svg class="terra" viewBox="0 0 1000 64" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="neveTerra" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".45" stop-color="#EEF3F5"/><stop offset="1" stop-color="#DFE8EC"/></linearGradient></defs><path d="M0 19C150 15 320 12.5 420 12C460 11.8 540 11.8 580 12C680 12.5 850 15 1000 19V64H0Z" fill="url(#neveTerra)"/></svg>
     <div class="ombra-casa"></div>
+    <svg class="cortile" id="cortile" aria-hidden="true"></svg>
     <svg class="abete ab-sx" viewBox="0 0 60 96" aria-hidden="true"><defs><clipPath id="cl-ab-sx-m"><rect x="30" y="0" width="30" height="96"/></clipPath><clipPath id="cl-ab-sx-0"><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z"/></clipPath><clipPath id="cl-ab-sx-1"><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z"/></clipPath><clipPath id="cl-ab-sx-2"><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z"/></clipPath><clipPath id="cl-ab-sx-3"><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z"/></clipPath></defs><ellipse cx="30" cy="92" rx="21" ry="3.4" fill="#5E7C8C" opacity=".38"/><rect x="27.4" y="80" width="5.2" height="12" fill="#5A3A24"/><rect x="30" y="80" width="2.6" height="12" fill="#3F2817"/><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z" fill="#2F5E40"/><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z" fill="#1F4630" clip-path="url(#cl-ab-sx-m)"/><g clip-path="url(#cl-ab-sx-3)"><path d="M0.5,38 H59.5 V68.2 Q49.7,72.4 39.8,68.2 Q30,70.8 20.2,68.2 Q10.3,72.4 0.5,68.2Z" fill="#FFFDF8"/><path d="M0.5,38 H59.5 V68.2 Q49.7,72.4 39.8,68.2 Q30,70.8 20.2,68.2 Q10.3,72.4 0.5,68.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-sx-m)" opacity=".75"/></g><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z" fill="#2F5E40"/><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z" fill="#1F4630" clip-path="url(#cl-ab-sx-m)"/><g clip-path="url(#cl-ab-sx-2)"><path d="M5.5,24 H54.5 V50.2 Q46.3,54.4 38.2,50.2 Q30,52.8 21.8,50.2 Q13.7,54.4 5.5,50.2Z" fill="#FFFDF8"/><path d="M5.5,24 H54.5 V50.2 Q46.3,54.4 38.2,50.2 Q30,52.8 21.8,50.2 Q13.7,54.4 5.5,50.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-sx-m)" opacity=".75"/></g><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z" fill="#2F5E40"/><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z" fill="#1F4630" clip-path="url(#cl-ab-sx-m)"/><g clip-path="url(#cl-ab-sx-1)"><path d="M10.5,11 H49.5 V32.2 Q43,36.4 36.5,32.2 Q30,34.8 23.5,32.2 Q17,36.4 10.5,32.2Z" fill="#FFFDF8"/><path d="M10.5,11 H49.5 V32.2 Q43,36.4 36.5,32.2 Q30,34.8 23.5,32.2 Q17,36.4 10.5,32.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-sx-m)" opacity=".75"/></g><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z" fill="#2F5E40"/><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z" fill="#1F4630" clip-path="url(#cl-ab-sx-m)"/><g clip-path="url(#cl-ab-sx-0)"><path d="M16,0 H44 V14.2 Q39.3,18.4 34.7,14.2 Q30,16.8 25.3,14.2 Q20.7,18.4 16,14.2Z" fill="#FFFDF8"/><path d="M16,0 H44 V14.2 Q39.3,18.4 34.7,14.2 Q30,16.8 25.3,14.2 Q20.7,18.4 16,14.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-sx-m)" opacity=".75"/></g></svg><svg class="abete ab-dx" viewBox="0 0 60 96" aria-hidden="true"><defs><clipPath id="cl-ab-dx-m"><rect x="30" y="0" width="30" height="96"/></clipPath><clipPath id="cl-ab-dx-0"><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z"/></clipPath><clipPath id="cl-ab-dx-1"><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z"/></clipPath><clipPath id="cl-ab-dx-2"><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z"/></clipPath><clipPath id="cl-ab-dx-3"><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z"/></clipPath></defs><ellipse cx="30" cy="92" rx="21" ry="3.4" fill="#5E7C8C" opacity=".38"/><rect x="27.4" y="80" width="5.2" height="12" fill="#5A3A24"/><rect x="30" y="80" width="2.6" height="12" fill="#3F2817"/><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z" fill="#2F5E40"/><path d="M30,41 L56.5,85 Q52.1,80.8 47.7,86.6 Q43.2,80.8 38.8,86.6 Q34.4,80.8 30,86.6 Q25.6,80.8 21.2,86.6 Q16.8,80.8 12.3,86.6 Q7.9,80.8 3.5,85Z" fill="#1F4630" clip-path="url(#cl-ab-dx-m)"/><g clip-path="url(#cl-ab-dx-3)"><path d="M0.5,38 H59.5 V68.2 Q49.7,72.4 39.8,68.2 Q30,70.8 20.2,68.2 Q10.3,72.4 0.5,68.2Z" fill="#FFFDF8"/><path d="M0.5,38 H59.5 V68.2 Q49.7,72.4 39.8,68.2 Q30,70.8 20.2,68.2 Q10.3,72.4 0.5,68.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-dx-m)" opacity=".75"/></g><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z" fill="#2F5E40"/><path d="M30,27 L51.5,66 Q47.2,61.8 42.9,67.6 Q38.6,61.8 34.3,67.6 Q30,61.8 25.7,67.6 Q21.4,61.8 17.1,67.6 Q12.8,61.8 8.5,66Z" fill="#1F4630" clip-path="url(#cl-ab-dx-m)"/><g clip-path="url(#cl-ab-dx-2)"><path d="M5.5,24 H54.5 V50.2 Q46.3,54.4 38.2,50.2 Q30,52.8 21.8,50.2 Q13.7,54.4 5.5,50.2Z" fill="#FFFDF8"/><path d="M5.5,24 H54.5 V50.2 Q46.3,54.4 38.2,50.2 Q30,52.8 21.8,50.2 Q13.7,54.4 5.5,50.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-dx-m)" opacity=".75"/></g><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z" fill="#2F5E40"/><path d="M30,14 L46.5,48 Q42.4,43.8 38.2,49.6 Q34.1,43.8 30,49.6 Q25.9,43.8 21.8,49.6 Q17.6,43.8 13.5,48Z" fill="#1F4630" clip-path="url(#cl-ab-dx-m)"/><g clip-path="url(#cl-ab-dx-1)"><path d="M10.5,11 H49.5 V32.2 Q43,36.4 36.5,32.2 Q30,34.8 23.5,32.2 Q17,36.4 10.5,32.2Z" fill="#FFFDF8"/><path d="M10.5,11 H49.5 V32.2 Q43,36.4 36.5,32.2 Q30,34.8 23.5,32.2 Q17,36.4 10.5,32.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-dx-m)" opacity=".75"/></g><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z" fill="#2F5E40"/><path d="M30,3 L41,30 Q37.3,25.8 33.7,31.6 Q30,25.8 26.3,31.6 Q22.7,25.8 19,30Z" fill="#1F4630" clip-path="url(#cl-ab-dx-m)"/><g clip-path="url(#cl-ab-dx-0)"><path d="M16,0 H44 V14.2 Q39.3,18.4 34.7,14.2 Q30,16.8 25.3,14.2 Q20.7,18.4 16,14.2Z" fill="#FFFDF8"/><path d="M16,0 H44 V14.2 Q39.3,18.4 34.7,14.2 Q30,16.8 25.3,14.2 Q20.7,18.4 16,14.2Z" fill="#D6E3EA" clip-path="url(#cl-ab-dx-m)" opacity=".75"/></g></svg>
   </main>
 
   <footer>
+    <svg class="cornice" id="cornice" aria-hidden="true"></svg>
+    <div class="promemoria-box">
+      <button class="pillola rossa promemoria" type="button"><svg viewBox="0 0 16 17" aria-hidden="true"><path d="M8 1.6c-2.7 0-4.4 2-4.4 4.6v3.2L2 11.9h12l-1.6-2.5V6.2C12.4 3.6 10.7 1.6 8 1.6Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M6.2 14.2a1.9 1.9 0 0 0 3.6 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Ricordamelo ogni sera</button>
+      <p class="promemoria-nota">Un avviso sul telefono alle 21, dal 1° al 24 dicembre.</p>
+    </div>
     <div class="firma"><div class="fn">Dott.ssa Sara Savelli</div><div class="ft"><span class="fl"></span><span class="fw">PEDAGOGISTA</span><span class="fl"></span></div></div>
     <p class="profilo"><a href="https://www.instagram.com/sara.azzurra_pedagogista" target="_blank" rel="noopener">@sara.azzurra_pedagogista</a><span>su Instagram</span></p>
     <p class="nota">Per ritrovarlo ogni giorno, aggiungi questa pagina alla schermata Home del telefono.</p>
   </footer>
 </div>
+
+<canvas id="neve-davanti" aria-hidden="true"></canvas>
 
 <div class="lettera" id="lettera" hidden role="dialog" aria-modal="true" aria-labelledby="titoloLettera">
   <article class="foglio">
@@ -365,7 +433,7 @@ h1{font-size:clamp(30px,9.4vw,46px);font-weight:700;color:var(--crema);line-heig
     <p class="t">Questo calendario non è un manuale di istruzioni né una lista di cose da fare. È una <b>boccata d’aria quotidiana</b>. Dal 1° al 24 dicembre, prenditi un minuto: apri la carta del giorno, accogli la frase guida e lascia che la riflessione ti sollevi, ti alleggerisca del senso di colpa e ti ricordi che stai già facendo un lavoro straordinario.</p>
     <div class="passi">
       <div class="passo"><div class="n">1</div><div><h3>Apri la finestrella</h3><p>Ogni giorno tocca la finestrella con il numero di oggi, poi tocca la carta per girarla.</p></div></div>
-      <div class="passo"><div class="n">2</div><div><h3>Un rito quotidiano</h3><p>La mattina o la sera, prenditi un minuto di pausa solo per te.</p></div></div>
+      <div class="passo"><div class="n">2</div><div><h3>Un rito quotidiano</h3><p>La mattina o la sera, prenditi un minuto di pausa solo per te.</p><button class="link-promemoria promemoria" type="button">Ricordamelo ogni sera alle 21</button></div></div>
       <div class="passo"><div class="n">3</div><div><h3>Respira e sostieni</h3><p>Porta con te la frase della giornata e regalati la cura che meriti.</p></div></div>
     </div>
     <div class="firma"><div class="fn">Dott.ssa Sara Savelli</div><div class="ft"><span class="fl"></span><span class="fw">PEDAGOGISTA</span><span class="fl"></span></div></div>
@@ -410,10 +478,10 @@ const PORTA=(()=>{
   s+='<path d="M30 46.8L24.2 43.6C23 46.3 23.7 49.6 26.8 49.4ZM30 46.8L35.8 43.6C37 46.3 36.3 49.6 33.2 49.4Z" fill="#C3272E"/>'+
      '<path d="M29 47.6L26 54.4L28.6 53.2L30 55.4ZM31 47.6L34 54.4L31.4 53.2L30 55.4Z" fill="#9C1C22"/><circle cx="30" cy="47" r="2" fill="#C3272E"/>';
   s+='<text x="30" y="39.4" text-anchor="middle" font-family="Alegreya,Georgia,serif" font-weight="700" font-size="10" fill="#FFF4D6">24</text>';
-  s+='<rect x="47.6" y="53" width="4.8" height="12" rx="2.2" fill="#A9853A"/><circle cx="50" cy="56.6" r="2.1" fill="url(#pOttone)"/>'+
-     '<circle cx="50" cy="61.2" r=".8" fill="#2A1E10"/><rect x="49.65" y="61.2" width=".7" height="1.9" fill="#2A1E10"/>';
+  s+='<rect x="7.6" y="53" width="4.8" height="12" rx="2.2" fill="#A9853A"/><circle cx="10" cy="56.6" r="2.1" fill="url(#pOttone)"/>'+
+     '<circle cx="10" cy="61.2" r=".8" fill="#2A1E10"/><rect x="9.65" y="61.2" width=".7" height="1.9" fill="#2A1E10"/>';
   s+='<rect x="3" y="92" width="54" height="3.6" rx=".8" fill="#A9853A"/><rect x="3" y="92" width="54" height=".7" fill="#FFF2BE" opacity=".55"/>';
-  s+='<rect width="1.2" height="98" fill="#FFF" opacity=".08"/><rect x="58.6" width="1.4" height="98" fill="#000" opacity=".28"/></svg>';
+  s+='<rect width="1.4" height="98" fill="#000" opacity=".28"/><rect x="58.8" width="1.2" height="98" fill="#FFF" opacity=".08"/></svg>';
   return s;
 })();
 const ilGiorno=g=>(g===8||g===11)?'l’'+g:'il '+(g===1?'1°':g);
@@ -517,6 +585,7 @@ function tocca(g,b){
     return;
   }
   occupato=true; griglia.classList.add('ferma');
+  chiediMovimento();
   document.documentElement.classList.add('fermo');
   const giaAperta=b.classList.contains('aperta');
   document.documentElement.classList.add('zoom');
@@ -547,7 +616,7 @@ function mostra(g,b,primaVolta){
      '<span class="rbody"><span class="in"><span class="frase">“'+esc(t.frase)+'”</span><svg class="sep" aria-hidden="true"><use href="#sep"/></svg>'+
      '<span class="eti">'+esc(t.etichetta)+'</span><span class="testo">'+esc(t.testo)+'</span></span></span><span class="luce"></span></span>';
   carta.classList.remove('girata','tocco');
-  raddrizza();
+  raddrizza(); azzeraIncl();
   $('sugg').lastElementChild.textContent='Tocca la carta per girarla';
   scena.classList.remove('via');scena.hidden=false;
   document.documentElement.classList.add('fermo');
@@ -608,10 +677,45 @@ scena.addEventListener('pointermove',e=>{
   if(giu&&Math.hypot(e.clientX-x0,e.clientY-y0)>9) mosso=true;
   if((giu&&mosso)||e.pointerType==='mouse'){carta.classList.add('tocco');segui(e);}
 });
-function lascia(){giu=false;carta.classList.remove('tocco');raddrizza();}
+function lascia(){giu=false;carta.classList.remove('tocco');raddrizza();if(incl.on)incl.base=null;}
 scena.addEventListener('pointerup',lascia);
 scena.addEventListener('pointercancel',lascia);
 scena.addEventListener('pointerleave',lascia);
+
+/* la carta segue il telefono quando lo inclini (iPhone chiede il permesso al primo tocco su una finestra) */
+const incl={on:false,chiesto:false,base:null,x:0,y:0,tx:0,ty:0,raf:0};
+function chiediMovimento(){
+  const D=window.DeviceOrientationEvent;
+  if(!D||calmo||incl.chiesto) return;
+  incl.chiesto=true;
+  const ascolta=()=>{if(!incl.on){incl.on=true;addEventListener('deviceorientation',suOrientamento);}};
+  /* ascolto sempre: dove serve il permesso (iPhone) gli eventi arrivano solo dopo il sì */
+  ascolta();
+  if(typeof D.requestPermission==='function'){try{D.requestPermission().catch(()=>{});}catch(e){}}
+}
+function suOrientamento(e){
+  if(scena.hidden||giu||e.beta==null||e.gamma==null) return;
+  let b=e.beta, g=e.gamma;
+  const ang=(screen.orientation&&typeof screen.orientation.angle==='number')?screen.orientation.angle:(window.orientation||0);
+  if(ang===90){const t=b;b=-g;g=t;} else if(ang===270||ang===-90){const t=b;b=g;g=-t;}
+  if(!incl.base) incl.base={b,g};
+  incl.base.b+=(b-incl.base.b)*.008; incl.base.g+=(g-incl.base.g)*.008;
+  incl.tx=Math.max(-1,Math.min(1,(g-incl.base.g)/20));
+  incl.ty=Math.max(-1,Math.min(1,(b-incl.base.b)/20));
+  if(!incl.raf) incl.raf=requestAnimationFrame(passoIncl);
+}
+function passoIncl(){
+  incl.raf=0;
+  if(scena.hidden||giu){carta.classList.remove('giroscopio');return;}
+  incl.x+=(incl.tx-incl.x)*.16; incl.y+=(incl.ty-incl.y)*.16;
+  carta.classList.add('giroscopio');
+  carta.style.setProperty('--ry',(incl.x*22).toFixed(2)+'deg');
+  carta.style.setProperty('--rx',(-incl.y*16).toFixed(2)+'deg');
+  carta.style.setProperty('--lx',(50+incl.x*46).toFixed(1)+'%');
+  carta.style.setProperty('--ly',(50+incl.y*46).toFixed(1)+'%');
+  if(Math.abs(incl.tx-incl.x)>.003||Math.abs(incl.ty-incl.y)>.003) incl.raf=requestAnimationFrame(passoIncl);
+}
+function azzeraIncl(){incl.base=null;incl.x=incl.y=incl.tx=incl.ty=0;carta.classList.remove('giroscopio');}
 
 carta.addEventListener('click',()=>{
   if(mosso){mosso=false;return;}
@@ -626,6 +730,7 @@ function chiudi(){
   casa.style.transition='transform 1s cubic-bezier(.45,.05,.2,1)';
   casa.style.transform='';
   document.documentElement.classList.remove('zoom');
+  azzeraIncl();
   setTimeout(()=>{scena.hidden=true;scena.classList.remove('viva','via');fluttua.classList.remove('viva');if(daDove)daDove.focus({preventScroll:true});},240);
   setTimeout(()=>{document.documentElement.classList.remove('fermo');griglia.classList.remove('ferma');occupato=false;},calmo?260:1050);
 }
@@ -758,8 +863,85 @@ $('storia').addEventListener('click',e=>{if(e.target===$('storia'))chiudiStoria(
 
 /* --- musica e suoni, fatti in codice (nessun file audio) ---
    La melodia è «Astro del ciel» (Stille Nacht, 1818, di pubblico dominio) suonata come un carillon. */
+/* sintesi dei suoni: eco di stanza, lamella di carillon, campana, legno, scatto, soffio, fruscio di carta */
+function creaSintesi(ac,uscita){
+  const SR=ac.sampleRate;
+  const rumore=ac.createBuffer(1,SR*2,SR);
+  {const d=rumore.getChannelData(0);let p=0;for(let i=0;i<d.length;i++){const w=Math.random()*2-1;p=.97*p+.03*w;d[i]=w*.55+p*2;}}
+  const ir=ac.createBuffer(2,Math.floor(SR*2.4),SR);
+  for(let c=0;c<2;c++){const d=ir.getChannelData(c);let lp=0;for(let i=0;i<d.length;i++){const t=i/SR;lp=lp*.6+(Math.random()*2-1)*.4;d[i]=lp*Math.exp(-t*2.3)*(t<.015?t/.015:1);}}
+  const eco=ac.createConvolver(); eco.buffer=ir;
+  const pre=ac.createDelay(.1); pre.delayTime.value=.024;
+  const ritorno=ac.createGain(); ritorno.gain.value=.5;
+  pre.connect(eco); eco.connect(ritorno); ritorno.connect(uscita);
+  function bus(mandata){const v=ac.createGain();v.connect(uscita);const m=ac.createGain();m.gain.value=mandata;v.connect(m);m.connect(pre);return v;}
+  const musica=bus(.34), effetti=bus(.42);
+  function lato(dest,p){if(!ac.createStereoPanner)return dest;const s=ac.createStereoPanner();s.pan.value=p;s.connect(dest);return s;}
+  function parziale(dest,f,q,g,att,dur){
+    if(f>SR/2.2) return;
+    const o=ac.createOscillator(),v=ac.createGain();o.frequency.value=f;
+    v.gain.setValueAtTime(0,q);v.gain.linearRampToValueAtTime(g,q+att);v.gain.exponentialRampToValueAtTime(.0001,q+att+dur);
+    o.connect(v);v.connect(dest);o.start(q);o.stop(q+att+dur+.05);
+  }
+  function soffiato(dest,q,dur,tipo,f,Q,g,att){
+    const s=ac.createBufferSource(),fl=ac.createBiquadFilter(),v=ac.createGain();
+    s.buffer=rumore;fl.type=tipo;fl.frequency.value=f;fl.Q.value=Q;
+    v.gain.setValueAtTime(.0001,q);v.gain.exponentialRampToValueAtTime(g,q+(att||.002));v.gain.exponentialRampToValueAtTime(.0001,q+dur);
+    s.connect(fl);fl.connect(v);v.connect(dest);s.start(q,Math.random()*1.5,dur+.05);
+    return fl;
+  }
+  return {
+    /* lamella del carillon: fondamentale lunga, ottava leggera, tintinnio acuto breve e lo scatto del pettine */
+    carillon(f,q,g,dur){
+      const d=lato(musica,(Math.random()-.5)*.4), t=(dur||1.8)*(f<400?1.3:1);
+      parziale(d,f,q,g,.003,t);parziale(d,f*2.004,q,g*.16,.002,t*.42);parziale(d,f*6.27,q,g*.05,.001,.12);
+      soffiato(d,q,.018,'highpass',4200,.7,g*.22);
+    },
+    /* campana: parziali non armonici, ognuno doppiato e un filo stonato per il battimento */
+    campana(f,q,g){
+      const d=lato(effetti,(Math.random()-.5)*.6);
+      [[1,1,2.6],[2.76,.3,1.2],[5.4,.13,.55],[8.93,.06,.28]].forEach(([r,a,t])=>{parziale(d,f*r,q,g*a,.002,t);parziale(d,f*r*1.0023,q,g*a*.55,.002,t*.85);});
+    },
+    /* colpo di legno: un impulso che fa risuonare tre modi della tavola */
+    legno(q,g,f){
+      [[f,16,1],[f*2.37,13,.5],[f*4.6,10,.22]].forEach(([fr,Q,a])=>soffiato(effetti,q,.2,'bandpass',fr,Q,g*a*9,.001));
+      soffiato(effetti,q,.025,'lowpass',2200,.7,g*.7,.001);
+    },
+    /* scatto del chiavistello: metallo acuto e subito dopo il legno dell'anta */
+    scatto(q,g){
+      soffiato(effetti,q,.07,'bandpass',3100,22,g*7,.001);
+      soffiato(effetti,q,.012,'highpass',3500,.7,g*.7,.001);
+      soffiato(effetti,q+.03,.12,'bandpass',620,12,g*5,.001);
+    },
+    /* soffio d'aria che sale e passa da sinistra a destra */
+    soffio(q,g,dur){
+      let d=effetti;
+      if(ac.createStereoPanner){const p=ac.createStereoPanner();p.pan.setValueAtTime(-.55,q);p.pan.linearRampToValueAtTime(.55,q+dur);p.connect(effetti);d=p;}
+      const fl=soffiato(d,q,dur,'bandpass',400,.8,g,dur*.42);
+      fl.frequency.setValueAtTime(380,q);fl.frequency.exponentialRampToValueAtTime(2300,q+dur*.55);fl.frequency.exponentialRampToValueAtTime(1300,q+dur);
+    },
+    /* brezza: rumore scuro che si gonfia e si spegne */
+    brezza(q,g,dur){
+      let d=effetti;
+      if(ac.createStereoPanner){const p=ac.createStereoPanner();p.pan.setValueAtTime(-.4,q);p.pan.linearRampToValueAtTime(.4,q+dur);p.connect(effetti);d=p;}
+      const fl=soffiato(d,q,dur,'bandpass',420,.7,g,dur*.35);
+      fl.frequency.setValueAtTime(320,q);fl.frequency.exponentialRampToValueAtTime(820,q+dur*.4);fl.frequency.exponentialRampToValueAtTime(380,q+dur);
+    },
+    /* fruscio di carta a due tempi */
+    sfoglia(q,g){
+      [[0,1],[.06,.55]].forEach(([t,a])=>{
+        const fl=soffiato(effetti,q+t,.085,'bandpass',1600,1.4,g*a,.006);
+        fl.frequency.setValueAtTime(1400,q+t);fl.frequency.exponentialRampToValueAtTime(4200,q+t+.08);
+      });
+      parziale(effetti,140,q+.01,g*.25,.004,.06);
+    }
+  };
+}
+
+/* --- musica e suoni, fatti in codice (nessun file audio) ---
+   La melodia è «Astro del ciel» (Stille Nacht, 1818, di pubblico dominio) suonata come un carillon. */
 const Suono=(()=>{
-  let ac=null, master=null, acceso=true, t0=0, k=0;
+  let ac=null, S=null, acceso=true, t0=0, k=0;
   try{acceso=localStorage.getItem('respiri-musica')!=='no';}catch(e){}
   const B=.62, F={C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,B4:493.88,C5:523.25,D5:587.33,E5:659.25,F5:698.46};
   const M=[['G4',1.5],['A4',.5],['G4',1],['E4',3],['G4',1.5],['A4',.5],['G4',1],['E4',3],
@@ -770,23 +952,16 @@ const Suono=(()=>{
     ['C5',1],['G4',1],['E4',1],['G4',1.5],['F4',.5],['D4',1],['C4',3]];
   const ACC={C:[130.81,164.81,196],G:[146.83,196,246.94],F:[174.61,220,261.63]}, BARRE='CCCCGGCCFFCCFFCCGGCCCGCC';
   const EV=[]; let t=0;
-  for(const [n,d] of M){EV.push([t,F[n]*2,.2,2]);t+=d;}
-  for(let i=0;i<24;i++){const a=ACC[BARRE[i]];EV.push([i*3,a[0]*2,.07,1.6],[i*3+1,a[1]*2,.045,1.2],[i*3+2,a[2]*2,.045,1.2]);}
+  for(const [n,d] of M){EV.push([t,F[n]*2,.16,2.2]);t+=d;}
+  for(let i=0;i<24;i++){const a=ACC[BARRE[i]];EV.push([i*3,a[0]*2,.055,1.8],[i*3+1,a[1]*2,.034,1.3],[i*3+2,a[2]*2,.034,1.3]);}
   EV.sort((a,b)=>a[0]-b[0]);
   const LUNGO=78;
-  function nota(f,q,g,dur){
-    const o=ac.createOscillator(), o2=ac.createOscillator(), v=ac.createGain(), v2=ac.createGain();
-    o.type='sine';o.frequency.value=f; o2.type='sine';o2.frequency.value=f*3.01; v2.gain.value=.1;
-    v.gain.setValueAtTime(0,q); v.gain.linearRampToValueAtTime(g,q+.006); v.gain.exponentialRampToValueAtTime(.0008,q+dur);
-    o.connect(v);o2.connect(v2);v2.connect(v);v.connect(master);
-    o.start(q);o2.start(q);o.stop(q+dur+.05);o2.stop(q+dur+.05);
-  }
   function programma(){
     if(!ac||!acceso||ac.state!=='running') return;
     for(let i=0;i<40;i++){
       const e=EV[k%EV.length], q=t0+(Math.floor(k/EV.length)*LUNGO+e[0])*B;
       if(q>ac.currentTime+.9) break;
-      if(q>ac.currentTime-.05) nota(e[1],Math.max(q,ac.currentTime+.01),e[2],e[3]);
+      if(q>ac.currentTime-.05) S.carillon(e[1],Math.max(q,ac.currentTime+.01),e[2],e[3]);
       k++;
     }
   }
@@ -795,12 +970,15 @@ const Suono=(()=>{
     if(!ac){
       const A=window.AudioContext||window.webkitAudioContext; if(!A) return;
       try{ac=new A();}catch(e){return;}
-      master=ac.createGain();master.gain.value=.5;master.connect(ac.destination);
+      const comp=ac.createDynamicsCompressor(); comp.threshold.value=-16; comp.ratio.value=3; comp.attack.value=.004; comp.release.value=.25;
+      const vol=ac.createGain(); vol.gain.value=.62; vol.connect(comp); comp.connect(ac.destination);
+      S=creaSintesi(ac,vol);
       t0=ac.currentTime+.5;k=0;setInterval(programma,200);
     }
     if(ac.state==='suspended') ac.resume();
   }
-  const pronto=()=>ac&&acceso&&ac.state==='running';
+  const pronto=()=>ac&&S&&acceso&&ac.state==='running';
+  const ora=()=>ac.currentTime+.02;
   function disegnaTasto(){
     const b=$('musica'); b.classList.toggle('spenta',!acceso); b.setAttribute('aria-pressed',acceso);
     b.setAttribute('aria-label',acceso?'Spegni musica e suoni':'Accendi musica e suoni');
@@ -809,71 +987,311 @@ const Suono=(()=>{
     avvia, disegnaTasto,
     cambia(){acceso=!acceso;try{localStorage.setItem('respiri-musica',acceso?'si':'no');}catch(e){} if(acceso)avvia();else if(ac)ac.suspend();disegnaTasto();},
     pausa(nascosta){if(!ac)return; if(nascosta)ac.suspend();else if(acceso)ac.resume();},
-    campanella(){if(!pronto())return;const n=ac.currentTime+.02;nota(1318.5,n,.13,1.5);nota(1568,n+.1,.11,1.7);nota(2093,n+.2,.1,2);},
-    ante(){if(!pronto())return;const n=ac.currentTime+.02;nota(170,n,.16,.16);nota(140,n+.1,.12,.2);nota(1046.5,n+.05,.05,1.2);nota(1568,n+.12,.04,1.4);},
+    campanella(){if(!pronto())return;const n=ora();S.campana(1568,n,.07);S.campana(2093,n+.13,.05);},
     spalanca(){
       if(!pronto())return;
-      const n=ac.currentTime+.01;
-      nota(190,n,.14,.09);nota(620,n,.035,.05);
-      const len=Math.floor(ac.sampleRate*.75), buf=ac.createBuffer(1,len,ac.sampleRate), d=buf.getChannelData(0);
-      for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
-      const src=ac.createBufferSource(), fl=ac.createBiquadFilter(), v=ac.createGain();
-      src.buffer=buf;fl.type='bandpass';fl.Q.value=1.1;
-      fl.frequency.setValueAtTime(420,n+.03);fl.frequency.exponentialRampToValueAtTime(3400,n+.5);
-      v.gain.setValueAtTime(0,n+.03);v.gain.linearRampToValueAtTime(.1,n+.16);v.gain.exponentialRampToValueAtTime(.001,n+.72);
-      src.connect(fl);fl.connect(v);v.connect(master);src.start(n+.03);src.stop(n+.76);
-      [1046.5,1318.5,1568,2093,2637.0].forEach((f,i)=>nota(f,n+.1+i*.075,.075-i*.008,1.5));
+      const n=ora();
+      S.scatto(n,.2);
+      S.soffio(n+.05,.3,.85);
+      [1046.5,1318.5,1568,2093,2637].forEach((f,i)=>S.campana(f,n+.16+i*.09,.055-i*.006));
     },
-    bussa(){if(!pronto())return;const n=ac.currentTime+.02;[.09,.33,.56].forEach((t,i)=>{nota(156-i*10,n+t,.15,.13);nota(320+i*12,n+t,.035,.07);});},
-    fruscio(){
-      if(!pronto())return;
-      const n=ac.currentTime+.01, len=Math.floor(ac.sampleRate*.22), buf=ac.createBuffer(1,len,ac.sampleRate), d=buf.getChannelData(0);
-      for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*(1-i/len);
-      const src=ac.createBufferSource(), fl=ac.createBiquadFilter(), v=ac.createGain();
-      src.buffer=buf;fl.type='bandpass';fl.frequency.value=2600;fl.Q.value=.7;v.gain.value=.09;
-      src.connect(fl);fl.connect(v);v.connect(master);src.start(n);
-    }
+    ante(){this.spalanca();},
+    bussa(){if(!pronto())return;const n=ora();[.09,.33,.56].forEach((t,i)=>S.legno(n+t,.32+i*.09,165+i*6));},
+    fruscio(){if(!pronto())return;S.sfoglia(ora(),.32);},
+    vento(){if(!pronto()||!scena.hidden)return;S.brezza(ora(),.22,3.3);}
   };
 })();
 Suono.disegnaTasto();
 $('musica').addEventListener('click',e=>{e.stopPropagation();Suono.cambia();});
 /* la musica può partire solo dopo il primo tocco: lo chiedono i telefoni */
 document.addEventListener('click',()=>Suono.avvia());
-document.addEventListener('touchend',()=>Suono.avvia(),{passive:true});
 document.addEventListener('visibilitychange',()=>Suono.pausa(document.hidden));
 
-/* --- la neve --- */
+/* --- atmosfera: neve dietro e davanti alla casa, stelle, stella cadente, folate di vento --- */
 (function(){
-  const cv=$('neve'), cx=cv.getContext('2d');
-  let W=0,H=0,fiocchi=[],prima=0;
+  const dietro=$('neve'), davanti=$('neve-davanti'), cd=dietro.getContext('2d'), cf=davanti.getContext('2d');
+  const tetto=document.querySelector('.tetto'), radice=document.documentElement;
+  let W=0,H=0,lontani=[],vicini=[],stelle=[],cometa=null,prossimaCometa=9,inizioFolata=-1,forza=0,prossimaFolata=7,filamenti=[],polvere=[],prima=0,tempo=0;
+  function fiocco(ovunque,vicino){
+    const z=Math.random();
+    return vicino
+      ? {x:Math.random()*W,y:ovunque?Math.random()*H:-24,r:2.6+z*3.4,v:44+z*42,a:.32+z*.38,f:Math.random()*6.28,o:.4+Math.random()*.8,s:1.8}
+      : {x:Math.random()*W,y:ovunque?Math.random()*H:-8,r:.7+z*2.1,v:10+z*28,a:.25+z*.55,f:Math.random()*6.28,o:.3+Math.random()*.9,s:1};
+  }
   function misura(){
     const d=Math.min(devicePixelRatio||1,2);
-    W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0);
-    const n=Math.round(Math.min(90,Math.max(28,W*H/11000)));
-    fiocchi=Array.from({length:n},()=>nuovo(true));
+    W=innerWidth;H=innerHeight;
+    for(const c of [dietro,davanti]){c.width=W*d;c.height=H*d;}
+    cd.setTransform(d,0,0,d,0,0);cf.setTransform(d,0,0,d,0,0);
+    const n=Math.round(Math.min(80,Math.max(26,W*H/12000)));
+    lontani=Array.from({length:n},()=>fiocco(true,false));
+    vicini=Array.from({length:Math.round(n/6)+5},()=>fiocco(true,true));
+    stelle=Array.from({length:Math.round(Math.min(60,W/13))},()=>({x:Math.random()*W,y:Math.random()*H*.4,r:.45+Math.random()*1.05,f:Math.random()*6.28,v:.5+Math.random()*1.5}));
     if(calmo) disegna(0);
   }
-  function nuovo(ovunque){
-    const z=Math.random();
-    return {x:Math.random()*W,y:ovunque?Math.random()*H:-8,r:.7+z*2.3,v:10+z*30,a:.25+z*.6,f:Math.random()*6.28,o:.3+Math.random()*.9};
+  function muovi(f,dt,vicino){
+    f.y+=f.v*dt*(1-forza*.3); f.f+=f.o*dt;
+    f.x+=Math.sin(f.f)*12*f.s*dt+forza*(vicino?165:90)*dt;
+    if(f.y>H+14||f.x>W+40){const nuovo=fiocco(false,vicino);if(forza>.35){nuovo.x=-30;nuovo.y=Math.random()*H;}Object.assign(f,nuovo);}
+  }
+  const curva=t=>t<0?0:t>1?1:t*t*(3-2*t);
+  function avviaFolata(){
+    inizioFolata=tempo; radice.classList.add('folata');
+    for(let i=0;i<3;i++) filamenti.push({t0:tempo+i*.35,dur:2.4+Math.random()*.8,y:H*(.12+Math.random()*.55),amp:10+Math.random()*16,fr:1+Math.random()*1.4,ph:Math.random()*6.28,sp:.8+Math.random()*.4});
+    if(typeof Suono!=='undefined'&&Suono.vento) Suono.vento();
+  }
+  function aggiornaFolata(dt){
+    if(tempo>prossimaFolata&&inizioFolata<0) avviaFolata();
+    if(inizioFolata>=0){
+      const t=tempo-inizioFolata;
+      forza=t<.9?curva(t/.9):t<2.1?1:1-curva((t-2.1)/1.4);
+      if(t<1.6&&tetto) soffiaTetto(dt);
+      if(t>=3.5){inizioFolata=-1;forza=0;radice.classList.remove('folata');prossimaFolata=tempo+9+Math.random()*9;}
+    }
+  }
+  /* la neve polverosa che il vento solleva dal tetto */
+  function soffiaTetto(dt){
+    const r=tetto.getBoundingClientRect();
+    if(r.bottom<0||r.top>H) return;
+    const n=Math.random()<dt*34?2:0;
+    for(let i=0;i<n;i++){
+      const u=Math.random(), lato=Math.random()<.5?-1:1;
+      polvere.push({x:r.left+r.width/2+lato*u*r.width*.52,y:r.top+r.height*(.06+u*.84),vx:50+Math.random()*90,vy:-14-Math.random()*22,vita:0,dur:1.1+Math.random()*1.1,r:.6+Math.random()*1.3});
+    }
+  }
+  function disegnaFiocchi(c,lista,vicino,dt){
+    for(const f of lista){
+      muovi(f,dt,vicino);
+      c.globalAlpha=f.a;
+      if(vicino){const g=c.createRadialGradient(f.x,f.y,0,f.x,f.y,f.r);g.addColorStop(0,'rgba(255,250,240,1)');g.addColorStop(.5,'rgba(255,250,240,.5)');g.addColorStop(1,'rgba(255,250,240,0)');c.fillStyle=g;}
+      else c.fillStyle='#FFF7E6';
+      c.beginPath();c.arc(f.x,f.y,f.r,0,6.283);c.fill();
+    }
+    c.globalAlpha=1;
+  }
+  function disegnaCielo(dt){
+    cd.fillStyle='#FFF4D8';
+    for(const s of stelle){cd.globalAlpha=.22+.5*(.5+.5*Math.sin(tempo*s.v+s.f));cd.beginPath();cd.arc(s.x,s.y,s.r,0,6.283);cd.fill();}
+    cd.globalAlpha=1;
+    if(calmo) return;
+    if(!cometa&&tempo>prossimaCometa){const a=.32+Math.random()*.22;cometa={x:W*(.08+Math.random()*.5),y:H*(.03+Math.random()*.16),vx:Math.cos(a)*620,vy:Math.sin(a)*620,t:0,dur:1.05};}
+    if(cometa){
+      cometa.t+=dt;
+      const k=cometa.t/cometa.dur, x=cometa.x+cometa.vx*cometa.t, y=cometa.y+cometa.vy*cometa.t, coda=.16;
+      const al=k<.15?k/.15:1-curva((k-.4)/.6);
+      const g=cd.createLinearGradient(x,y,x-cometa.vx*coda,y-cometa.vy*coda);
+      g.addColorStop(0,'rgba(255,240,200,'+(.95*al).toFixed(3)+')');g.addColorStop(1,'rgba(255,240,200,0)');
+      cd.strokeStyle=g;cd.lineWidth=1.8;cd.lineCap='round';cd.beginPath();cd.moveTo(x,y);cd.lineTo(x-cometa.vx*coda,y-cometa.vy*coda);cd.stroke();
+      cd.fillStyle='rgba(255,246,220,'+al.toFixed(3)+')';cd.beginPath();cd.arc(x,y,1.6,0,6.283);cd.fill();
+      if(k>=1){cometa=null;prossimaCometa=tempo+18+Math.random()*20;}
+    }
+  }
+  function disegnaVento(dt){
+    for(let i=filamenti.length-1;i>=0;i--){
+      const w=filamenti[i], t=(tempo-w.t0)/w.dur;
+      if(t<0) continue;
+      if(t>1){filamenti.splice(i,1);continue;}
+      const testa=-.15+t*1.35*w.sp, lun=.32, al=Math.sin(Math.PI*t)*.22;
+      cf.strokeStyle='rgba(255,252,245,'+al.toFixed(3)+')';cf.lineWidth=1.3;cf.lineCap='round';cf.beginPath();
+      for(let u=0;u<=1.0001;u+=.05){
+        const p=testa-lun+u*lun, x=p*W, y=w.y+Math.sin(p*w.fr*6.28+w.ph)*w.amp-(u>.82?(u-.82)*90*Math.sin(t*3):0);
+        if(u===0)cf.moveTo(x,y);else cf.lineTo(x,y);
+      }
+      cf.stroke();
+    }
+    cf.fillStyle='#FFFFFF';
+    for(let i=polvere.length-1;i>=0;i--){
+      const p=polvere[i];p.vita+=dt;
+      if(p.vita>p.dur){polvere.splice(i,1);continue;}
+      p.vx+=forza*40*dt;p.vy+=26*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;
+      cf.globalAlpha=.85*(1-p.vita/p.dur);cf.beginPath();cf.arc(p.x,p.y,p.r,0,6.283);cf.fill();
+    }
+    cf.globalAlpha=1;
   }
   function disegna(dt){
-    cx.clearRect(0,0,W,H);
-    for(const f of fiocchi){
-      f.y+=f.v*dt; f.f+=f.o*dt; f.x+=Math.sin(f.f)*12*dt;
-      if(f.y>H+8) Object.assign(f,nuovo(false));
-      cx.globalAlpha=f.a; cx.fillStyle='#FFF7E6';
-      cx.beginPath(); cx.arc(f.x,f.y,f.r,0,6.283); cx.fill();
-    }
+    cd.clearRect(0,0,W,H);cf.clearRect(0,0,W,H);
+    disegnaCielo(dt);
+    disegnaFiocchi(cd,lontani,false,dt);
+    if(!calmo){aggiornaFolata(dt);disegnaVento(dt);}
+    disegnaFiocchi(cf,vicini,true,dt);
   }
   function passo(t){
     const dt=Math.min(.05,(t-prima)/1000||0); prima=t;
-    if(!document.hidden&&scena.hidden) disegna(dt);
+    if(!document.hidden&&scena.hidden){tempo+=dt;disegna(dt);}
     requestAnimationFrame(passo);
   }
   addEventListener('resize',misura); misura();
   if(!calmo) requestAnimationFrame(passo);
+  /* luccichii sulla neve a terra */
+  const prato=document.querySelector('footer');
+  if(prato&&!calmo) for(let i=0;i<16;i++){
+    const l=document.createElement('span');l.className='luccica';l.setAttribute('aria-hidden','true');
+    l.style.left=(4+Math.random()*92).toFixed(1)+'%';l.style.top=(Math.random()*Math.random()*88+2).toFixed(1)+'%';
+    l.style.animationDelay=(-Math.random()*5).toFixed(2)+'s';l.style.animationDuration=(4+Math.random()*3).toFixed(2)+'s';
+    prato.appendChild(l);
+  }
 })();
+
+/* --- la scena intorno alla casa, a piani e tutta in scala sulla porta (D = altezza della porta):
+   bosco dietro, giardino con cespugli e pupazzo, staccionata con cancelletto, lampione, cassetta delle lettere,
+   stradina con le tracce della slitta, e in primo piano il cumulo di neve con le scritte tra gli abeti --- */
+function disegnaScena(){
+  const sv=$('cortile'), bo=$('bosco'), co=$('cornice'), porta=document.querySelector('.fin.porta'), zoc=document.querySelector('.zoccolo'), prato=document.querySelector('footer'), modello=document.querySelector('.ab-sx');
+  if(!sv||!bo||!co||!porta||!zoc||!prato||!modello||casa.style.transform) return;
+  const cr=casa.getBoundingClientRect(), zr=zoc.getBoundingClientRect(), pr=porta.getBoundingClientRect();
+  const W=Math.round(innerWidth), D=pr.height, wd=pr.width, largo=W>=700, n=v=>(+v).toFixed(1);
+  if(D<24||wd<10) return;
+  let seme=11; const caso=()=>(seme=(seme*16807)%2147483647)/2147483647;
+  const base=zr.bottom-cr.top;
+  sv.style.top=(base-7)+'px';
+  const ox=sv.getBoundingClientRect().left, xd=pr.left+pr.width/2-ox, cl=cr.left-ox, cdx=cr.right-ox;
+  const yF=1.22*D, yLt=x=>yF+.14*D+.018*D*Math.sin(x*.011+1), yLb=x=>yLt(x)+.5*D+.02*D*Math.sin(x*.007+2), fy=x=>yLt(x)-.03*D;
+  const Hc=Math.round(yF+D);
+  sv.style.height=Hc+'px'; sv.setAttribute('viewBox','0 0 '+W+' '+Hc);
+  let xg=xd+(W/2-xd)*.5; if(Math.abs(xg-xd)>1.15*D) xg=xd+Math.sign(xg-xd)*1.15*D;
+  const gh=.75*wd+.1*D, xl=xg-gh-.36*D, xs=Math.max(.5*D,xl-.95*D), xm=xg+gh+.36*D;
+  const lungo=(f,dy)=>{let d='';for(let x=-24;x<=W+24;x+=24)d+=(d?'L':'M')+n(x)+','+n(f(x)+(dy||0));return d;};
+  const ramo=modello.innerHTML;
+  const abete=(x,by,h,gira)=>{const w=h*60/96;return '<g class="albero" style="transform-origin:'+n(x)+'px '+n(by)+'px"><svg x="'+n(x-w/2)+'" y="'+n(by-h*92/96)+'" width="'+n(w)+'" height="'+n(h)+'" viewBox="0 0 60 96" overflow="visible">'+(gira?'<g transform="translate(60 0) scale(-1 1)">'+ramo+'</g>':ramo)+'</svg></g>';};
+  const orma=(x,y,a)=>'<g transform="translate('+n(x)+' '+n(y)+') rotate('+n(a)+') scale('+n(D/85)+')" fill="#A4B6BF" opacity=".7"><ellipse cx="0" cy="-2.2" rx="2.2" ry="3"/><ellipse cx="0" cy="3.1" rx="1.7" ry="1.8"/></g>';
+  let o='<defs>'
+   +'<linearGradient id="gCortile" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="'+n(yF)+'"><stop offset="0" stop-color="#F8FBFB" stop-opacity="0"/><stop offset=".14" stop-color="#F8FBFB"/><stop offset="1" stop-color="#E8EFF2"/></linearGradient>'
+   +'<linearGradient id="gStrada" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="'+n(yF+.7*D)+'"><stop offset="0" stop-color="#DCE5E9"/><stop offset="1" stop-color="#C5D1D8"/></linearGradient>'
+   +'<linearGradient id="gCumulo" gradientUnits="userSpaceOnUse" x1="0" y1="'+n(yF+.62*D)+'" x2="0" y2="'+Hc+'"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#EEF3F5"/></linearGradient>'
+   +'<radialGradient id="gAlone"><stop offset="0" stop-color="#FFD98F" stop-opacity=".6"/><stop offset=".45" stop-color="#FFD98F" stop-opacity=".2"/><stop offset="1" stop-color="#FFD98F" stop-opacity="0"/></radialGradient>'
+   +'<radialGradient id="gPozza"><stop offset="0" stop-color="#FFE3A6" stop-opacity=".6"/><stop offset=".6" stop-color="#FFE3A6" stop-opacity=".2"/><stop offset="1" stop-color="#FFE3A6" stop-opacity="0"/></radialGradient>'
+   +'<radialGradient id="gPalla" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".7" stop-color="#EEF3F6"/><stop offset="1" stop-color="#CFDCE3"/></radialGradient></defs>';
+  /* terreno del giardino */
+  o+='<rect x="0" y="0" width="'+W+'" height="'+Hc+'" fill="url(#gCortile)"/>';
+  /* alberi ai lati della casa, dove c'è spazio */
+  const lati=[];
+  for(let k=0;k<8;k++){const dx=.95*D+k*1.15*D, h=(1.5+caso()*.8)*D, by=(.5+caso()*.42)*D; if(cl-dx>-.8*D)lati.push([cl-dx,by,h,k%2]); if(cdx+dx<W+.8*D)lati.push([cdx+dx,by,h*.92,(k+1)%2]);}
+  lati.sort((a,b)=>a[1]-b[1]).forEach(a=>{o+=abete(a[0],a[1],a[2],a[3]);});
+  /* cespugli innevati lungo il muro */
+  const tr=document.querySelector('.tavola').getBoundingClientRect();
+  for(let x=tr.left-ox+.42*D;x<pr.left-ox-.42*D;x+=.78*D){const r=(.15+caso()*.04)*D,y=.2*D; if(Math.abs(x-xl)<.4*D)continue;
+    o+='<g><ellipse cx="'+n(x)+'" cy="'+n(y+.02*D)+'" rx="'+n(r*2)+'" ry="'+n(r*.35)+'" fill="#5E7C8C" opacity=".3"/>'
+      +'<circle cx="'+n(x-r*.85)+'" cy="'+n(y-r*.55)+'" r="'+n(r*.8)+'" fill="#2A5438"/><circle cx="'+n(x+r*.8)+'" cy="'+n(y-r*.6)+'" r="'+n(r*.85)+'" fill="#244A31"/><circle cx="'+n(x)+'" cy="'+n(y-r*.9)+'" r="'+n(r)+'" fill="#2F5E40"/>'
+      +'<path d="M'+n(x-r*1.5)+','+n(y-r*.8)+'Q'+n(x-r*1.3)+','+n(y-r*1.9)+' '+n(x-r*.3)+','+n(y-r*1.75)+'Q'+n(x)+','+n(y-r*2.35)+' '+n(x+r*.55)+','+n(y-r*1.8)+'Q'+n(x+r*1.5)+','+n(y-r*1.9)+' '+n(x+r*1.6)+','+n(y-r*.9)+'Q'+n(x+r*.9)+','+n(y-r*1.25)+' '+n(x+r*.2)+','+n(y-r*1.05)+'Q'+n(x-r*.7)+','+n(y-r*1.3)+' '+n(x-r*1.5)+','+n(y-r*.8)+'Z" fill="#FFFDF8"/>'
+      +'<circle cx="'+n(x-r*.5)+'" cy="'+n(y-r*.55)+'" r="'+n(r*.13)+'" fill="#C3272E"/><circle cx="'+n(x+r*.45)+'" cy="'+n(y-r*.4)+'" r="'+n(r*.13)+'" fill="#C3272E"/><circle cx="'+n(x+r*.1)+'" cy="'+n(y-r*.25)+'" r="'+n(r*.11)+'" fill="#C3272E"/></g>';}
+  /* abeti agli angoli della casa */
+  o+=abete(cl-.1*D,.32*D,1.15*D,0)+abete(cdx+.12*D,.3*D,.95*D,1);
+  /* vialetto dalla porta al cancelletto */
+  const bez=(a,b,c,d,t)=>{const u=1-t;return u*u*u*a+3*u*u*t*b+3*u*t*t*c+t*t*t*d;};
+  const ye=yLt(xg)+.1*D, centro=[];
+  for(let i=0;i<=24;i++){const k=i/24;centro.push([bez(xd,xd,xg,xg,k),bez(-8,ye*.5,ye*.48,ye,k),wd*(1.02+.48*k)]);}
+  const sx=[],dx=[];
+  centro.forEach((p,i)=>{const q=centro[Math.min(i+1,24)],a=centro[Math.max(i-1,0)];let tx=q[0]-a[0],ty=q[1]-a[1];const l=Math.hypot(tx,ty)||1;tx/=l;ty/=l;sx.push([p[0]-ty*p[2]/2,p[1]+tx*p[2]/2]);dx.push([p[0]+ty*p[2]/2,p[1]-tx*p[2]/2]);});
+  const linea=a=>a.map((p,i)=>(i?'L':'M')+n(p[0])+','+n(p[1])).join('');
+  /* stradina davanti al giardino */
+  let giu='';for(let x=W+24;x>=-24;x-=24)giu+='L'+n(x)+','+n(yLb(x));
+  o+='<path d="'+lungo(yLt)+giu+'Z" fill="url(#gStrada)"/>';
+  o+='<path d="'+lungo(yLt,.035*D)+'" fill="none" stroke="#AFC0C9" stroke-width="'+n(.03*D)+'" opacity=".5"/>';
+  o+='<path d="'+linea(sx)+linea(dx.slice().reverse()).replace('M','L')+'Z" fill="url(#gStrada)"/>';
+  o+='<path d="'+lungo(yLt,-.004*D)+'" fill="none" stroke="#FFFFFF" stroke-width="'+n(.045*D)+'" stroke-linecap="round"/>';
+  o+='<path d="M'+n(xg-.75*wd+2)+','+n(yLt(xg)-.03*D)+'H'+n(xg+.75*wd-2)+'" stroke="#D2DDE2" stroke-width="'+n(.09*D)+'"/>';
+  o+='<path d="'+linea(sx.slice(0,23))+'" fill="none" stroke="#FFFFFF" stroke-width="'+n(.04*D)+'" stroke-linecap="round"/><path d="'+linea(dx.slice(0,23))+'" fill="none" stroke="#FFFFFF" stroke-width="'+n(.04*D)+'" stroke-linecap="round"/>';
+  o+='<path d="'+linea(sx.slice(0,22).map((p,i)=>[p[0]+(dx[i][0]-p[0])*.07,p[1]+(dx[i][1]-p[1])*.07]))+'" fill="none" stroke="#AFC0C9" stroke-width="'+n(.016*D)+'" opacity=".6"/>';
+  /* tracce della slitta e impronte: arrivano dalla strada, entrano dal cancelletto, salgono alla porta */
+  o+='<path d="'+lungo(yLt,.3*D)+'" fill="none" stroke="#B3C2CA" stroke-width="'+n(.016*D)+'" opacity=".8"/><path d="'+lungo(yLt,.39*D)+'" fill="none" stroke="#B3C2CA" stroke-width="'+n(.016*D)+'" opacity=".8"/>';
+  for(let k=0,x=xg-2.6*D;x<xg-.25*D;x+=.24*D,k++) if(x>0) o+=orma(x,yLt(x)+(.15+(k%2?.05:0))*D,90);
+  for(let i=22;i>=3;i-=2){const p=centro[i],q=centro[i-1],a=Math.atan2(q[1]-p[1],q[0]-p[0])*180/Math.PI+90;o+=orma(p[0]+((i/2)%2?1:-1)*p[2]*.13,p[1],a);}
+  /* cumulo di neve in primo piano */
+  o+='<path d="'+lungo(yLb,-.03*D)+'" fill="none" stroke="#AFC0C9" stroke-width="'+n(.03*D)+'" opacity=".5"/>';
+  o+='<path d="'+lungo(yLb)+'L'+(W+24)+','+(Hc+2)+'L-24,'+(Hc+2)+'Z" fill="url(#gCumulo)"/>';
+  /* luce del lampione sulla neve */
+  const yl=fy(xl)-.05*D;
+  o+='<ellipse class="lume" cx="'+n(xl)+'" cy="'+n(yl+.03*D)+'" rx="'+n(.8*D)+'" ry="'+n(.15*D)+'" fill="url(#gPozza)"/><circle class="lume" cx="'+n(xl)+'" cy="'+n(yl-1.36*D)+'" r="'+n(.85*D)+'" fill="url(#gAlone)"/>';
+  /* pupazzo di neve */
+  {const b=fy(xs)-.2*D, r1=.24*D, r2=.17*D, r3=.125*D, y1=b-r1, y2=y1-.31*D, y3=y2-.225*D, t=.012*D;
+   o+='<g><ellipse cx="'+n(xs)+'" cy="'+n(b)+'" rx="'+n(.34*D)+'" ry="'+n(.05*D)+'" fill="#5E7C8C" opacity=".3"/>'
+    +'<path d="M'+n(xs-r2*.8)+','+n(y2-.02*D)+'l'+n(-.2*D)+','+n(-.13*D)+'m'+n(.07*D)+','+n(.045*D)+'l'+n(-.02*D)+','+n(-.08*D)+'M'+n(xs+r2*.8)+','+n(y2-.02*D)+'l'+n(.2*D)+','+n(-.15*D)+'m'+n(-.07*D)+','+n(.052*D)+'l'+n(.07*D)+','+n(-.01*D)+'" fill="none" stroke="#5A3A24" stroke-width="'+n(.022*D)+'" stroke-linecap="round"/>'
+    +'<circle cx="'+n(xs)+'" cy="'+n(y1)+'" r="'+n(r1)+'" fill="url(#gPalla)" stroke="#C3D1D9" stroke-width="'+n(t)+'"/><circle cx="'+n(xs)+'" cy="'+n(y2)+'" r="'+n(r2)+'" fill="url(#gPalla)" stroke="#C3D1D9" stroke-width="'+n(t)+'"/><circle cx="'+n(xs)+'" cy="'+n(y3)+'" r="'+n(r3)+'" fill="url(#gPalla)" stroke="#C3D1D9" stroke-width="'+n(t)+'"/>'
+    +'<path d="M'+n(xs-r3*.95)+','+n(y3+r3*.62)+'Q'+n(xs)+','+n(y3+r3*1.25)+' '+n(xs+r3*.95)+','+n(y3+r3*.62)+'L'+n(xs+r3*.9)+','+n(y3+r3*1.02)+'Q'+n(xs)+','+n(y3+r3*1.62)+' '+n(xs-r3*.9)+','+n(y3+r3*1.02)+'Z" fill="#A0222A"/><path d="M'+n(xs+r3*.35)+','+n(y3+r3*1.2)+'l'+n(.035*D)+','+n(.16*D)+'l'+n(-.06*D)+','+n(.01*D)+'l'+n(-.03*D)+','+n(-.15*D)+'Z" fill="#8E1B1E"/>'
+    +'<circle cx="'+n(xs-r3*.38)+'" cy="'+n(y3-r3*.18)+'" r="'+n(.014*D)+'" fill="#2B2B2B"/><circle cx="'+n(xs+r3*.3)+'" cy="'+n(y3-r3*.2)+'" r="'+n(.014*D)+'" fill="#2B2B2B"/>'
+    +'<path d="M'+n(xs)+','+n(y3+r3*.02)+'l'+n(.12*D)+','+n(.03*D)+'l'+n(-.12*D)+','+n(.035*D)+'Z" fill="#E07A2B"/>'
+    +[-.3,-.1,.12,.32].map((a,i)=>'<circle cx="'+n(xs+a*r3*1.3)+'" cy="'+n(y3+r3*(.42+(i==1||i==2?.1:0)))+'" r="'+n(.009*D)+'" fill="#2B2B2B"/>').join('')
+    +'<circle cx="'+n(xs)+'" cy="'+n(y2-.03*D)+'" r="'+n(.016*D)+'" fill="#2B2B2B"/><circle cx="'+n(xs)+'" cy="'+n(y2+.05*D)+'" r="'+n(.016*D)+'" fill="#2B2B2B"/>'
+    +'<rect x="'+n(xs-r3*1.05)+'" y="'+n(y3-r3*.86)+'" width="'+n(r3*2.1)+'" height="'+n(.03*D)+'" rx="'+n(.012*D)+'" fill="#2B2B2B"/><rect x="'+n(xs-r3*.68)+'" y="'+n(y3-r3*.86-.13*D)+'" width="'+n(r3*1.36)+'" height="'+n(.135*D)+'" fill="#2B2B2B"/><rect x="'+n(xs-r3*.68)+'" y="'+n(y3-r3*.86-.045*D)+'" width="'+n(r3*1.36)+'" height="'+n(.03*D)+'" fill="#A0222A"/>'
+    +'<path d="M'+n(xs-r3*.72)+','+n(y3-r3*.86-.125*D)+'q'+n(r3*.72)+','+n(-.05*D)+' '+n(r3*1.44)+',0z" fill="#FFFDF8"/></g>';}
+  /* lampione, più alto della porta */
+  {const u=D;
+   o+='<g><rect x="'+n(xl-.06*u)+'" y="'+n(yl-.1*u)+'" width="'+n(.12*u)+'" height="'+n(.1*u)+'" rx="'+n(.012*u)+'" fill="#26282A"/><rect x="'+n(xl-.022*u)+'" y="'+n(yl-1.2*u)+'" width="'+n(.044*u)+'" height="'+n(1.12*u)+'" fill="#26282A"/><rect x="'+n(xl-.01*u)+'" y="'+n(yl-1.2*u)+'" width="'+n(.012*u)+'" height="'+n(1.12*u)+'" fill="#4A4E51"/>'
+    +'<rect x="'+n(xl-.055*u)+'" y="'+n(yl-1.22*u)+'" width="'+n(.11*u)+'" height="'+n(.03*u)+'" fill="#26282A"/>'
+    +'<path d="M'+n(xl-.075*u)+','+n(yl-1.22*u)+'L'+n(xl-.105*u)+','+n(yl-1.5*u)+'H'+n(xl+.105*u)+'L'+n(xl+.075*u)+','+n(yl-1.22*u)+'Z" fill="#26282A"/>'
+    +'<path class="lume" d="M'+n(xl-.058*u)+','+n(yl-1.245*u)+'L'+n(xl-.082*u)+','+n(yl-1.475*u)+'H'+n(xl+.082*u)+'L'+n(xl+.058*u)+','+n(yl-1.245*u)+'Z" fill="#FFDDA0"/><path d="M'+n(xl)+','+n(yl-1.475*u)+'V'+n(yl-1.245*u)+'" stroke="#26282A" stroke-width="'+n(.014*u)+'"/>'
+    +'<path d="M'+n(xl-.14*u)+','+n(yl-1.5*u)+'L'+n(xl)+','+n(yl-1.63*u)+'L'+n(xl+.14*u)+','+n(yl-1.5*u)+'Z" fill="#26282A"/><circle cx="'+n(xl)+'" cy="'+n(yl-1.645*u)+'" r="'+n(.018*u)+'" fill="#26282A"/>'
+    +'<path d="M'+n(xl-.15*u)+','+n(yl-1.505*u)+'Q'+n(xl-.06*u)+','+n(yl-1.66*u)+' '+n(xl)+','+n(yl-1.66*u)+'Q'+n(xl+.06*u)+','+n(yl-1.66*u)+' '+n(xl+.15*u)+','+n(yl-1.505*u)+'Q'+n(xl)+','+n(yl-1.56*u)+' '+n(xl-.15*u)+','+n(yl-1.505*u)+'Z" fill="#FFFDF8"/></g>';}
+  /* staccionata rossa a punta, con la neve su ogni paletto */
+  const pal=(x,y,h,w)=>'<path d="M'+n(x-w/2)+','+n(y)+'V'+n(y-h+w*.6)+'L'+n(x)+','+n(y-h)+'L'+n(x+w/2)+','+n(y-h+w*.6)+'V'+n(y)+'Z" fill="#8E1B1E"/><path d="M'+n(x)+','+n(y)+'V'+n(y-h)+'L'+n(x+w/2)+','+n(y-h+w*.6)+'V'+n(y)+'Z" fill="#6F1417"/>'
+    +'<path d="M'+n(x-w/2-1)+','+n(y-h+w*.66)+'L'+n(x)+','+n(y-h-1.6)+'L'+n(x+w/2+1)+','+n(y-h+w*.66)+'Q'+n(x)+','+n(y-h+w*.2)+' '+n(x-w/2-1)+','+n(y-h+w*.66)+'Z" fill="#FFFDF8"/>';
+  const tratto=(a,b)=>{if(b-a<.1*D)return '';let t='';
+    [.14,.3].forEach(k=>{let d='';for(let x=a;x<=b+1;x+=Math.min(24,b-a))d+=(d?'L':'M')+n(x)+','+n(fy(x)-k*D);t+='<path d="'+d+'" fill="none" stroke="#7A1719" stroke-width="'+n(.045*D)+'"/><path d="'+d+'" fill="none" stroke="#FFFDF8" stroke-width="'+n(.014*D)+'" transform="translate(0 '+n(-.026*D)+')"/>';});
+    for(let x=a+.06*D;x<=b-.04*D;x+=.17*D)t+=pal(x,fy(x)+.01*D,.42*D,.085*D);return t;};
+  o+=tratto(-10,xg-gh-.06*D)+tratto(xg+gh+.06*D,W+10);
+  [xg-gh,xg+gh].forEach(x=>{const y=fy(x)+.015*D;o+='<rect x="'+n(x-.055*D)+'" y="'+n(y-.56*D)+'" width="'+n(.11*D)+'" height="'+n(.56*D)+'" fill="#7A1719"/><rect x="'+n(x)+'" y="'+n(y-.56*D)+'" width="'+n(.055*D)+'" height="'+n(.56*D)+'" fill="#5E1012"/><circle cx="'+n(x)+'" cy="'+n(y-.6*D)+'" r="'+n(.062*D)+'" fill="#7A1719"/><path d="M'+n(x-.075*D)+','+n(y-.6*D)+'A'+n(.075*D)+','+n(.085*D)+' 0 0 1 '+n(x+.075*D)+','+n(y-.6*D)+'Q'+n(x)+','+n(y-.63*D)+' '+n(x-.075*D)+','+n(y-.6*D)+'Z" fill="#FFFDF8"/>';});
+  /* cancelletto aperto verso il giardino */
+  for(let k=1;k<=4;k++){const x=xg+gh-.06*D-k*.085*D, y=fy(xg+gh)-k*.045*D;o+=pal(x,y,.4*D*(1-.05*k),.07*D*(1-.05*k));}
+  /* pettirosso sul paletto del cancelletto */
+  {const x=xg+gh, y=fy(x)-.69*D, r=.05*D;
+   o+='<g><path d="M'+n(x+r*.9)+','+n(y)+'l'+n(r*1.5)+','+n(-r*.5)+'l'+n(-r*.3)+','+n(r*.8)+'Z" fill="#5A4030"/><ellipse cx="'+n(x)+'" cy="'+n(y)+'" rx="'+n(r*1.15)+'" ry="'+n(r*.95)+'" fill="#6B4A33"/><circle cx="'+n(x-r*.75)+'" cy="'+n(y-r*.7)+'" r="'+n(r*.7)+'" fill="#6B4A33"/><ellipse cx="'+n(x-r*.55)+'" cy="'+n(y+r*.1)+'" rx="'+n(r*.75)+'" ry="'+n(r*.7)+'" fill="#D9532B"/><path d="M'+n(x-r*1.4)+','+n(y-r*.75)+'l'+n(-r*.6)+','+n(r*.15)+'l'+n(r*.6)+','+n(r*.2)+'Z" fill="#E0A23A"/><circle cx="'+n(x-r*.95)+'" cy="'+n(y-r*.85)+'" r="'+n(r*.14)+'" fill="#1D1D1D"/></g>';}
+  /* cassetta delle lettere, con la neve sopra e una busta che spunta */
+  {const y=fy(xm)+.12*D, bw=.34*D, bh=.21*D, yb=y-.48*D;
+   o+='<g><ellipse cx="'+n(xm)+'" cy="'+n(y)+'" rx="'+n(.16*D)+'" ry="'+n(.03*D)+'" fill="#5E7C8C" opacity=".3"/><rect x="'+n(xm-.022*D)+'" y="'+n(yb)+'" width="'+n(.044*D)+'" height="'+n(.48*D)+'" fill="#5E4331"/>'
+    +'<rect x="'+n(xm-bw/2-.03*D)+'" y="'+n(yb-bh*.82)+'" width="'+n(.1*D)+'" height="'+n(.065*D)+'" fill="#FBF6EC" transform="rotate(-9 '+n(xm-bw/2)+' '+n(yb-bh*.6)+')"/>'
+    +'<path d="M'+n(xm-bw/2)+','+n(yb)+'V'+n(yb-bh*.5)+'A'+n(bw/2)+','+n(bh*.5)+' 0 0 1 '+n(xm+bw/2)+','+n(yb-bh*.5)+'V'+n(yb)+'Z" fill="#A0222A"/><rect x="'+n(xm-bw/2)+'" y="'+n(yb-.035*D)+'" width="'+n(bw)+'" height="'+n(.035*D)+'" fill="#7A1719"/>'
+    +'<rect x="'+n(xm+bw*.2)+'" y="'+n(yb-bh*.95)+'" width="'+n(.016*D)+'" height="'+n(bh*.6)+'" fill="#C49A45"/><rect x="'+n(xm+bw*.2)+'" y="'+n(yb-bh*.95)+'" width="'+n(.07*D)+'" height="'+n(.045*D)+'" fill="#C49A45"/>'
+    +'<path d="M'+n(xm-bw/2-.01*D)+','+n(yb-bh*.52)+'A'+n(bw/2+.01*D)+','+n(bh*.56)+' 0 0 1 '+n(xm+bw/2+.01*D)+','+n(yb-bh*.52)+'Q'+n(xm)+','+n(yb-bh*1.02)+' '+n(xm-bw/2-.01*D)+','+n(yb-bh*.52)+'Z" fill="#FFFDF8"/></g>';}
+  /* slitta appoggiata alla staccionata, se c'è posto */
+  if(largo&&xm+1.3*D<W){const x=xm+.95*D, y=fy(x)+.06*D;
+   o+='<g transform="rotate(-66 '+n(x)+' '+n(y)+')"><path d="M'+n(x)+','+n(y)+'h'+n(.6*D)+'q'+n(.1*D)+',0 '+n(.1*D)+','+n(-.09*D)+'" fill="none" stroke="#A0222A" stroke-width="'+n(.028*D)+'" stroke-linecap="round"/><rect x="'+n(x+.04*D)+'" y="'+n(y-.1*D)+'" width="'+n(.5*D)+'" height="'+n(.04*D)+'" rx="'+n(.01*D)+'" fill="#B8834F"/><path d="M'+n(x+.12*D)+','+n(y)+'v'+n(-.07*D)+'M'+n(x+.44*D)+','+n(y)+'v'+n(-.07*D)+'" stroke="#8A5E36" stroke-width="'+n(.024*D)+'"/></g>';}
+  sv.innerHTML=o;
+
+  /* bosco in controluce dietro la casa */
+  const Hb=Math.round(2.9*D); bo.style.top=(base-Hb)+'px'; bo.style.height=Hb+'px'; bo.setAttribute('viewBox','0 0 '+W+' '+Hb);
+  const sagoma=(x,h,col,op)=>{const w=h*.56,y=Hb;return '<path d="M'+n(x)+','+n(y-h)+'L'+n(x+w*.27)+','+n(y-h*.63)+'L'+n(x+w*.13)+','+n(y-h*.63)+'L'+n(x+w*.39)+','+n(y-h*.31)+'L'+n(x+w*.21)+','+n(y-h*.31)+'L'+n(x+w*.5)+','+n(y)+'H'+n(x-w*.5)+'L'+n(x-w*.21)+','+n(y-h*.31)+'L'+n(x-w*.39)+','+n(y-h*.31)+'L'+n(x-w*.13)+','+n(y-h*.63)+'L'+n(x-w*.27)+','+n(y-h*.63)+'Z" fill="'+col+'" opacity="'+op+'"/>';};
+  let b='';const tl=tr.left-ox-.3*D, trd=tr.right-ox+.3*D;
+  for(let x=-.3*D;x<W+.5*D;x+=(.42+caso()*.2)*D) if(x<tl||x>trd) b+=sagoma(x,(1.1+caso()*.9)*D,'#2C4D3F',.55);
+  for(let x=-.1*D;x<W+.5*D;x+=(.62+caso()*.36)*D) if(x<tl||x>trd){const h=(1.5+caso()*1.2)*D;b+=sagoma(x,h,'#13271E',1)+'<path d="M'+n(x)+','+n(Hb-h)+'l'+n(-h*.15)+','+n(h*.37)+'l'+n(h*.1)+','+n(-h*.05)+'Z" fill="#FFFFFF" opacity=".16"/>';}
+  bo.innerHTML=b;
+
+  /* primo piano: le scritte in una radura di neve, tra grandi abeti */
+  const sopra=(base-7+Hc)-casa.offsetHeight;
+  prato.style.paddingTop=Math.max(30,sopra+.26*D)+'px';
+  prato.style.paddingBottom='calc('+n(largo?.7*D:1.05*D)+'px + env(safe-area-inset-bottom,0px))';
+  const Hf=prato.offsetHeight;
+  co.setAttribute('viewBox','0 0 '+W+' '+Hf);
+  let c='';
+  const duna=(y,a,f)=>{let d='';for(let x=-24;x<=W+24;x+=24)d+=(d?'L':'M')+n(x)+','+n(y+a*Math.sin(x*f+y));return '<path d="'+d+'" fill="none" stroke="#B7C6CE" stroke-width="'+n(.03*D)+'" opacity=".45"/><path d="'+d+'" fill="none" stroke="#FFFFFF" stroke-width="'+n(.035*D)+'" opacity=".8" transform="translate(0 '+n(-.03*D)+')"/>';};
+  {const nt=prato.querySelector('.nota'), sotto=nt?nt.offsetTop+nt.offsetHeight:Hf*.8; c+=duna(sotto+.3*D,.05*D,.009);}
+  const ciuffo=(x,y)=>'<path d="M'+n(x)+','+n(y)+'q'+n(-.03*D)+','+n(-.09*D)+' '+n(-.07*D)+','+n(-.13*D)+'M'+n(x)+','+n(y)+'q0,'+n(-.1*D)+' '+n(.012*D)+','+n(-.17*D)+'M'+n(x)+','+n(y)+'q'+n(.04*D)+','+n(-.08*D)+' '+n(.08*D)+','+n(-.11*D)+'" fill="none" stroke="#8C7B62" stroke-width="'+n(.014*D)+'" stroke-linecap="round" opacity=".8"/><ellipse cx="'+n(x)+'" cy="'+n(y)+'" rx="'+n(.07*D)+'" ry="'+n(.018*D)+'" fill="#FFFFFF"/>';
+  if(largo){
+    const margine=360;
+    for(let k=0;k<7;k++){const lato=k%2?1:-1, x=W/2+lato*(margine+caso()*Math.max(0,W/2-margine-.6*D)), y=Hf*(.3+caso()*.6); if(x>.3*D&&x<W-.3*D)c+=ciuffo(x,y);}
+    c+=abete(.25*D,Hf+.12*D,Math.min(3.1*D,Hf*.92),0)+abete(1.45*D,Hf+.3*D,Math.min(2.1*D,Hf*.7),1)+abete(2.5*D,Hf+.25*D,Math.min(1.35*D,Hf*.5),0);
+    c+=abete(W-.2*D,Hf+.15*D,Math.min(2.7*D,Hf*.85),1)+abete(W-1.4*D,Hf+.28*D,Math.min(1.8*D,Hf*.62),0)+abete(W-2.45*D,Hf+.22*D,Math.min(1.2*D,Hf*.45),1);
+  }else{
+    c+=ciuffo(W*.2,Hf-.5*D)+ciuffo(W*.74,Hf-.34*D);
+    c+=abete(-.18*D,Hf+.1*D,Math.min(1.9*D,Hf*.5),0)+abete(W+.2*D,Hf+.14*D,Math.min(1.55*D,Hf*.42),1)+abete(W-.62*D,Hf+.28*D,.95*D,0);
+  }
+  co.innerHTML=c;
+}
+{let attesa;addEventListener('resize',()=>{clearTimeout(attesa);attesa=setTimeout(disegnaScena,200);});}
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(disegnaScena);
+setTimeout(disegnaScena,60);
+
+/* --- promemoria serale: calendario del telefono (iPhone e computer) o Google Calendar (Android) --- */
+function promemoria(){
+  if(/Android/i.test(navigator.userAgent)){
+    const u='https://calendar.google.com/calendar/render?action=TEMPLATE'
+      +'&text='+encodeURIComponent('24 Respiri: la carta di oggi')
+      +'&dates=20261201T210000/20261201T211000'
+      +'&recur='+encodeURIComponent('RRULE:FREQ=DAILY;COUNT=24')
+      +'&details='+encodeURIComponent('Un minuto solo per te: apri la finestrella di oggi. https://24respiri.github.io');
+    window.open(u,'_blank','noopener');
+  } else location.href='promemoria.ics';
+}
+document.querySelectorAll('.promemoria').forEach(b=>b.addEventListener('click',promemoria));
 
 /* --- la lettera di Sara --- */
 const lettera=$('lettera');
@@ -942,7 +1360,10 @@ document.querySelectorAll('.comignolo').forEach(el=>el.addEventListener('click',
 }));
 
 {const d=dataDiProva();avvia(d||new Date(),!!d);if(d)barra.hidden=false;}
-{let letta=false;try{letta=localStorage.getItem('respiri-lettera')==='letta';}catch(e){} if(!letta){$('rileggi').classList.add('nascosta');setTimeout(apriLettera,calmo?0:650);}}
+const SOCIAL=new URLSearchParams(location.search).has('social');
+if(SOCIAL){document.documentElement.classList.add('social');viste=[1,2,3,5,6];avvia(new Date(2026,11,23),true);
+  viste=[1,2,3,5,6];[1,2,3,5,6].forEach(g=>document.querySelector('.fin[data-g="'+g+'"]').classList.add('aperta'));}
+{let letta=false;try{letta=localStorage.getItem('respiri-lettera')==='letta';}catch(e){} if(!letta&&!SOCIAL){$('rileggi').classList.add('nascosta');setTimeout(apriLettera,calmo?0:650);}}
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!scena.hidden)adatta();});
 </script>
 </body>

@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//24 Respiri per Genitori//IT
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:24 Respiri per Genitori
+BEGIN:VEVENT
+UID:24respiri-promemoria-2026@24respiri.github.io
+DTSTAMP:20261114T120000Z
+DTSTART:20261201T210000
+DTEND:20261201T211000
+RRULE:FREQ=DAILY;COUNT=24
+SUMMARY:24 Respiri: la carta di oggi
+DESCRIPTION:Un minuto solo per te: apri la finestrella di oggi.\nhttps://24respiri.github.io
+URL:https://24respiri.github.io
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:24 Respiri: la carta di oggi
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
